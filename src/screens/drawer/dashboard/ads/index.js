@@ -12,6 +12,7 @@ import {
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
+import HeaderBackButton from "react-navigation";
 
 const { width, height } = Dimensions.get("window");
 
@@ -88,113 +89,112 @@ export default class Ads extends Component {
         end={endGradient}
         style={globalStyles.screen}
       >
+        <SafeAreaView/>
         <SafeAreaView style={styles.container}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.goBack();
-            }}
-            style={styles.backButton}
-          >
-            <Icon name="arrow-left" size={24} color="#737373" />
-          </TouchableOpacity>
-
-          {s.data === "" ? null : (
-            <TouchableOpacity onPress={this.share} style={styles.shareButton}>
-              <Icon name="share-alt" size={24} color="#737373" />
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.goBack();
+              }}
+              style={styles.backButton}
+            >
+              <Icon name="arrow-left" size={24} color="#737373" />
             </TouchableOpacity>
-          )}
 
-          {s.data === "" ? (
-            <View style={styles.content}>
-              <Text style={[globalStyles.textSemiBold, styles.mainText]}>
-                {s.textContent.title}
-              </Text>
-              <Text style={[globalStyles.textRegular, styles.subText]}>
-                {s.textContent.subTitle}
-              </Text>
-              <Text style={[globalStyles.textRegular, styles.subText]}>
-                https://app-venda.firebaseapp.com/
-              </Text>
-              <TouchableOpacity
-                style={styles.accessBtn}
-                onPress={() => {
-                  this.props.navigation.navigate("Site");
-                }}
-              >
-                <Text
-                  style={[
-                    globalStyles.textRegular,
-                    styles.subText,
-                    { color: "#FFF" }
-                  ]}
-                >
-                  {s.textContent.acess}
+          {s.data === ""
+            ? null
+            : <TouchableOpacity onPress={this.share} style={styles.shareButton}>
+                <Icon name="share-alt" size={24} color="#737373" />
+              </TouchableOpacity>}
+
+          {s.data === ""
+            ? <View style={styles.content}>
+                <Text style={[globalStyles.textSemiBold, styles.mainText]}>
+                  {s.textContent.title + "\n"}
                 </Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View style={styles.content}>
-              <Image
-                source={{ uri: s.data.fullImage }}
-                style={{
-                  borderRadius: 5,
-                  height: height - 200,
-                  width: width,
-                  resizeMode: "contain"
-                }}
-              />
-              {s.data.businessName === "" ? null : (
-                <Text
-                  style={[
-                    globalStyles.textSemiBold,
-                    { marginTop: 10, fontSize: 18, marginHorizontal: 10 }
-                  ]}
-                >
-                  {s.data.businessName}
+                <Text style={[globalStyles.textRegular, styles.subText]}>
+                  {s.textContent.subTitle}
                 </Text>
-              )}
-              <TouchableOpacity
-                activeOpacity={0.4}
-                onPress={() => {
-                  Clipboard.setString(s.data.externalLink);
-                  Vibration.vibrate(500);
-                  this.setState({ copy: true });
-                }}
-              >
-                <Text
-                  style={[
-                    globalStyles.textRegular,
-                    {
-                      marginTop: 5,
-                      fontSize: 18,
-                      marginHorizontal: 10,
-                      textAlign: "center"
-                    }
-                  ]}
-                >
-                  {s.data.externalLink ? s.data.externalLink : null}
+                <Text style={[globalStyles.textRegular, styles.subText]}>
+                  https://theundergradstore.com
                 </Text>
-              </TouchableOpacity>
-              {s.copy ? (
-                <Text
-                  style={[
-                    globalStyles.textSemiBold,
-                    {
-                      color: "#FFF",
-                      marginTop: 5,
-                      backgroundColor: "#00000080",
-                      paddingHorizontal: 10,
-                      paddingVertical: 5,
-                      borderRadius: 20,
-                      textAlign: "center"
-                    }
-                  ]}
+                <TouchableOpacity
+                  style={styles.accessBtn}
+                  onPress={() => {
+                    this.props.navigation.navigate("Site");
+                  }}
                 >
-                  {s.textContent.copy}
-                </Text>
-              ) : null}
-            </View>
-          )}
+                  <Text
+                    style={[
+                      globalStyles.textRegular,
+                      styles.subText,
+                      { color: "#FFF" }
+                    ]}
+                  >
+                    {s.textContent.acess}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            : <View style={styles.content}>
+                <Image
+                  source={{ uri: s.data.fullImage }}
+                  style={{
+                    borderRadius: 5,
+                    height: height - 200,
+                    width: width,
+                    resizeMode: "contain"
+                  }}
+                />
+                {s.data.businessName === ""
+                  ? null
+                  : <Text
+                      style={[
+                        globalStyles.textSemiBold,
+                        { marginTop: 10, fontSize: 18, marginHorizontal: 10 }
+                      ]}
+                    >
+                      {s.data.businessName}
+                    </Text>}
+                <TouchableOpacity
+                  activeOpacity={0.4}
+                  onPress={() => {
+                    Clipboard.setString(s.data.externalLink);
+                    Vibration.vibrate(500);
+                    this.setState({ copy: true });
+                  }}
+                >
+                  <Text
+                    style={[
+                      globalStyles.textRegular,
+                      {
+                        marginTop: 5,
+                        fontSize: 18,
+                        marginHorizontal: 10,
+                        textAlign: "center"
+                      }
+                    ]}
+                  >
+                    {s.data.externalLink ? s.data.externalLink : null}
+                  </Text>
+                </TouchableOpacity>
+                {s.copy
+                  ? <Text
+                      style={[
+                        globalStyles.textSemiBold,
+                        {
+                          color: "#FFF",
+                          marginTop: 5,
+                          backgroundColor: "#00000080",
+                          paddingHorizontal: 10,
+                          paddingVertical: 5,
+                          borderRadius: 20,
+                          textAlign: "center"
+                        }
+                      ]}
+                    >
+                      {s.textContent.copy}
+                    </Text>
+                  : null}
+              </View>}
         </SafeAreaView>
       </LinearGradient>
     );

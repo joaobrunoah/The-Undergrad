@@ -199,7 +199,7 @@ export default class Login extends Component {
                 <TouchableOpacity
                   activeOpacity={0.7}
                   style={[styles.buttons, s.buttonRes, s.opacity]}
-                  onPress={this.checkUni}
+                  onPress={this.signIn}
                   disabled={s.buttonDisable}
                 >
                   <Text style={[globalStyles.textRegular, styles.textButton]}>

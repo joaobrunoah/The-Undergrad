@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { createStackNavigator } from "react-navigation";
+import { HeaderBackButton , createStackNavigator } from "react-navigation";
 
 //Screens
 import Dashboard from "../../screens/drawer/dashboard";
@@ -17,37 +17,82 @@ import Search from "../../screens/drawer/dashboard/search";
 const StackDash = createStackNavigator(
   {
     Dashboard: {
-      screen: Dashboard
+      screen: Dashboard,
+      navigationOptions: {
+        header: null
+      },
     },
     Gadgets: {
-      screen: Gadgets
+      screen: Gadgets,
+      navigationOptions: {
+        header: null
+      },
     },
     Books: {
-      screen: Books
+      screen: Books,
+      navigationOptions: {
+        header: null
+      },
     },
     Furniture: {
-      screen: Furniture
+      screen: Furniture,
+      navigationOptions: {
+        header: null
+      },
     },
     Clothing: {
-      screen: Clothing
+      screen: Clothing,
+      navigationOptions: {
+        header: null
+      },
     },
     Ads: {
-      screen: Ads
+      screen: Ads,
+      navigationOptions: {
+        header: null
+      }
     },
     Site: {
-      screen: Site
+      screen: Site,
+      navigationOptions: ({ navigation}) => ({
+        headerLeft:(<HeaderBackButton tintColor="#737373" onPress={() => navigation.goBack()}/>),
+        title: "The Undergrad",
+        headerTitleStyle: {
+          color: "#737373"
+        },
+        headerTintColor: "#737373",
+        headerStyle: {
+          color: "#000",
+          backgroundColor: "#DDD",
+          shadowColor: "#000",
+          shadowOffset: {
+            width: 0,
+            height: 2
+          },
+          shadowOpacity: 0.23,
+          shadowRadius: 2.62,
+  
+          elevation: 4
+        }
+      }),
     },
     Details: {
-      screen: Details
+      screen: Details,
+      navigationOptions: {
+        header: null
+      },
     },
     Search: {
-      screen: Search
+      screen: Search,
+      navigationOptions: {
+        header: null
+      },
     }
   },
   {
-    defaultNavigationOptions: {
-      header: null
-    },
+    // defaultNavigationOptions: {
+    //   header: null
+    // },
     mode: "screen"
   }
 );

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { WebView, ActivityIndicator } from "react-native";
+import { WebView, ActivityIndicator, SafeAreaView} from "react-native";
 
 export default class Site extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ export default class Site extends Component {
           <ActivityIndicator size="large" color="#0008" />;
         }}
         startInLoadingState={true}
-        source={{ uri: "https://app-venda.firebaseapp.com/" }}
+        source={{ uri: "https://theundergradstore.com" }}
         style={{}}
       />
     );

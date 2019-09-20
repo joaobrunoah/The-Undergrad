@@ -241,7 +241,7 @@ export default class Dashboard extends Component {
                 <TouchableOpacity
                   disabled={s.disable}
                   onPress={() => {
-                    this.props.navigation.navigate("Ads", {
+                    this.props.navigation.navigate("Ads", { 
                       data: s.spotFour
                     });
                   }}

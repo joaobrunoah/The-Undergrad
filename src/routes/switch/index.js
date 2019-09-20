@@ -33,7 +33,7 @@ const SwitchMenu = FluidNavigator(
   },
   {
     mode: "screen",
-    initialRouteName: "Home",
+    initialRouteName: "Preload",
     defaultNavigationOptions: {
       header: null
     }
