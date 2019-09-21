@@ -115,7 +115,7 @@ export default class Ads extends Component {
                   {s.textContent.subTitle}
                 </Text>
                 <Text style={[globalStyles.textRegular, styles.subText]}>
-                  https://theundergradstore.com
+                  {"https://theundergradstore.com\n"}
                 </Text>
                 <TouchableOpacity
                   style={styles.accessBtn}

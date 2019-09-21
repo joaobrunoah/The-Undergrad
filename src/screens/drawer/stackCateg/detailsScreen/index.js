@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TouchableOpacity, Image, View, Text, ScrollView } from "react-native";
+import { TouchableOpacity, Image, View, Text, ScrollView , SafeAreaView } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
 
@@ -95,6 +95,7 @@ export default class Details extends Component {
         end={endGradient}
         style={globalStyles.screen}
       >
+        <SafeAreaView/>
         <View style={styles.container}>
           <Header back={true} />
           <ScrollView>

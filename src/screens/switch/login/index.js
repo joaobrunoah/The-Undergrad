@@ -176,6 +176,7 @@ export default class Login extends Component {
                       this.setState({ email: email });
                     }}
                     keyboardType="email-address"
+                    placeholderTextColor="#999"
                     placeholder={s.textContent.emailInput}
                   />
                   <TextInput
@@ -191,6 +192,7 @@ export default class Login extends Component {
                       this.setState({ pass: pass });
                     }}
                     placeholder={s.textContent.passInput}
+                    placeholderTextColor="#999"
                   />
                 </View>
               </Transition>

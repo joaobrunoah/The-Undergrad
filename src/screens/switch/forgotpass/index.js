@@ -137,6 +137,7 @@ export default class ForgotPass extends Component {
                       this.setState({ email: email });
                     }}
                     keyboardType="email-address"
+                    placeholderTextColor="#999"
                     placeholder={s.textContent.emailInput}
                   />
                 </Transition>

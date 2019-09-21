@@ -7,7 +7,8 @@ import {
   ActivityIndicator,
   TextInput,
   Image,
-  SafeAreaView
+  SafeAreaView,
+  Keyboard,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -113,6 +114,8 @@ export default class Search extends Component {
       textContent: {},
       loading: true,
       itemsForSale: [],
+      itemsForSale2: [],
+      itemsFiltrados: [],
       userInfo: {},
       userUid: "",
       search: ""
@@ -137,32 +140,68 @@ export default class Search extends Component {
       await this.setState(s);
     });
 
-    this.search();
-  }
-
-  search = () => {
-    let s = this.state;
-    s.loading = true;
-    s.itemsForSale = [];
-    this.setState(s);
-    console.log(s.userInfo);
-
-    System.getSearchItem(s.search)
+    System.getEveryItem()
       .then(r => {
         r.forEach(doc => {
-          s.itemsForSale.push(doc.data());
-          this.setState(s);
+          let auxUni = doc.data().university.split("/", 3);
+          let auxUserUni = s.userInfo.university.split("/", 2);
+          if (auxUni[2] === auxUserUni[1]) {
+            s.itemsForSale2.push(doc.data());
+            s.itemsFiltrados = [...s.itemsForSale2];
+            this.setState(s);
+          }
         });
 
         s.loading = false;
         s.search = "";
         this.setState(s);
-        console.log(s.itemsForSale);
+        console.log(s.itemsForSale2);
       })
       .catch(e => {
         console.log(e);
       });
-  };
+
+    // this.search();
+  }
+
+  // search = () => {
+  //   let s = this.state;
+  //   s.loading = true;
+  //   s.itemsForSale = [];
+  //   this.setState(s);
+  //   console.log(s.userInfo);
+
+  //   System.getSearchItem(s.search)
+  //     .then(r => {
+  //       r.forEach(doc => {
+  //         s.itemsForSale.push(doc.data());
+  //         this.setState(s);
+  //       });
+
+  //       s.loading = false;
+  //       s.search = "";
+  //       this.setState(s);
+  //       console.log(s.itemsForSale);
+  //     })
+  //     .catch(e => {
+  //       console.log(e);
+  //     });
+  // };
+
+  filtro() {
+    let s = this.state;
+
+    s.itemsFiltrados = [];
+
+    for (var i in s.itemsForSale2) {
+      if (s.itemsForSale2[i].description.toUpperCase().includes(s.search.toUpperCase())) {
+        s.itemsFiltrados.push(s.itemsForSale2[i]);
+      }
+    }
+
+    this.setState(s);
+    console.log("A" + s.itemsForSale2);
+  }
 
   render() {
     let s = this.state;
@@ -174,17 +213,24 @@ export default class Search extends Component {
         end={endGradient}
         style={globalStyles.screen}
       >
+        <SafeAreaView />
         <View style={styles.container}>
-          <Header back={true} />
-          <Text style={styles.textButton}>{s.textContent.search}</Text>
+            <Header back={true}/>
+          <Text style={styles.textButton}>
+            {s.textContent.search}
+          </Text>
           <TextInput
             value={s.search}
             onChangeText={text => {
-              this.setState({ search: text });
+              s.search = text;
+              this.setState(s);
+              this.filtro();
+              console.log(s.search);
             }}
             onSubmitEditing={() => {
-              this.setState({ search: "" });
-              this.search();
+              Keyboard.dismiss();
+              // this.setState({ search: "" });
+              // this.search();
             }}
             placeholder={s.textContent.search}
             style={{
@@ -200,47 +246,44 @@ export default class Search extends Component {
               ...globalStyles.textRegular
             }}
           />
-          {s.loading ? (
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <ActivityIndicator size="large" color="#0008" />
-            </View>
-          ) : (
-            <FlatList
-              ListEmptyComponent={
-                <View
-                  style={{
-                    flex: 1,
-                    height: 400,
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}
-                >
-                  <Icon name="surprise" size={50} light color="#0006" />
-                  <Text style={globalStyles.textSemiBold}>
-                    {s.textContent.items}
-                  </Text>
-                </View>
-              }
-              style={{ marginTop: 20 }}
-              data={s.itemsForSale}
-              columnWrapperStyle={{ justifyContent: "space-around" }}
-              numColumns={2}
-              renderItem={({ item }) => (
-                <Item
-                  text={s.textContent}
-                  data={item}
-                  nav={this.props.navigation}
-                />
-              )}
-              keyExtractor={(item, index) => index}
-            />
-          )}
+          {s.loading
+            ? <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                <ActivityIndicator size="large" color="#0008" />
+              </View>
+            : <FlatList
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      flex: 1,
+                      height: 400,
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Icon name="surprise" size={50} light color="#0006" />
+                    <Text style={globalStyles.textSemiBold}>
+                      {s.textContent.items}
+                    </Text>
+                  </View>
+                }
+                style={{ marginTop: 20 }}
+                data={s.itemsFiltrados}
+                columnWrapperStyle={{ justifyContent: "space-around" }}
+                numColumns={2}
+                renderItem={({ item }) =>
+                  <Item
+                    text={s.textContent}
+                    data={item}
+                    nav={this.props.navigation}
+                  />}
+                keyExtractor={(item, index) => index}
+              />}
         </View>
       </LinearGradient>
     );

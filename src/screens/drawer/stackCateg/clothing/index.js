@@ -133,7 +133,7 @@ export default class Clothing extends Component {
     System.getUserInfo(s.userUid).then(r => {
       s.userInfo = r.data();
       this.setState(s);
-      console.log(s.userInfo.university);
+      // console.log(s.userInfo.university);
     });
 
     System.getCategories("Clothing")
@@ -148,17 +148,19 @@ export default class Clothing extends Component {
               if (auxUni[2] === auxUserUni[1]) {
                 s.itemsForSale.push(doc.data());
                 this.setState(s);
+                // s.loading = false;
+                // this.setState(s);
+                // console.log(s.loading);
               } else {
-                return;
+                s.loading = false;
+                this.setState(s);
+                console.log("finalizou" + s.loading);
               }
               console.log(auxUni[2]);
               console.log(auxUserUni[1]);
             });
           });
         });
-        s.loading = false;
-        this.setState(s);
-        console.log(s.itemsForSale);
       })
       .catch(e => {
         console.log(e);
@@ -184,47 +186,44 @@ export default class Clothing extends Component {
           >
             {s.textContent.clothing}
           </Text>
-          {s.loading ? (
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <ActivityIndicator size="large" color="#0008" />
-            </View>
-          ) : (
-            <FlatList
-              ListEmptyComponent={
-                <View
-                  style={{
-                    flex: 1,
-                    height: 400,
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}
-                >
-                  <Icon name="surprise" size={50} light color="#0006" />
-                  <Text style={globalStyles.textSemiBold}>
-                    {s.textContent.emptyList}
-                  </Text>
-                </View>
-              }
-              style={{ marginTop: 20 }}
-              data={s.itemsForSale}
-              columnWrapperStyle={{ justifyContent: "space-around" }}
-              numColumns={2}
-              renderItem={({ item }) => (
-                <Item
-                  text={s.textContent}
-                  data={item}
-                  nav={this.props.navigation}
-                />
-              )}
-              keyExtractor={(item, index) => index}
-            />
-          )}
+          {s.loading
+            ? <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                <ActivityIndicator size="large" color="#0008" />
+              </View>
+            : <FlatList
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      flex: 1,
+                      height: 400,
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Icon name="surprise" size={50} light color="#0006" />
+                    <Text style={globalStyles.textSemiBold}>
+                      {"\n" + s.textContent.emptyList}
+                    </Text>
+                  </View>
+                }
+                style={{ marginTop: 20 }}
+                data={s.itemsForSale}
+                columnWrapperStyle={{ justifyContent: "space-around" }}
+                numColumns={2}
+                renderItem={({ item }) =>
+                  <Item
+                    text={s.textContent}
+                    data={item}
+                    nav={this.props.navigation}
+                  />}
+                keyExtractor={(item, index) => index}
+              />}
         </SafeAreaView>
       </LinearGradient>
     );

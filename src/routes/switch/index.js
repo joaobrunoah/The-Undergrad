@@ -10,6 +10,12 @@ import Login from "../../screens/switch/login";
 import Cadastro from "../../screens/switch/cadastro";
 import ForgotPass from "../../screens/switch/forgotpass";
 
+isSignedIn = async () => {
+  const user = await AsyncStorage.getItem("language");
+
+  return (user !== null) ? true : false;
+};
+
 const SwitchMenu = FluidNavigator(
   {
     Preload: {

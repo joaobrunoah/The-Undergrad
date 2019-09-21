@@ -148,6 +148,13 @@ class System {
       .get();
   }
 
+  async getEveryItem(){
+    return await firebase
+      .firestore()
+      .collection("offers")
+      .get()
+  }
+
   // Registrar oferta no Firestore
   async registerItem(data) {
     await firebase

@@ -5,7 +5,8 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  SafeAreaView
+  SafeAreaView,
+  ScrollView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -237,6 +238,7 @@ export default class Perfil extends Component {
 
         <SafeAreaView style={styles.container}>
           <Header back={true} />
+          <ScrollView>
           <View style={styles.stats}>
             <View style={[styles.statsItems, { maxWidth: 75, width: 75 }]}>
               <Text style={globalStyles.textBold}>{s.textContent.sales}</Text>
@@ -331,6 +333,7 @@ export default class Perfil extends Component {
               </Text>
             </TouchableOpacity>
           </View>
+          </ScrollView>
         </SafeAreaView>
       </LinearGradient>
     );

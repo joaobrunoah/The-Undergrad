@@ -6,7 +6,8 @@ import {
   FlatList,
   ActivityIndicator,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  SafeAreaView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { StackActions, NavigationActions } from "react-navigation";
@@ -243,6 +244,7 @@ export default class ItemsForSale extends Component {
         end={endGradient}
         style={globalStyles.screen}
       >
+        <SafeAreaView/>
         {/* Modal */}
 
         {/* Fim Modal */}

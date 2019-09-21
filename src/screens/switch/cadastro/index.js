@@ -272,6 +272,7 @@ export default class Cadastro extends Component {
                       this.setState({ name: name });
                     }}
                     keyboardType="default"
+                    placeholderTextColor="#999"
                     placeholder={s.textContent.nameInput}
                   />
                   <TextInput
@@ -287,6 +288,7 @@ export default class Cadastro extends Component {
                       this.setState({ email: email });
                     }}
                     keyboardType="email-address"
+                    placeholderTextColor="#999"
                     placeholder={s.textContent.emailInput}
                   />
                   <TextInput
@@ -305,6 +307,7 @@ export default class Cadastro extends Component {
                     onChangeText={pass => {
                       this.setState({ pass: pass });
                     }}
+                    placeholderTextColor="#999"
                     placeholder={s.textContent.passInput}
                   />
                   <TextInput
@@ -324,6 +327,7 @@ export default class Cadastro extends Component {
                       this.checkPass(repPass);
                       this.setState({ repPass: repPass });
                     }}
+                    placeholderTextColor="#999"
                     placeholder={s.textContent.repPassInput}
                   />
                 </View>

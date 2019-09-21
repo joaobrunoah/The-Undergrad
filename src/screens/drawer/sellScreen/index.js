@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  SafeAreaView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import moment from "moment";
@@ -197,6 +198,7 @@ export default class SellScreen extends Component {
         end={endGradient}
         style={globalStyles.screen}
       >
+        <SafeAreaView />
         {/* Modal */}
         <Modal
           swipeToClose={true}
@@ -313,29 +315,27 @@ export default class SellScreen extends Component {
         <ScrollView style={styles.container}>
           <Header back={true} />
           <TouchableOpacity onPress={this.takePhoto} style={styles.uploadArea}>
-            {s.photo === null ? (
-              <Text style={[globalStyles.textSemiBold, styles.uploadText]}>
-                {s.textContent.upImg}
-              </Text>
-            ) : s.loadingImg ? (
-              <View
-                style={{
-                  backgroundColor: "#FFF4",
-                  width: "100%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-              >
-                <ActivityIndicator size="large" color="#FFF" />
-              </View>
-            ) : (
-              <Image
-                source={s.photo}
-                style={{ height: "100%", width: "100%" }}
-                resizeMode="stretch"
-              />
-            )}
+            {s.photo === null
+              ? <Text style={[globalStyles.textSemiBold, styles.uploadText]}>
+                  {s.textContent.upImg}
+                </Text>
+              : s.loadingImg
+                ? <View
+                    style={{
+                      backgroundColor: "#FFF4",
+                      width: "100%",
+                      height: "100%",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    <ActivityIndicator size="large" color="#FFF" />
+                  </View>
+                : <Image
+                    source={s.photo}
+                    style={{ height: "100%", width: "100%" }}
+                    resizeMode="stretch"
+                  />}
           </TouchableOpacity>
           <TextInput
             multiline={false}
@@ -355,7 +355,9 @@ export default class SellScreen extends Component {
             }}
             style={[styles.description, { justifyContent: "center" }]}
           >
-            <Text style={[globalStyles.textRegular]}>{s.categ}</Text>
+            <Text style={[globalStyles.textRegular]}>
+              {s.categ}
+            </Text>
           </TouchableOpacity>
           <TextInput
             multiline={true}
@@ -381,13 +383,11 @@ export default class SellScreen extends Component {
             onPress={this.upOffer}
             style={styles.uploadOfferButton}
           >
-            {s.loading ? (
-              <ActivityIndicator size="small" color="#FFF" />
-            ) : (
-              <Text style={[globalStyles.textSemiBold, styles.uploadOffer]}>
-                {s.textContent.upOffer}
-              </Text>
-            )}
+            {s.loading
+              ? <ActivityIndicator size="small" color="#FFF" />
+              : <Text style={[globalStyles.textSemiBold, styles.uploadOffer]}>
+                  {s.textContent.upOffer}
+                </Text>}
           </TouchableOpacity>
         </ScrollView>
       </LinearGradient>

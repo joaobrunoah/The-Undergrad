@@ -114,7 +114,7 @@ export default class Gadgets extends Component {
       userUid: ""
     };
 
-    console.log("Tec");
+    console.log("Gadgets");
   }
 
   async componentDidMount() {
@@ -149,16 +149,14 @@ export default class Gadgets extends Component {
                 s.itemsForSale.push(doc.data());
                 this.setState(s);
               } else {
-                return;
+                s.loading = false;
+                this.setState(s);
               }
-              console.log(auxUni[2]);
-              console.log(auxUserUni[1]);
+              // console.log(auxUni[2]);
+              // console.log(auxUserUni[1]);
             });
           });
         });
-        s.loading = false;
-        this.setState(s);
-        console.log(s.itemsForSale);
       })
       .catch(e => {
         console.log(e);
@@ -184,47 +182,44 @@ export default class Gadgets extends Component {
           >
             {s.textContent.gadgets}
           </Text>
-          {s.loading ? (
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <ActivityIndicator size="large" color="#0008" />
-            </View>
-          ) : (
-            <FlatList
-              ListEmptyComponent={
-                <View
-                  style={{
-                    flex: 1,
-                    height: 400,
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}
-                >
-                  <Icon name="surprise" size={50} light color="#0006" />
-                  <Text style={globalStyles.textSemiBold}>
-                    {s.textContent.emptyList}
-                  </Text>
-                </View>
-              }
-              style={{ marginTop: 20 }}
-              data={s.itemsForSale}
-              columnWrapperStyle={{ justifyContent: "space-around" }}
-              numColumns={2}
-              renderItem={({ item }) => (
-                <Item
-                  text={s.textContent}
-                  data={item}
-                  nav={this.props.navigation}
-                />
-              )}
-              keyExtractor={(item, index) => index}
-            />
-          )}
+          {s.loading
+            ? <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                <ActivityIndicator size="large" color="#0008" />
+              </View>
+            : <FlatList
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      flex: 1,
+                      height: 400,
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Icon name="surprise" size={50} light color="#0006" />
+                    <Text style={globalStyles.textSemiBold}>
+                      {"\n" + s.textContent.emptyList}
+                    </Text>
+                  </View>
+                }
+                style={{ marginTop: 20 }}
+                data={s.itemsForSale}
+                columnWrapperStyle={{ justifyContent: "space-around" }}
+                numColumns={2}
+                renderItem={({ item }) =>
+                  <Item
+                    text={s.textContent}
+                    data={item}
+                    nav={this.props.navigation}
+                  />}
+                keyExtractor={(item, index) => index}
+              />}
         </SafeAreaView>
       </LinearGradient>
     );
