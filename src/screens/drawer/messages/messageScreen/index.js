@@ -6,7 +6,8 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  KeyboardAvoidingView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -37,9 +38,19 @@ export class Mensagem extends Component {
 
     this.state = {
       data: p,
+      language: "",
       style: { alignSelf: "flex-start" }
     };
   }
+
+  async componentWillMount() {
+    let s = this.state;
+    let languageSelected = await AsyncStorage.getItem("language");
+
+    s.language = languageSelected;
+
+    this.setState({language: languageSelected});
+  };
 
   async componentDidMount() {
     let s = this.state;
@@ -210,13 +221,13 @@ export default class MessageDetail extends Component {
               keyExtractor={(item, index) => index}
             />
           </View>
-          <View style={styles.messageTextArea}>
+          <KeyboardAvoidingView style={styles.messageTextArea}>
             <TextInput
               value={s.newMessage}
               onChangeText={text => {
                 this.setState({ newMessage: text });
               }}
-              placeholder="Digite aqui sua mensagem"
+              placeholder= {this.state.language == "br" ? "Digite aqui sua mensagem" : "Write your message here"}
               style={[
                 globalStyles.textRegular,
                 {
@@ -240,7 +251,7 @@ export default class MessageDetail extends Component {
             >
               <Icon name="arrow-circle-right" size={24} color="#737373" />
             </TouchableOpacity>
-          </View>
+          </KeyboardAvoidingView>
         </SafeAreaView>
       </LinearGradient>
     );

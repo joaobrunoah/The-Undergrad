@@ -43,7 +43,7 @@ export default class Language extends Component {
       selectedUsaStyle: {}
     };
 
-    System.logOut();
+    // System.logOut();
   }
 
   saveLanguage = async language => {

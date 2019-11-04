@@ -1,9 +1,11 @@
 import firebase from "./firebaseConnection";
 import "firebase/firestore";
+import AsyncStorage from "@react-native-community/async-storage";
 
 class System {
   // Função para deslogar do sistema
   async logOut() {
+    await AsyncStorage.multiRemove(["email","pass"]);
     await firebase.auth().signOut();
   }
 
@@ -11,6 +13,12 @@ class System {
   async addAuthListener(callback) {
     await firebase.auth().onAuthStateChanged(callback);
   }
+
+  async isSignedIn() {
+    const token = await AsyncStorage.getItem("email");
+
+    return (token !== null) ? true : false;
+};
 
   // Login
   async login(email, pass) {

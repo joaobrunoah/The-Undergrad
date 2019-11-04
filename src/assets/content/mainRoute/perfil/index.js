@@ -5,7 +5,7 @@ export const textBr = {
   stars: "Estrelas",
   itemsFor: "Itens à venda",
   emptyList: "Você ainda não possui itens à venda",
-  looking: "Estou olhando para",
+  looking: "Estou interessado em",
   buy: "Comprar",
   sell: "Vender",
   phase: "O que você está procurando?",

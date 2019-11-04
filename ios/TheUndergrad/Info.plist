@@ -42,8 +42,6 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Some description</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Some description</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to use your microphone (for videos)</string>
@@ -93,6 +91,8 @@
 	<array>
 		<string>armv7</string>
 	</array>
+	<key>UIStatusBarStyle</key>
+	<string>UIStatusBarStyleDarkContent</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>

@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
 import { StackActions, NavigationActions } from "react-navigation";
+import System from "../../../services/api.js"
 
 //Icon
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -121,7 +122,7 @@ export default class Settings extends Component {
                 justifyContent: "space-between"
               }}
               onPress={async () => {
-                await AsyncStorage.clear().then(r => {
+                await System.logOut().then(r => {
                   const resetAction = StackActions.reset({
                     index: 0,
                     actions: [

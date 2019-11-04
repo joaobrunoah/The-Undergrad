@@ -56,7 +56,6 @@ export default class Login extends Component {
       loading: false
     };
 
-    System.logOut();
   }
 
   async componentWillMount() {
@@ -168,7 +167,7 @@ export default class Login extends Component {
                     onSubmitEditing={() => this.senhaInput.focus()}
                     style={[styles.inputArea, globalStyles.textRegular]}
                     multiline={false}
-                    autoCapitalize={false}
+                    autoCapitalize="none"
                     autoCorrect={false}
                     returnKeyType="next"
                     value={s.email}
