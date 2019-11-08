@@ -109,7 +109,7 @@ export class Message extends Component {
             <Text style={[globalStyles.textRegular, styles.name]}>
               {s.nome}
             </Text>
-            <Text style={[globalStyles.textRegular, styles.msg, {width: 100, borderWidth: 1, borderColor: "red"}]} ellipsizeMode={"tail"} numberOfLines={1}>{this.props.msg}</Text>
+            <Text style={[globalStyles.textRegular, styles.msg, {width: 100}]} ellipsizeMode={"tail"} numberOfLines={1}>{this.props.msg}</Text>
           </View>
         </SafeAreaView>
       </TouchableOpacity>
