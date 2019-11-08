@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { createStackNavigator } from "react-navigation";
+import { createStackNavigator, HeaderBackButton } from "react-navigation";
 
 //Screens
 import Perfil from "../../screens/drawer/perfil";
@@ -17,38 +17,72 @@ import MessageItem from "../../screens/drawer/messages/messagesItem";
 const DrawerMenu = createStackNavigator(
   {
     StackDash: {
-      screen: StackDash
+      screen: StackDash,
+      navigationOptions: {
+        header: null
+      }
     },
     Perfil: {
-      screen: Perfil
+      screen: Perfil,
+      navigationOptions: {
+        header: null
+      }
     },
     Settings: {
-      screen: Settings
+      screen: Settings,
+      navigationOptions: {
+        header: null
+      }
     },
     ItemsForSale: {
-      screen: ItemsForSale
+      screen: ItemsForSale,
+      navigationOptions: {
+        header: null
+      }
     },
     SellScreen: {
-      screen: SellScreen
+      screen: SellScreen,
+      navigationOptions: {
+        header: null
+      }
     },
     BuyScreen: {
-      screen: BuyScreen
+      screen: BuyScreen,
+      navigationOptions: {
+        header: null
+      }
     },
     Messages: {
-      screen: Messages
+      screen: Messages,
+      navigationOptions: {
+        header: null
+      }
     },
     MessageDetail: {
-      screen: MessageDetail
+      screen: MessageDetail,
+      navigationOptions: ({ navigation}) => ({
+        headerLeft: () => <HeaderBackButton tintColor="#737373" onPress={() => navigation.goBack()}/>,
+        title: "The Undergrad",
+        headerTitleStyle: {
+          fontSize: 26,
+          fontFamily: "Montserrat-SemiBold",
+          textAlign: "center",
+          marginBottom: 10
+        },
+        headerStyle: {
+          backgroundColor: "#ebebeb"
+        }
+      })
     },
     MessageItem: {
-      screen: MessageItem
+      screen: MessageItem,
+      navigationOptions: {
+        header: null
+      }
     }
   },
   {
     //initialRouteName: "StackDash",
-    defaultNavigationOptions: {
-      header: null
-    }
   }
 );
 

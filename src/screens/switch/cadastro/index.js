@@ -159,6 +159,8 @@ export default class Cadastro extends Component {
 
     let uniDomain = s.email.split("@", 2);
 
+    uniDomain[1] = uniDomain[1] == "poli.ufrj.br" ? "ufrj.br" : uniDomain[1];
+
     System.checkUni(uniDomain[1])
       .then(r => {
         if (r.docs.length !== 0) {
@@ -279,7 +281,7 @@ export default class Cadastro extends Component {
                     onSubmitEditing={() => this.senhaInput.focus()}
                     ref={input => (this.emailInput = input)}
                     style={[styles.inputArea, globalStyles.textRegular]}
-                    autoCapitalize={false}
+                    autoCapitalize="none"
                     multiline={false}
                     autoCorrect={false}
                     returnKeyType="next"

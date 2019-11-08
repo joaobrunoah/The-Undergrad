@@ -129,7 +129,7 @@ export default class ForgotPass extends Component {
                     onSubmitEditing={this.forgot}
                     style={[styles.inputArea, globalStyles.textRegular]}
                     multiline={false}
-                    autoCapitalize={false}
+                    autoCapitalize={"none"}
                     autoCorrect={false}
                     returnKeyType="go"
                     value={s.email}

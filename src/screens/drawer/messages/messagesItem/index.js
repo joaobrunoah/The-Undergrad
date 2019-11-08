@@ -29,7 +29,9 @@ export class Message extends Component {
     this.state = {
       imageProfile: p.img,
       nome: "",
-      uni: ""
+      uni: "",
+      messages: [],
+      lastMessage: "",
     };
   }
 
@@ -49,7 +51,35 @@ export class Message extends Component {
       this.setState(s);
       console.log(r.data());
     });
+    // this.loadMessages()
   }
+
+  // loadMessages = async () => {
+  //   let s = this.state;
+  //   let uid = await AsyncStorage.getItem("userUID");
+  //   let p = this.props.data;
+  //   console.log(p)
+
+  //   System.getListaConversas(uid, async r => {
+  //     s.messages = [];
+  //     r.forEach(r => {
+  //       if (r.key === p.key) {
+  //         let messages = r.val().messages;
+  //         Object.values(messages).forEach(r => {
+  //           s.messages.push({
+  //             hour: r.hour,
+  //             user: r.user,
+  //             message: r.message
+  //           });
+  //           console.log(r);
+  //         });
+  //         s.lastMessage = s.messages[s.messages.length - 1].message
+  //       }
+  //     });
+  //     await this.setState(s);
+  //   })
+  // };
+
 
   render() {
     let s = this.state;
@@ -79,7 +109,7 @@ export class Message extends Component {
             <Text style={[globalStyles.textRegular, styles.name]}>
               {s.nome}
             </Text>
-            <Text style={[globalStyles.textRegular, styles.msg]}>{s.uni}</Text>
+            <Text style={[globalStyles.textRegular, styles.msg, {width: 100, borderWidth: 1, borderColor: "red"}]} ellipsizeMode={"tail"} numberOfLines={1}>{this.props.msg}</Text>
           </View>
         </SafeAreaView>
       </TouchableOpacity>

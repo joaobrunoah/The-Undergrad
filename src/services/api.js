@@ -5,8 +5,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 class System {
   // Função para deslogar do sistema
   async logOut() {
-    await AsyncStorage.multiRemove(["email","pass"]);
     await firebase.auth().signOut();
+    await AsyncStorage.multiRemove(["email","pass","userUID"]);
   }
 
   // Verificar se existe um usuário logado

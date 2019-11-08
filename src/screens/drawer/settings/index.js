@@ -126,7 +126,7 @@ export default class Settings extends Component {
                   const resetAction = StackActions.reset({
                     index: 0,
                     actions: [
-                      NavigationActions.navigate({ routeName: "Language" })
+                      NavigationActions.navigate({ routeName: "Preload" })
                     ]
                   });
                   this.props.navigation.dispatch(resetAction);

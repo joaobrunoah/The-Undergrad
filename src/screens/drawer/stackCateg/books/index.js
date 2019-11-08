@@ -142,19 +142,27 @@ export default class Books extends Component {
         data.forEach(doc => {
           let id = doc.id;
           System.getItemsCateg(id).then(r => {
+            if (r.size == 0) {
+              if (s.language === "br") {
+                console.log("BRASIL")
+                s.textContent = textBr;
+              } else if (s.language === "usa") {
+                s.textContent = textUsa;
+              }
+              s.loading = false;
+              this.setState(s);
+            }
             r.forEach(doc => {
               let auxUni = doc.data().university.split("/", 3);
               let auxUserUni = s.userInfo.university.split("/", 2);
               if (auxUni[2] === auxUserUni[1]) {
                 s.itemsForSale.push(doc.data());
+                s.loading = false;
                 this.setState(s);
-                
               } else {
                 s.loading = false;
-                this.setState(s);;
+                this.setState(s);
               }
-              // console.log(auxUni[2]);
-              // console.log(auxUserUni[1]);
             });
           });
         });

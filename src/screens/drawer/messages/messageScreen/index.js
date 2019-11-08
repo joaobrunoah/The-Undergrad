@@ -7,7 +7,10 @@ import {
   TouchableOpacity,
   ScrollView,
   SafeAreaView,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  InputAccessoryView,
+  StyleSheet,
+  Keyboard
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -43,14 +46,14 @@ export class Mensagem extends Component {
     };
   }
 
-  async componentWillMount() {
+  async componentDidMount() {
     let s = this.state;
     let languageSelected = await AsyncStorage.getItem("language");
 
     s.language = languageSelected;
 
-    this.setState({language: languageSelected});
-  };
+    this.setState({ language: languageSelected });
+  }
 
   async componentDidMount() {
     let s = this.state;
@@ -66,14 +69,14 @@ export class Mensagem extends Component {
     if (s.data.user == uid) {
       s.style = {
         ...style,
-        backgroundColor: "#66ff66",
-        alignSelf: "flex-start"
+        backgroundColor: "rgb(220,246,199)",
+        alignSelf: "flex-end"
       };
     } else {
       s.style = {
         ...style,
-        backgroundColor: "#a6a6a6",
-        alignSelf: "flex-end"
+        backgroundColor: "rgb(249,249,249)",
+        alignSelf: "flex-start"
       };
     }
 
@@ -118,26 +121,67 @@ export default class MessageDetail extends Component {
       data: p,
       uid: "",
       messages: [],
-      newMessage: ""
+      newMessage: "",
+      language: "",
+      height: 0,
+      keyboardOffset: 0
     };
   }
 
+  componentDidMount() {
+    console.log(this.state.keyboardOffset);
+    this.keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      this._keyboardDidShow
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      this._keyboardDidHide
+    );
+  }
+
+  componentWillUnmount() {
+    this.keyboardDidShowListener.remove();
+    this.keyboardDidHideListener.remove();
+  }
+
+  _keyboardDidShow = (event) => {
+    this.setState({keyboardOffset: event.endCoordinates.height});
+  }
+
+  _keyboardDidHide = () => {
+    this.setState({keyboardOffset: 0});
+  }
+
   async componentDidMount() {
+    this.keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      this._keyboardDidShow
+    );
+    this.keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      this._keyboardDidHide
+    );
+
     let uid = await AsyncStorage.getItem("userUID");
     let p = this.props.navigation.state.params.data;
     console.log(p.key);
     await this.setState({ uid: uid });
     this.loadMessages();
+
+    let s = this.state;
+    let languageSelected = await AsyncStorage.getItem("language");
+
+    s.language = languageSelected;
+
+    this.setState({ language: languageSelected });
+    console.log(this.state.language);
   }
 
   sendMessage = async () => {
     let s = this.state;
     let p = this.props.navigation.state.params.data;
-    let hora = `${moment().hour()}:${Number(
-      moment()
-        .minute()
-        .toFixed(2)
-    )}`;
+    let hora = `${moment().hour()}:${Number(moment().minute().toFixed(2))}`;
 
     let data = {
       hour: hora,
@@ -190,69 +234,76 @@ export default class MessageDetail extends Component {
         end={endGradient}
         style={globalStyles.screen}
       >
-        <SafeAreaView
-          style={{
-            margin: -10,
-            padding: 10,
-            backgroundColor: "#FFF",
-            zIndex: 7,
-            opacity: 0.8
-          }}
-        >
-          <Header back={true} />
-        </SafeAreaView>
-
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
           <View
             style={{
-              padding: 10,
-              height: "100%",
-              width: "100%"
+              flex:1,
+              width: "100%",
+              // height: "100%",
+              marginBottom: this.state.keyboardOffset == 0 ? this.state.height - 10 : this.state.keyboardOffset - 10,
             }}
+            onLayout={() => this.refs.flatList.scrollToEnd()}
           >
             <FlatList
-              style={{ marginTop: 10 }}
+              style={{ paddingTop: 0, paddingBottom: 10 }}
               ref="flatList"
               onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
               data={s.messages}
-              renderItem={({ item }) => (
-                <Mensagem data={item} user={item.user} />
-              )}
-              keyExtractor={(item, index) => index}
+              renderItem={({ item }) =>
+                <Mensagem data={item} user={item.user} />}
+              keyExtractor={(item, index) => index.toString()}
             />
           </View>
-          <KeyboardAvoidingView style={styles.messageTextArea}>
-            <TextInput
-              value={s.newMessage}
-              onChangeText={text => {
-                this.setState({ newMessage: text });
+          <InputAccessoryView
+            backgroundColor="#ebebeb"
+            
+          >
+            <View
+              style={{
+                flexDirection: "row",
+                flex: 1,
+                alignItems: "center"
               }}
-              placeholder= {this.state.language == "br" ? "Digite aqui sua mensagem" : "Write your message here"}
-              style={[
-                globalStyles.textRegular,
-                {
-                  height: 40,
-                  maxHeight: 40,
-                  width: "90%",
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                  flexDirection: "row",
-                  borderColor: "#CCC",
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  alignItems: "center",
-                  justifyContent: "flex-start"
-                }
-              ]}
-            />
-            <TouchableOpacity
-              onPress={this.sendMessage}
-              style={{ marginRight: 5 }}
+              onLayout={event => {
+              var { x, y, width, height } = event.nativeEvent.layout;
+              this.setState({ height: height });
+              console.log(this.state.height)
+            }}
             >
-              <Icon name="arrow-circle-right" size={24} color="#737373" />
-            </TouchableOpacity>
-          </KeyboardAvoidingView>
-        </SafeAreaView>
+              <TextInput
+                style={{
+                  flex: 1,
+                  margin: 10,
+                  padding: 10,
+                  borderRadius: 100,
+                  borderWidth: StyleSheet.hairlineWidth,
+                  backgroundColor: "white"
+                }}
+                placeholder={
+                  this.state.language == "br"
+                    ? "Digite aqui sua mensagem"
+                    : "Write your message here"
+                }
+                value={s.newMessage}
+                onChangeText={text => {
+                  this.setState({ newMessage: text });
+                }}
+              />
+              <TouchableOpacity onPress={this.sendMessage}>
+                <Icon
+                  name="arrow-circle-right"
+                  size={30}
+                  color="#666"
+                  style={{
+                    borderRadius: 100,
+                    marginVertical: 10,
+                    marginRight: 10
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
+          </InputAccessoryView>
+        </View>
       </LinearGradient>
     );
   }

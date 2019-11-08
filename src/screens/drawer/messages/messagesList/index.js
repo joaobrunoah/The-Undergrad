@@ -47,9 +47,17 @@ export default class MessagesList extends Component {
           messages: r.val().messages
         });
       });
+      console.log(s.conversas);
       s.loading = false;
       await this.setState(s);
     });
+  }
+
+  lastMsg(item){
+    var obj = item.messages;
+    last = Object.keys(obj)[Object.keys(obj).length-1];
+
+    return obj[last].message
   }
 
   render() {
@@ -86,7 +94,7 @@ export default class MessagesList extends Component {
               </View>
             }
             data={s.conversas}
-            renderItem={({ item }) => <Message data={item} />}
+            renderItem={({ item }) => <Message data={item} msg={this.lastMsg(item)} />}
             numColumns={1}
             horizontal={false}
             keyExtractor={(item, index) => item.key}

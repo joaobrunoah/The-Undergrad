@@ -153,6 +153,7 @@ export default class SellScreen extends Component {
       });
 
     this.setState(s);
+    console.log(s.userID);
   }
 
   upOffer = () => {
