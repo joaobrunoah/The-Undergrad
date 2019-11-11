@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import {
-  AsyncStorage,
   View,
   Text,
   FlatList,
@@ -10,6 +9,8 @@ import {
   SafeAreaView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 // Icon
 import Icon from "react-native-vector-icons/FontAwesome5";
@@ -142,7 +143,7 @@ export default class Funiture extends Component {
         data.forEach(doc => {
           let id = doc.id;
           System.getItemsCateg(id).then(r => {
-            if(r.size == 0){
+            if (r.size == 0) {
               if (s.language === "br") {
                 s.textContent = textBr;
               } else if (s.language === "usa") {

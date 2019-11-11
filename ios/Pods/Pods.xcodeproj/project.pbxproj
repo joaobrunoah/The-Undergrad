@@ -1,0 +1,741 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		32C4A2D082C2A6C35DBB0EDB9D795DA4 /* Pods-TheUndergradTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 50A10EEF403A6BD34E24E8192109607A /* Pods-TheUndergradTests-dummy.m */; };
+		3C9A66D7BB7187FEA8F93C4B97A596E3 /* Pods-TheUndergrad-tvOSTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 1EEFAC79CB4BD16622973C411FD8BCDC /* Pods-TheUndergrad-tvOSTests-dummy.m */; };
+		7C29A14B04977AD5C701DFE3EF82B09E /* Pods-TheUndergradTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 90A546507CC53075A735D1DB02D15A3C /* Pods-TheUndergradTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		825958A543915F7D2B1773B0D711AB8D /* Pods-TheUndergrad-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = BB2D32E335E39B95AB2679F92BA8A37C /* Pods-TheUndergrad-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C02DBCF53CB6EC00BFC22C780D6A67F7 /* Pods-TheUndergrad-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C1BA4DF92D896C50E329E794CDF51BE /* Pods-TheUndergrad-dummy.m */; };
+		C541A1557EEFD1812C902719D157C0B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
+		CCCD2369D87FE527F50D8204CBF81BC3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
+		D5917B5FAF0B2CD2F4CCF70CDBB74AD0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
+		DDA1ED8393966721DAED067758F66D78 /* Pods-TheUndergrad-tvOSTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = A2FEE3D65CA2A998F7904D51D72A703D /* Pods-TheUndergrad-tvOSTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		013EFF5E12F2C001CB6A66A8DF29CA6E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BF78A0BC6E856F11AE92461571409AE2;
+			remoteInfo = "Pods-TheUndergrad";
+		};
+		416741C400E5BC58DF782F25FA75B26B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BF78A0BC6E856F11AE92461571409AE2;
+			remoteInfo = "Pods-TheUndergrad";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0C1D9E001019133D6722040201F4967D /* Pods-TheUndergrad-tvOSTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TheUndergrad-tvOSTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		1EEFAC79CB4BD16622973C411FD8BCDC /* Pods-TheUndergrad-tvOSTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TheUndergrad-tvOSTests-dummy.m"; sourceTree = "<group>"; };
+		3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		3772977F30A5D2C8A2F2B6CE7C0CAFEC /* Pods-TheUndergrad-tvOSTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TheUndergrad-tvOSTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		47C2B775FF1943E2C86F9859DBD20089 /* Pods-TheUndergradTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TheUndergradTests.release.xcconfig"; sourceTree = "<group>"; };
+		4AAFD126DBC41374E21D4C86618E3A89 /* Pods-TheUndergrad-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TheUndergrad-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		50A10EEF403A6BD34E24E8192109607A /* Pods-TheUndergradTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TheUndergradTests-dummy.m"; sourceTree = "<group>"; };
+		5D58242FBC99D5BE8EB525627FEE3A80 /* Pods-TheUndergrad.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-TheUndergrad.modulemap"; sourceTree = "<group>"; };
+		63146C34379B2E08A9416814D974225E /* Pods-TheUndergradTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TheUndergradTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		7C7C224052141324876474EE77A4E98D /* Pods-TheUndergrad-tvOSTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TheUndergrad-tvOSTests-Info.plist"; sourceTree = "<group>"; };
+		801CEE73E6E08A433D766D839FCA7200 /* Pods-TheUndergrad-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-TheUndergrad-acknowledgements.markdown"; sourceTree = "<group>"; };
+		839097038AA463FF944D7C32E796091F /* Pods-TheUndergrad-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TheUndergrad-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		90A546507CC53075A735D1DB02D15A3C /* Pods-TheUndergradTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-TheUndergradTests-umbrella.h"; sourceTree = "<group>"; };
+		99F03902BBA4492D8E57A1BBAA90E22F /* Pods-TheUndergradTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TheUndergradTests-Info.plist"; sourceTree = "<group>"; };
+		9C1BA4DF92D896C50E329E794CDF51BE /* Pods-TheUndergrad-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-TheUndergrad-dummy.m"; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A1E3850216D37BE2E26750CFDCE4CBF0 /* Pods-TheUndergrad.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TheUndergrad.release.xcconfig"; sourceTree = "<group>"; };
+		A2FEE3D65CA2A998F7904D51D72A703D /* Pods-TheUndergrad-tvOSTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-TheUndergrad-tvOSTests-umbrella.h"; sourceTree = "<group>"; };
+		BB2D32E335E39B95AB2679F92BA8A37C /* Pods-TheUndergrad-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-TheUndergrad-umbrella.h"; sourceTree = "<group>"; };
+		BC70DD0EFB05539B569A65A2FC00E33E /* Pods_TheUndergradTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_TheUndergradTests.framework; path = "Pods-TheUndergradTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BD0C17D9926587167D5F56240752FEA5 /* Pods_TheUndergrad_tvOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_TheUndergrad_tvOSTests.framework; path = "Pods-TheUndergrad-tvOSTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D9239D0D53EBE6C7E05BFE1F4E4565D5 /* Pods-TheUndergrad-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TheUndergrad-acknowledgements.plist"; sourceTree = "<group>"; };
+		DC610D128663DCB314EDAC0A08BE2911 /* Pods-TheUndergradTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TheUndergradTests.debug.xcconfig"; sourceTree = "<group>"; };
+		DD508CA3D943981080E618E232D6C31F /* Pods-TheUndergradTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-TheUndergradTests.modulemap"; sourceTree = "<group>"; };
+		DE03AC3312536D2A9F681D7872B9A4F7 /* Pods_TheUndergrad.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_TheUndergrad.framework; path = "Pods-TheUndergrad.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DEAE89594A31BD80DB117C8F1C998514 /* Pods-TheUndergradTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TheUndergradTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		E81C81ACC4F30B08614E33BD3A45346D /* Pods-TheUndergrad-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-TheUndergrad-Info.plist"; sourceTree = "<group>"; };
+		F8DA13DE4B7BF6574263F66081FF6388 /* Pods-TheUndergrad.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-TheUndergrad.debug.xcconfig"; sourceTree = "<group>"; };
+		FE463E11373943404FE73259F55A9C06 /* Pods-TheUndergrad-tvOSTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-TheUndergrad-tvOSTests.modulemap"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		57D7CB9F2F05119110F1F21436571FB1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D5917B5FAF0B2CD2F4CCF70CDBB74AD0 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E0E32DB62C751A06E75B67B03CE081C9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C541A1557EEFD1812C902719D157C0B1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FB34D032A012E5DAC95F009F3F5A708A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCCD2369D87FE527F50D8204CBF81BC3 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		25AA4310CAFD1979A47FF1F55E91A9C9 /* Pods-TheUndergrad */ = {
+			isa = PBXGroup;
+			children = (
+				5D58242FBC99D5BE8EB525627FEE3A80 /* Pods-TheUndergrad.modulemap */,
+				801CEE73E6E08A433D766D839FCA7200 /* Pods-TheUndergrad-acknowledgements.markdown */,
+				D9239D0D53EBE6C7E05BFE1F4E4565D5 /* Pods-TheUndergrad-acknowledgements.plist */,
+				9C1BA4DF92D896C50E329E794CDF51BE /* Pods-TheUndergrad-dummy.m */,
+				E81C81ACC4F30B08614E33BD3A45346D /* Pods-TheUndergrad-Info.plist */,
+				BB2D32E335E39B95AB2679F92BA8A37C /* Pods-TheUndergrad-umbrella.h */,
+				F8DA13DE4B7BF6574263F66081FF6388 /* Pods-TheUndergrad.debug.xcconfig */,
+				A1E3850216D37BE2E26750CFDCE4CBF0 /* Pods-TheUndergrad.release.xcconfig */,
+			);
+			name = "Pods-TheUndergrad";
+			path = "Target Support Files/Pods-TheUndergrad";
+			sourceTree = "<group>";
+		};
+		274739CD25DCAA989B28277CD8376402 /* Pods-TheUndergradTests */ = {
+			isa = PBXGroup;
+			children = (
+				DD508CA3D943981080E618E232D6C31F /* Pods-TheUndergradTests.modulemap */,
+				63146C34379B2E08A9416814D974225E /* Pods-TheUndergradTests-acknowledgements.markdown */,
+				DEAE89594A31BD80DB117C8F1C998514 /* Pods-TheUndergradTests-acknowledgements.plist */,
+				50A10EEF403A6BD34E24E8192109607A /* Pods-TheUndergradTests-dummy.m */,
+				99F03902BBA4492D8E57A1BBAA90E22F /* Pods-TheUndergradTests-Info.plist */,
+				90A546507CC53075A735D1DB02D15A3C /* Pods-TheUndergradTests-umbrella.h */,
+				DC610D128663DCB314EDAC0A08BE2911 /* Pods-TheUndergradTests.debug.xcconfig */,
+				47C2B775FF1943E2C86F9859DBD20089 /* Pods-TheUndergradTests.release.xcconfig */,
+			);
+			name = "Pods-TheUndergradTests";
+			path = "Target Support Files/Pods-TheUndergradTests";
+			sourceTree = "<group>";
+		};
+		6A6004866CDAE9036AE52E5933906341 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DE03AC3312536D2A9F681D7872B9A4F7 /* Pods_TheUndergrad.framework */,
+				BD0C17D9926587167D5F56240752FEA5 /* Pods_TheUndergrad_tvOSTests.framework */,
+				BC70DD0EFB05539B569A65A2FC00E33E /* Pods_TheUndergradTests.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BCD513570594CE3CB7936F7ED27F7A5C /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				25AA4310CAFD1979A47FF1F55E91A9C9 /* Pods-TheUndergrad */,
+				CBD75E63E0BF31396038159ABB1D7E25 /* Pods-TheUndergrad-tvOSTests */,
+				274739CD25DCAA989B28277CD8376402 /* Pods-TheUndergradTests */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		C0834CEBB1379A84116EF29F93051C60 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		CBD75E63E0BF31396038159ABB1D7E25 /* Pods-TheUndergrad-tvOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				FE463E11373943404FE73259F55A9C06 /* Pods-TheUndergrad-tvOSTests.modulemap */,
+				3772977F30A5D2C8A2F2B6CE7C0CAFEC /* Pods-TheUndergrad-tvOSTests-acknowledgements.markdown */,
+				0C1D9E001019133D6722040201F4967D /* Pods-TheUndergrad-tvOSTests-acknowledgements.plist */,
+				1EEFAC79CB4BD16622973C411FD8BCDC /* Pods-TheUndergrad-tvOSTests-dummy.m */,
+				7C7C224052141324876474EE77A4E98D /* Pods-TheUndergrad-tvOSTests-Info.plist */,
+				A2FEE3D65CA2A998F7904D51D72A703D /* Pods-TheUndergrad-tvOSTests-umbrella.h */,
+				4AAFD126DBC41374E21D4C86618E3A89 /* Pods-TheUndergrad-tvOSTests.debug.xcconfig */,
+				839097038AA463FF944D7C32E796091F /* Pods-TheUndergrad-tvOSTests.release.xcconfig */,
+			);
+			name = "Pods-TheUndergrad-tvOSTests";
+			path = "Target Support Files/Pods-TheUndergrad-tvOSTests";
+			sourceTree = "<group>";
+		};
+		CF1408CF629C7361332E53B88F7BD30C = {
+			isa = PBXGroup;
+			children = (
+				9D940727FF8FB9C785EB98E56350EF41 /* Podfile */,
+				D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */,
+				6A6004866CDAE9036AE52E5933906341 /* Products */,
+				BCD513570594CE3CB7936F7ED27F7A5C /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		D210D550F4EA176C3123ED886F8F87F5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C0834CEBB1379A84116EF29F93051C60 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		7AE934E4BC131AF693C08E5BC58C7B2D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDA1ED8393966721DAED067758F66D78 /* Pods-TheUndergrad-tvOSTests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D63CFF0DB958D5C62CF08F96CA83485A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				825958A543915F7D2B1773B0D711AB8D /* Pods-TheUndergrad-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F7F022414266EA2C2AD7D7AEF44164C6 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7C29A14B04977AD5C701DFE3EF82B09E /* Pods-TheUndergradTests-umbrella.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		22A3F439854763AA1D7AF8256757A4C1 /* Pods-TheUndergradTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 87D8517D0FE4A2D42C000706C041CBEE /* Build configuration list for PBXNativeTarget "Pods-TheUndergradTests" */;
+			buildPhases = (
+				F7F022414266EA2C2AD7D7AEF44164C6 /* Headers */,
+				3F98363C5902A01A65237B159A87FE9C /* Sources */,
+				E0E32DB62C751A06E75B67B03CE081C9 /* Frameworks */,
+				93668BBC0369B7FAA14AB4FF4B9884BE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D101E381F7C5027D4A570704B4DF753A /* PBXTargetDependency */,
+			);
+			name = "Pods-TheUndergradTests";
+			productName = "Pods-TheUndergradTests";
+			productReference = BC70DD0EFB05539B569A65A2FC00E33E /* Pods_TheUndergradTests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		2CFCC3476D920605B33ABD445E10BB47 /* Pods-TheUndergrad-tvOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2774A5A3B8D41E4A377756528BBBE9CC /* Build configuration list for PBXNativeTarget "Pods-TheUndergrad-tvOSTests" */;
+			buildPhases = (
+				7AE934E4BC131AF693C08E5BC58C7B2D /* Headers */,
+				4B90FDC34B91446CCD86A6C6D6715B36 /* Sources */,
+				FB34D032A012E5DAC95F009F3F5A708A /* Frameworks */,
+				0E740CE8B6A6EB3AE038096F65F9664F /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				34FB7901BEF08B13DA7B1238A26F862A /* PBXTargetDependency */,
+			);
+			name = "Pods-TheUndergrad-tvOSTests";
+			productName = "Pods-TheUndergrad-tvOSTests";
+			productReference = BD0C17D9926587167D5F56240752FEA5 /* Pods_TheUndergrad_tvOSTests.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		BF78A0BC6E856F11AE92461571409AE2 /* Pods-TheUndergrad */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1B49B22E495A0174E5BAB77FD8D4BC01 /* Build configuration list for PBXNativeTarget "Pods-TheUndergrad" */;
+			buildPhases = (
+				D63CFF0DB958D5C62CF08F96CA83485A /* Headers */,
+				E216344105CED702151DA6FB00464B9D /* Sources */,
+				57D7CB9F2F05119110F1F21436571FB1 /* Frameworks */,
+				E10F555F4FE32FF0896CD3680F01C6A0 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-TheUndergrad";
+			productName = "Pods-TheUndergrad";
+			productReference = DE03AC3312536D2A9F681D7872B9A4F7 /* Pods_TheUndergrad.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		BFDFE7DC352907FC980B868725387E98 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1100;
+				LastUpgradeCheck = 1100;
+			};
+			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CF1408CF629C7361332E53B88F7BD30C;
+			productRefGroup = 6A6004866CDAE9036AE52E5933906341 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				BF78A0BC6E856F11AE92461571409AE2 /* Pods-TheUndergrad */,
+				2CFCC3476D920605B33ABD445E10BB47 /* Pods-TheUndergrad-tvOSTests */,
+				22A3F439854763AA1D7AF8256757A4C1 /* Pods-TheUndergradTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0E740CE8B6A6EB3AE038096F65F9664F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93668BBC0369B7FAA14AB4FF4B9884BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E10F555F4FE32FF0896CD3680F01C6A0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3F98363C5902A01A65237B159A87FE9C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				32C4A2D082C2A6C35DBB0EDB9D795DA4 /* Pods-TheUndergradTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4B90FDC34B91446CCD86A6C6D6715B36 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3C9A66D7BB7187FEA8F93C4B97A596E3 /* Pods-TheUndergrad-tvOSTests-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E216344105CED702151DA6FB00464B9D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C02DBCF53CB6EC00BFC22C780D6A67F7 /* Pods-TheUndergrad-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		34FB7901BEF08B13DA7B1238A26F862A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-TheUndergrad";
+			target = BF78A0BC6E856F11AE92461571409AE2 /* Pods-TheUndergrad */;
+			targetProxy = 416741C400E5BC58DF782F25FA75B26B /* PBXContainerItemProxy */;
+		};
+		D101E381F7C5027D4A570704B4DF753A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-TheUndergrad";
+			target = BF78A0BC6E856F11AE92461571409AE2 /* Pods-TheUndergrad */;
+			targetProxy = 013EFF5E12F2C001CB6A66A8DF29CA6E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		0F60B2B1126CAF1E92ED459F282887D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = DC610D128663DCB314EDAC0A08BE2911 /* Pods-TheUndergradTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-TheUndergradTests/Pods-TheUndergradTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-TheUndergradTests/Pods-TheUndergradTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		20B948B0E44F8CD78E99E7D3D7148461 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F8DA13DE4B7BF6574263F66081FF6388 /* Pods-TheUndergrad.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-TheUndergrad/Pods-TheUndergrad-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-TheUndergrad/Pods-TheUndergrad.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		26F0687DF5A2387C672DCE25FE0F468D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 839097038AA463FF944D7C32E796091F /* Pods-TheUndergrad-tvOSTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-TheUndergrad-tvOSTests/Pods-TheUndergrad-tvOSTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-TheUndergrad-tvOSTests/Pods-TheUndergrad-tvOSTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		5B72493C4BD0257BE81044BCA19E2F7C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A1E3850216D37BE2E26750CFDCE4CBF0 /* Pods-TheUndergrad.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-TheUndergrad/Pods-TheUndergrad-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-TheUndergrad/Pods-TheUndergrad.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		744B8A0D1F42CB4890BF8C17BF9E8442 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4AAFD126DBC41374E21D4C86618E3A89 /* Pods-TheUndergrad-tvOSTests.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-TheUndergrad-tvOSTests/Pods-TheUndergrad-tvOSTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-TheUndergrad-tvOSTests/Pods-TheUndergrad-tvOSTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		8F17DC3A99F99FBAD606CE6963886315 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_RELEASE=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Release;
+		};
+		916E0404255105F480DC4950B7625F7A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"POD_CONFIGURATION_DEBUG=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRIP_INSTALLED_PRODUCT = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				SYMROOT = "${SRCROOT}/../build";
+			};
+			name = Debug;
+		};
+		F0009612B13D6CB8DA7F169A08E43934 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 47C2B775FF1943E2C86F9859DBD20089 /* Pods-TheUndergradTests.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "Target Support Files/Pods-TheUndergradTests/Pods-TheUndergradTests-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-TheUndergradTests/Pods-TheUndergradTests.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1B49B22E495A0174E5BAB77FD8D4BC01 /* Build configuration list for PBXNativeTarget "Pods-TheUndergrad" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				20B948B0E44F8CD78E99E7D3D7148461 /* Debug */,
+				5B72493C4BD0257BE81044BCA19E2F7C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2774A5A3B8D41E4A377756528BBBE9CC /* Build configuration list for PBXNativeTarget "Pods-TheUndergrad-tvOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				744B8A0D1F42CB4890BF8C17BF9E8442 /* Debug */,
+				26F0687DF5A2387C672DCE25FE0F468D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				916E0404255105F480DC4950B7625F7A /* Debug */,
+				8F17DC3A99F99FBAD606CE6963886315 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		87D8517D0FE4A2D42C000706C041CBEE /* Build configuration list for PBXNativeTarget "Pods-TheUndergradTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0F60B2B1126CAF1E92ED459F282887D6 /* Debug */,
+				F0009612B13D6CB8DA7F169A08E43934 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = BFDFE7DC352907FC980B868725387E98 /* Project object */;
+}

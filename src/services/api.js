@@ -210,6 +210,17 @@ class System {
       .push()
       .set(data);
   }
+
+  async AsyncStorageContent() {
+    AsyncStorage.getAllKeys((err, keys) => {
+      AsyncStorage.multiGet(keys, (error, stores) => {
+        stores.map((result, i, store) => {
+          console.log({ [store[i][0]]: store[i][1] });
+          return true;
+        });
+      });
+    });
+  }
 }
 
 export default new System();

@@ -55,7 +55,6 @@ export default class Login extends Component {
       opacity: { opacity: 1 },
       loading: false
     };
-
   }
 
   async componentWillMount() {
@@ -80,28 +79,32 @@ export default class Login extends Component {
     this.setState(s);
 
     if (s.email !== "" && s.pass !== "") {
-      System.addAuthListener(user => {
+      System.addAuthListener(async user => {
         if (user) {
           s.userUID = user.uid;
-          AsyncStorage.setItem("userUID", user.uid);
+          await AsyncStorage.setItem("userUID", user.uid);
           this.setState(s);
         }
       });
 
       System.login(s.email, s.pass)
         .then(async () => {
-          await AsyncStorage.setItem("isOn", "true").then(
-            await AsyncStorage.setItem("email", s.email).then(
-              await AsyncStorage.setItem("pass", s.pass)
+          await AsyncStorage.setItem("isOn", "true")
+            .then(
+              await AsyncStorage.setItem("email", s.email).then(
+                await AsyncStorage.setItem("pass", s.pass)
+              )
             )
-          );
-          const resetAction = StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: "Home" })]
-          });
-          this.props.navigation.dispatch(resetAction);
+            .then(() => {
+              const resetAction = StackActions.reset({
+                index: 0,
+                actions: [NavigationActions.navigate({ routeName: "Home" })]
+              });
+              this.props.navigation.dispatch(resetAction);
+            });
         })
         .catch(err => {
+          console.log(err);
           Alert.alert(s.textContent.titleError, s.textContent.error_1);
           s.disabled = false;
           s.loading = false;

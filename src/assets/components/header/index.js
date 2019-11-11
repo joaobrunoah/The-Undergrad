@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StatusBar } from "react-native";
 import { withNavigation } from "react-navigation";
 
 //Styles
@@ -33,6 +33,7 @@ export class Header extends Component {
 
     return (
       <View style={styles.areaContainer}>
+        <StatusBar barStyle="dark-content" />
         <View style={styles.container}>
           {s.back ? (
             <TouchableOpacity

@@ -3,7 +3,6 @@ import {
   Image,
   Alert,
   ActivityIndicator,
-  AsyncStorage,
   View,
   Text,
   TouchableOpacity,
@@ -15,6 +14,7 @@ import LinearGradient from "react-native-linear-gradient";
 import moment from "moment";
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "rn-fetch-blob";
+import AsyncStorage from '@react-native-community/async-storage';
 
 // Api
 import System from "../../../services/api";

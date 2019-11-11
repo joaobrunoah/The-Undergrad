@@ -1,0 +1,33 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'TheUndergrad' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for TheUndergrad
+
+  target 'TheUndergrad-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'TheUndergradTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+# target 'TheUndergrad-tvOS' do
+#   # Comment the next line if you don't want to use dynamic frameworks
+#   use_frameworks!
+
+#   # Pods for TheUndergrad-tvOS
+
+#   target 'TheUndergrad-tvOSTests' do
+#     inherit! :search_paths
+#     # Pods for testing
+#   end
+
+# end

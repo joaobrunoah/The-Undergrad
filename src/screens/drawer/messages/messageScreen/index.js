@@ -5,9 +5,6 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-  KeyboardAvoidingView,
   InputAccessoryView,
   StyleSheet,
   Keyboard
@@ -284,6 +281,7 @@ export default class MessageDetail extends Component {
                     ? "Digite aqui sua mensagem"
                     : "Write your message here"
                 }
+                placeholderTextColor="#666"
                 value={s.newMessage}
                 onChangeText={text => {
                   this.setState({ newMessage: text });
