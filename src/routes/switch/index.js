@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { createAppContainer, createStackNavigator } from "react-navigation";
 import { FluidNavigator, Transition } from "react-navigation-fluid-transitions";
+import AsyncStorage from '@react-native-community/async-storage';
 
 //Screens
 import Home from "../drawer";

@@ -167,7 +167,8 @@ export default class SellScreen extends Component {
 
     if (s.sellInfo.description !== "") {
       if (s.categ !== "Categoria" && s.categ !== "Category") {
-        System.registerItem(data)
+        if(s.sellInfo.price !== ""){
+          System.registerItem(data)
           .then(r => {
             Alert.alert(s.textContent.warning, s.textContent.msgWarning);
             this.props.navigation.navigate("Dashboard");
@@ -177,6 +178,12 @@ export default class SellScreen extends Component {
             this.props.navigation.navigate("Dashboard");
             console.log(e);
           });
+        }
+        else{
+          Alert.alert(s.textContent.warning, s.textContent.msgError_4);
+          s.loading = false;
+          this.setState(s);
+        }
       } else {
         Alert.alert(s.textContent.warning, s.textContent.msgError_2);
         s.loading = false;
@@ -335,7 +342,6 @@ export default class SellScreen extends Component {
                 : <Image
                     source={s.photo}
                     style={{ height: "100%", width: "100%" }}
-                    resizeMode="stretch"
                   />}
           </TouchableOpacity>
           <TextInput
