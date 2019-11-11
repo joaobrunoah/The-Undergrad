@@ -15,7 +15,9 @@ export const textBr = {
   alertCancel: "Cancelar",
   alertConfirm: "Deletar",
   alertDeleted: "Item excluído com sucesso!",
-  alertUnsuc: "Não foi possível excluir o item."
+  alertUnsuc: "Não foi possível excluir o item.",
+  alertError: "Erro",
+  alertErrorMessage: "Impossível carregar dados do usuário"
 };
 
 export const textUsa = {
@@ -35,5 +37,7 @@ export const textUsa = {
   alertCancel: "Cancel",
   alertConfirm: "Delete",
   alertDeleted: "Item deleted successfully!",
-  alertUnsuc: "Could not delete item."
+  alertUnsuc: "Could not delete item.",
+  alertError: "Error",
+  alertErrorMessage: "Unable to load user data"
 };

@@ -62,6 +62,11 @@ export default class Dashboard extends Component {
     let s = this.state;
     s.language = await AsyncStorage.getItem("language");
 
+    if(!System.isSignedIn()){
+      System.logOut();
+      this.props.navigation.navigate("Language")
+    } 
+
     if (s.language === "br") {
       s.textContent = textBr;
     } else if (s.language === "usa") {

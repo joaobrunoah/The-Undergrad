@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Image,
   SafeAreaView,
-  ScrollView
+  ScrollView,
+  Alert
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -164,7 +165,19 @@ export default class Perfil extends Component {
       })
       .catch(e => {
         s.imgLoader = false;
-        alert("Impossível carregar dados do usuário!");
+        Alert.alert(
+          s.textContent.alertError,
+          s.textContent.alertErrorMessage,
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                System.logOut(), this.props.navigation.navigate("Language");
+              }
+            }
+          ],
+          { cancelable: false }
+        );
       });
 
     let auxID = `/users/${userUID}`;
@@ -239,100 +252,107 @@ export default class Perfil extends Component {
         <SafeAreaView style={styles.container}>
           <Header back={true} />
           <ScrollView>
-          <View style={styles.stats}>
-            <View style={[styles.statsItems, { maxWidth: 75, width: 75 }]}>
-              <Text style={globalStyles.textBold}>{s.textContent.sales}</Text>
-              <Text style={globalStyles.textBold}>
-                {s.sales} {s.textContent.items}
-              </Text>
-            </View>
-            <View style={styles.statsItems}>
-              <TouchableOpacity
-                style={{ alignItems: "center", justifyContent: "center" }}
-                onPress={() => this.props.navigation.navigate("Settings")}
-              >
-                <Icon name="sliders-h" size={24} solid />
-              </TouchableOpacity>
-              <View style={styles.giantCircle}>
-                <View style={styles.mediumCircle}>
-                  <TouchableOpacity
-                    disabled={s.disable}
-                    onPress={this.takePicture}
-                    style={styles.userCircle}
-                  >
-                    {s.imgLoader ? (
-                      <View
-                        style={{
-                          position: "absolute",
-                          zIndex: 10,
-                          width: 100,
-                          height: 100,
-                          borderRadius: 50,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          backgroundColor: "#CCC",
-                          opacity: 0.4
-                        }}
-                      >
-                        <ActivityIndicator size="small" color="#000" />
-                      </View>
-                    ) : null}
-                    {s.photo === "" ? (
-                      <Icon name="user" size={30} color="#737373" solid />
-                    ) : (
-                      <Image
-                        style={{
-                          width: 100,
-                          height: 100,
-                          borderRadius: 50,
-                          borderWidth: 2,
-                          borderColor: "#FFF"
-                        }}
-                        source={s.photo}
-                      />
-                    )}
-                  </TouchableOpacity>
-                </View>
+            <View style={styles.stats}>
+              <View style={[styles.statsItems, { maxWidth: 75, width: 75 }]}>
+                <Text style={globalStyles.textBold}>
+                  {s.textContent.sales}
+                </Text>
+                <Text style={globalStyles.textBold}>
+                  {s.sales} {s.textContent.items}
+                </Text>
               </View>
-              <Text style={[globalStyles.textBold, { fontSize: 16 }]}>
-                {s.userData.name === "" ? s.textContent.name : s.userData.name}
-              </Text>
+              <View style={styles.statsItems}>
+                <TouchableOpacity
+                  style={{ alignItems: "center", justifyContent: "center" }}
+                  onPress={() => this.props.navigation.navigate("Settings")}
+                >
+                  <Icon name="sliders-h" size={24} solid />
+                </TouchableOpacity>
+                <View style={styles.giantCircle}>
+                  <View style={styles.mediumCircle}>
+                    <TouchableOpacity
+                      disabled={s.disable}
+                      onPress={this.takePicture}
+                      style={styles.userCircle}
+                    >
+                      {s.imgLoader
+                        ? <View
+                            style={{
+                              position: "absolute",
+                              zIndex: 10,
+                              width: 100,
+                              height: 100,
+                              borderRadius: 50,
+                              justifyContent: "center",
+                              alignItems: "center",
+                              backgroundColor: "#CCC",
+                              opacity: 0.4
+                            }}
+                          >
+                            <ActivityIndicator size="small" color="#000" />
+                          </View>
+                        : null}
+                      {s.photo === ""
+                        ? <Icon name="user" size={30} color="#737373" solid />
+                        : <Image
+                            style={{
+                              width: 100,
+                              height: 100,
+                              borderRadius: 50,
+                              borderWidth: 2,
+                              borderColor: "#FFF"
+                            }}
+                            source={s.photo}
+                          />}
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <Text style={[globalStyles.textBold, { fontSize: 16 }]}>
+                  {s.userData.name === ""
+                    ? s.textContent.name
+                    : s.userData.name}
+                </Text>
+              </View>
+              <View style={[styles.statsItems, { maxWidth: 75, width: 75 }]}>
+                <Text style={globalStyles.textBold}>
+                  {s.textContent.stars}
+                </Text>
+                <Text style={globalStyles.textBold}>
+                  {s.stars > 0 ? s.stars : 0}
+                </Text>
+              </View>
             </View>
-            <View style={[styles.statsItems, { maxWidth: 75, width: 75 }]}>
-              <Text style={globalStyles.textBold}>{s.textContent.stars}</Text>
-              <Text style={globalStyles.textBold}>
-                {s.stars > 0 ? s.stars : 0}
-              </Text>
-            </View>
-          </View>
-          <TouchableOpacity
-            style={styles.itemsForSale}
-            onPress={() => this.props.navigation.navigate("ItemsForSale")}
-          >
-            <Text style={[globalStyles.textBold, { fontSize: 16 }]}>
-              {s.textContent.itemsFor}
-            </Text>
-          </TouchableOpacity>
-          <View style={styles.lookingFor}>
-            <Icon name="map-marker-alt" size={40} solid />
-            <Text
-              style={[globalStyles.textBold, { marginTop: 10, fontSize: 14 }]}
-            >
-              {s.userData.universityName === ""
-                ? s.textContent.name
-                : s.userData.universityName}
-            </Text>
             <TouchableOpacity
-              style={styles.lookingForButton}
-              onPress={() => this.refs.BuyOrSale.open()}
+              style={styles.itemsForSale}
+              onPress={() => this.props.navigation.navigate("ItemsForSale")}
             >
-              <Text
-                style={[globalStyles.textBold, { color: "#FFF", fontSize: 22 }]}
-              >
-                {s.textContent.looking}
+              <Text style={[globalStyles.textBold, { fontSize: 16 }]}>
+                {s.textContent.itemsFor}
               </Text>
             </TouchableOpacity>
-          </View>
+            <View style={styles.lookingFor}>
+              <Icon name="map-marker-alt" size={40} solid />
+              <Text
+                style={[globalStyles.textBold, { marginTop: 10, fontSize: 14 }]}
+              >
+                {s.userData.universityName === ""
+                  ? s.textContent.name
+                  : s.userData.universityName}
+              </Text>
+              <TouchableOpacity
+                style={styles.lookingForButton}
+                onPress={() => this.refs.BuyOrSale.open()}
+              >
+                <Text
+                  style={[
+                    globalStyles.textBold,
+                    { color: "#FFF", fontSize: 22 }
+                  ]}
+                >
+                  {s.textContent.looking}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </ScrollView>
         </SafeAreaView>
       </LinearGradient>
