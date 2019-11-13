@@ -216,7 +216,10 @@ export default class Login extends Component {
               <TouchableOpacity
                 hitSlop={{ bottom: 30, top: 0, right: 20, left: 20 }}
                 activeOpacity={0.7}
-                onPress={this.forgotPass}
+                onPress={() => {
+                  this.forgotPass;
+                  Keyboard.dismiss();
+                }}
               >
                 <Text
                   style={[
@@ -235,7 +238,10 @@ export default class Login extends Component {
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles.cadContent}
-              onPress={this.regs}
+              onPress={() => {
+                this.regs;
+                Keyboard.dismiss();
+              }}
               hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
             >
               <Text style={[globalStyles.textRegular, styles.cadText]}>

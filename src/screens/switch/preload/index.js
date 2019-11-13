@@ -17,7 +17,7 @@ import {
   endGradient
 } from "../../globalStyles";
 import styles from "./styles";
-import AsyncStorage from "@react-native-community/async-storage";
+// import AsyncStorage from "@react-native-community/async-storage";
 
 export default class Preload extends Component {
   constructor(props) {

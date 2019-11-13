@@ -161,41 +161,45 @@ export default class Cadastro extends Component {
 
     uniDomain[1] = uniDomain[1] == "poli.ufrj.br" ? "ufrj.br" : uniDomain[1];
 
-    System.checkUni(uniDomain[1])
-      .then(r => {
-        if (r.docs.length !== 0) {
-          s.uniID = r.docs[0].ref.id;
-          s.university = r.docs[0].ref.path;
-          System.getUniData(r.docs[0].ref.id)
-            .then(r => {
-              let data = r.data();
-              s.universityName = data.name;
-              s.data.universityName = data.name;
-              this.setState(s);
-              this.register();
-            })
-            .catch(e => {
-              Alert.alert(s.textContent.titleError, s.textContent.error_3);
-              s.buttonDisable = false;
-              s.loading = false;
-              s.opacity = { opacity: 1 };
-              this.setState(s);
-            });
-        } else {
+    if (s.pass.length < 6) {
+      Alert.alert(s.textContent.titleError, s.textContent.error_4);
+    } else {
+      System.checkUni(uniDomain[1])
+        .then(r => {
+          if (r.docs.length !== 0) {
+            s.uniID = r.docs[0].ref.id;
+            s.university = r.docs[0].ref.path;
+            System.getUniData(r.docs[0].ref.id)
+              .then(r => {
+                let data = r.data();
+                s.universityName = data.name;
+                s.data.universityName = data.name;
+                this.setState(s);
+                this.register();
+              })
+              .catch(e => {
+                Alert.alert(s.textContent.titleError, s.textContent.error_3);
+                s.buttonDisable = false;
+                s.loading = false;
+                s.opacity = { opacity: 1 };
+                this.setState(s);
+              });
+          } else {
+            Alert.alert(s.textContent.titleError, s.textContent.error_3);
+            s.buttonDisable = false;
+            s.loading = false;
+            s.opacity = { opacity: 1 };
+            this.setState(s);
+          }
+        })
+        .catch(error => {
           Alert.alert(s.textContent.titleError, s.textContent.error_3);
           s.buttonDisable = false;
           s.loading = false;
           s.opacity = { opacity: 1 };
           this.setState(s);
-        }
-      })
-      .catch(error => {
-        Alert.alert(s.textContent.titleError, s.textContent.error_3);
-        s.buttonDisable = false;
-        s.loading = false;
-        s.opacity = { opacity: 1 };
-        this.setState(s);
-      });
+        });
+    }
   };
 
   checkPass = repPass => {

@@ -24,7 +24,19 @@ const styles = StyleSheet.create({
   name: {
     fontFamily: "Montserrat-SemiBold"
   },
-  msg: {}
+  msg: {},
+  unread:{
+    position: "absolute",
+    backgroundColor: "rgb(21,128,251)",
+    minWidth: 20,
+    height: 20,
+    borderRadius: 100,
+    right: 10,
+    flex: 1,
+    paddingHorizontal: 5,
+    justifyContent: "center",
+    alignItems: "center"
+  }
 });
 
 export default styles;

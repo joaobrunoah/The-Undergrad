@@ -188,6 +188,16 @@ class System {
       .set(data);
   }
 
+  async setUnread(uid, sentUid, numero) {
+    console.log("INCREMENTOU");
+    await firebase
+      .database()
+      .ref("chats")
+      .child(uid)
+      .child(sentUid)
+      .update({ unreadMessages: numero ? this.unreadMessages + 1 : 0 });
+  }
+
   async AsyncStorageContent() {
     AsyncStorage.getAllKeys((err, keys) => {
       AsyncStorage.multiGet(keys, (error, stores) => {

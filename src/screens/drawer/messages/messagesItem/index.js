@@ -31,7 +31,7 @@ export class Message extends Component {
       nome: "",
       uni: "",
       messages: [],
-      lastMessage: "",
+      lastMessage: ""
     };
   }
 
@@ -80,7 +80,6 @@ export class Message extends Component {
   //   })
   // };
 
-
   render() {
     let s = this.state;
 
@@ -97,21 +96,36 @@ export class Message extends Component {
             justifyContent: "center"
           }}
         >
-          {s.imageProfile ? (
-            <Image source={{ uri: s.imageProfile }} style={styles.imgProfile} />
-          ) : (
-            <View style={styles.imgProfile}>
-              <Icon name="user" color="#FFF" size={18} solid />
-            </View>
-          )}
+          {s.imageProfile
+            ? <Image
+                source={{ uri: s.imageProfile }}
+                style={styles.imgProfile}
+              />
+            : <View style={styles.imgProfile}>
+                <Icon name="user" color="#FFF" size={18} solid />
+              </View>}
 
           <View style={{ justifyContent: "flex-start", marginLeft: 20 }}>
             <Text style={[globalStyles.textRegular, styles.name]}>
               {s.nome}
             </Text>
-            <Text style={[globalStyles.textRegular, styles.msg, {width: 100}]} ellipsizeMode={"tail"} numberOfLines={1}>{this.props.msg}</Text>
+            <Text
+              style={[globalStyles.textRegular, styles.msg, { width: 100 }]}
+              ellipsizeMode={"tail"}
+              numberOfLines={1}
+            >
+              {this.props.msg}
+            </Text>
           </View>
         </SafeAreaView>
+        {this.props.unread != "0" &&
+          <View style={styles.unread}>
+            <Text
+              style={{ color: "white", textAlign: "center", fontWeight: "600" }}
+            >
+              {this.props.unread}
+            </Text>
+          </View>}
       </TouchableOpacity>
     );
   }

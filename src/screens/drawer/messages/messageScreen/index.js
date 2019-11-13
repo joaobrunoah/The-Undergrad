@@ -142,13 +142,13 @@ export default class MessageDetail extends Component {
     this.keyboardDidHideListener.remove();
   }
 
-  _keyboardDidShow = (event) => {
-    this.setState({keyboardOffset: event.endCoordinates.height});
-  }
+  _keyboardDidShow = event => {
+    this.setState({ keyboardOffset: event.endCoordinates.height });
+  };
 
   _keyboardDidHide = () => {
-    this.setState({keyboardOffset: 0});
-  }
+    this.setState({ keyboardOffset: 0 });
+  };
 
   async componentDidMount() {
     this.keyboardDidShowListener = Keyboard.addListener(
@@ -172,13 +172,12 @@ export default class MessageDetail extends Component {
     s.language = languageSelected;
 
     this.setState({ language: languageSelected });
-    console.log(this.state.language);
   }
 
   sendMessage = async () => {
     let s = this.state;
     let p = this.props.navigation.state.params.data;
-    let hora = `${moment().hour()}:${Number(moment().minute().toFixed(2))}`;
+    let hora = ("0" + String(moment().hour())).slice(-2)+':'+("0" + String(moment().minute())).slice(-2);
 
     let data = {
       hour: hora,
@@ -213,12 +212,12 @@ export default class MessageDetail extends Component {
               user: r.user,
               message: r.message
             });
-            console.log(r);
           });
         }
       });
       await this.setState(s);
     });
+    System.setUnread(s.uid, p.key, 0);
   };
 
   render() {
@@ -234,10 +233,13 @@ export default class MessageDetail extends Component {
         <View style={styles.container}>
           <View
             style={{
-              flex:1,
+              flex: 1,
               width: "100%",
               // height: "100%",
-              marginBottom: this.state.keyboardOffset == 0 ? this.state.height - 10 : this.state.keyboardOffset - 10,
+              marginBottom:
+                this.state.keyboardOffset == 0
+                  ? this.state.height - 10
+                  : this.state.keyboardOffset - 10
             }}
             onLayout={() => this.refs.flatList.scrollToEnd()}
           >
@@ -251,10 +253,7 @@ export default class MessageDetail extends Component {
               keyExtractor={(item, index) => index.toString()}
             />
           </View>
-          <InputAccessoryView
-            backgroundColor="#ebebeb"
-            
-          >
+          <InputAccessoryView backgroundColor="#ebebeb">
             <View
               style={{
                 flexDirection: "row",
@@ -262,10 +261,9 @@ export default class MessageDetail extends Component {
                 alignItems: "center"
               }}
               onLayout={event => {
-              var { x, y, width, height } = event.nativeEvent.layout;
-              this.setState({ height: height });
-              console.log(this.state.height)
-            }}
+                var { x, y, width, height } = event.nativeEvent.layout;
+                this.setState({ height: height });
+              }}
             >
               <TextInput
                 style={{
@@ -287,7 +285,20 @@ export default class MessageDetail extends Component {
                   this.setState({ newMessage: text });
                 }}
               />
-              <TouchableOpacity onPress={this.sendMessage}>
+              <TouchableOpacity
+                onPress={() => {
+                  let p = this.props.navigation.state.params.data;
+                  console.log("AASAAAAAAAAAAAA")
+                  // System.getListaConversas(p.key, async r => {
+                  //   let messages = r.toJSON()[s.uid]["unreadMessages"];
+                  //   // System.setUnread(p.key,s.uid,messages+1)
+                  //   console.log(messages);
+                  // });
+                  System.setUnread(p.key,s.uid,1)
+                  this.sendMessage();
+
+                }}
+              >
                 <Icon
                   name="arrow-circle-right"
                   size={30}

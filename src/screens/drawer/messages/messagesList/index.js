@@ -20,6 +20,8 @@ export default class MessagesList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      language: "",
+      uid: "",
       textContent: {},
       conversas: [],
       loading: true
@@ -29,7 +31,8 @@ export default class MessagesList extends Component {
   async componentDidMount() {
     let s = this.state;
     s.language = await AsyncStorage.getItem("language");
-    let uid = await AsyncStorage.getItem("userUID");
+    var uid = await AsyncStorage.getItem("userUID");
+    s.uid = uid;
 
     if (s.language === "br") {
       s.textContent = textBr;
@@ -53,11 +56,21 @@ export default class MessagesList extends Component {
     });
   }
 
-  lastMsg(item){
+  lastMsg(item) {
     var obj = item.messages;
-    last = Object.keys(obj)[Object.keys(obj).length-1];
+    last = Object.keys(obj)[Object.keys(obj).length - 1];
 
-    return obj[last].message
+    return obj[last].message;
+  }
+
+  unread(item) {
+    var s = this.state;
+    var messages;
+    System.getListaConversas(s.uid, async r => {
+      messages = r.toJSON()[item.key]["unreadMessages"];
+      messages = String(messages);
+    });
+    return messages;
   }
 
   render() {
@@ -65,41 +78,44 @@ export default class MessagesList extends Component {
 
     return (
       <View>
-        {s.loading ? (
-          <View
-            style={{
-              flex: 1,
-              marginTop: 60,
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
-            <ActivityIndicator size="large" color="#0008" />
-          </View>
-        ) : (
-          <FlatList
-            ListEmptyComponent={
-              <View
-                style={{
-                  flex: 1,
-                  height: 400,
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
-                <Icon name="envelope-open" size={50} light color="#0006" />
-                <Text style={globalStyles.textSemiBold}>
-                  {s.textContent.empty}
-                </Text>
-              </View>
-            }
-            data={s.conversas}
-            renderItem={({ item }) => <Message data={item} msg={this.lastMsg(item)} />}
-            numColumns={1}
-            horizontal={false}
-            keyExtractor={(item, index) => item.key}
-          />
-        )}
+        {s.loading
+          ? <View
+              style={{
+                flex: 1,
+                marginTop: 60,
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <ActivityIndicator size="large" color="#0008" />
+            </View>
+          : <FlatList
+              ListEmptyComponent={
+                <View
+                  style={{
+                    flex: 1,
+                    height: 400,
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}
+                >
+                  <Icon name="envelope-open" size={50} light color="#0006" />
+                  <Text style={globalStyles.textSemiBold}>
+                    {s.textContent.empty}
+                  </Text>
+                </View>
+              }
+              data={s.conversas}
+              renderItem={({ item }) =>
+                <Message
+                  data={item}
+                  msg={this.lastMsg(item)}
+                  unread={this.unread(item)}
+                />}
+              numColumns={1}
+              horizontal={false}
+              keyExtractor={(item, index) => item.key}
+            />}
       </View>
     );
   }
