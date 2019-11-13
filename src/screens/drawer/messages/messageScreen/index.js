@@ -288,15 +288,8 @@ export default class MessageDetail extends Component {
               <TouchableOpacity
                 onPress={() => {
                   let p = this.props.navigation.state.params.data;
-                  console.log("AASAAAAAAAAAAAA")
-                  // System.getListaConversas(p.key, async r => {
-                  //   let messages = r.toJSON()[s.uid]["unreadMessages"];
-                  //   // System.setUnread(p.key,s.uid,messages+1)
-                  //   console.log(messages);
-                  // });
                   System.setUnread(p.key,s.uid,1)
                   this.sendMessage();
-
                 }}
               >
                 <Icon

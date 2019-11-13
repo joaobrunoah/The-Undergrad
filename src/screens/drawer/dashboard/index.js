@@ -39,6 +39,8 @@ export default class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      uid: "",
+      unreadMessages: 0,
       textContent: {},
       data: [],
       spotOne: "",
@@ -61,6 +63,7 @@ export default class Dashboard extends Component {
   async componentDidMount() {
     let s = this.state;
     s.language = await AsyncStorage.getItem("language");
+    s.uid = await AsyncStorage.getItem("userUID")
 
     if(!System.isSignedIn()){
       System.logOut();
@@ -76,6 +79,14 @@ export default class Dashboard extends Component {
     this.getInfo();
 
     this.setState(s);
+
+    System.getListaConversas(s.uid, async r => {
+      s.unreadMessages = 0
+      r.forEach(r => {
+        s.unreadMessages += r.val().unreadMessages;
+      });
+      this.setState(s)
+    });
   }
 
   getInfo = async () => {
@@ -159,7 +170,7 @@ export default class Dashboard extends Component {
         style={globalStyles.screen}
       >
         <SafeAreaView style={styles.container}>
-          <Header />
+          <Header unread={this.state.unreadMessages}/>
           <SearchBar />
           <ScrollView>
             <Categories />

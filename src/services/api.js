@@ -189,13 +189,28 @@ class System {
   }
 
   async setUnread(uid, sentUid, numero) {
-    console.log("INCREMENTOU");
+    var messages = 0;
+    this.getListaConversas(uid, async r => {
+      messages = r.toJSON()[sentUid]["unreadMessages"];
+    });
+    messages = messages + 1;
     await firebase
       .database()
       .ref("chats")
       .child(uid)
       .child(sentUid)
-      .update({ unreadMessages: numero ? this.unreadMessages + 1 : 0 });
+      .update({ unreadMessages: numero ? messages : 0 });
+  }
+
+  async getAllUnread(uid) {
+    var unread;
+    this.getListaConversas(uid, async r => {
+      r.forEach(r => {
+        unread += r.val().unreadMessages;
+      });
+    });
+    console.log(unread)
+    
   }
 
   async AsyncStorageContent() {
