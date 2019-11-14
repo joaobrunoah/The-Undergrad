@@ -69,7 +69,6 @@ export default class Dashboard extends Component {
       System.logOut();
       this.props.navigation.navigate("Language")
     } 
-
     if (s.language === "br") {
       s.textContent = textBr;
     } else if (s.language === "usa") {

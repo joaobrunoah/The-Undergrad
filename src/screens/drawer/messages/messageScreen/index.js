@@ -1,17 +1,7 @@
 import React, { Component } from "react";
-import {
-  FlatList,
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  InputAccessoryView,
-  StyleSheet,
-  Keyboard
-} from "react-native";
-import LinearGradient from "react-native-linear-gradient";
+import Text from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-import moment from "moment";
+import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 
 //API
 import System from "../../../../services/api";
@@ -19,94 +9,10 @@ import System from "../../../../services/api";
 //Icons
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-//Components
-import Header from "../../../../assets/components/header";
-
-//Styles
 import {
-  globalStyles,
-  colorsGradient,
-  startGradient,
-  endGradient
-} from "../../../globalStyles";
-import styles from "./styles";
-
-export class Mensagem extends Component {
-  constructor(props) {
-    super(props);
-    let p = this.props.data;
-
-    this.state = {
-      data: p,
-      language: "",
-      style: { alignSelf: "flex-start" }
-    };
-  }
-
-  async componentDidMount() {
-    let s = this.state;
-    let languageSelected = await AsyncStorage.getItem("language");
-
-    s.language = languageSelected;
-
-    this.setState({ language: languageSelected });
-  }
-
-  async componentDidMount() {
-    let s = this.state;
-    let uid = await AsyncStorage.getItem("userUID");
-    let style = {
-      paddingVertical: 5,
-      paddingHorizontal: 10,
-      maxWidth: 200,
-      marginVertical: 5,
-      borderRadius: 10
-    };
-
-    if (s.data.user == uid) {
-      s.style = {
-        ...style,
-        backgroundColor: "rgb(220,246,199)",
-        alignSelf: "flex-end"
-      };
-    } else {
-      s.style = {
-        ...style,
-        backgroundColor: "rgb(249,249,249)",
-        alignSelf: "flex-start"
-      };
-    }
-
-    this.setState(s);
-  }
-
-  render() {
-    let s = this.state;
-
-    return (
-      <View style={s.style}>
-        <Text
-          style={{
-            color: "#0008",
-            textAlign: "justify",
-            fontFamily: "Montserrat-SemiBold"
-          }}
-        >
-          {s.data.message}
-        </Text>
-        <Text
-          style={{
-            color: "#0006",
-            fontFamily: "Montserrat-SemiBold",
-            fontSize: 12
-          }}
-        >
-          {s.data.hour}
-        </Text>
-      </View>
-    );
-  }
-}
+  textBr,
+  textUsa
+} from "../../../../assets/content/drawer/MessageScreen";
 
 export default class MessageDetail extends Component {
   constructor(props) {
@@ -120,51 +26,55 @@ export default class MessageDetail extends Component {
       messages: [],
       newMessage: "",
       language: "",
-      height: 0,
-      keyboardOffset: 0
+      userDireita: {},
+      userEsquerda: {},
+      userEsquerdaInfo: {}
     };
   }
 
-  componentDidMount() {
-    console.log(this.state.keyboardOffset);
-    this.keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      this._keyboardDidShow
-    );
-    this.keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      this._keyboardDidHide
+  renderBubble(props) {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: "rgb(21,128,251)"
+          }
+        }}
+      />
     );
   }
 
-  componentWillUnmount() {
-    this.keyboardDidShowListener.remove();
-    this.keyboardDidHideListener.remove();
+
+  renderSend(props) {
+    return (
+      <Send {...props}>
+          <Icon
+                  name="arrow-circle-right"
+                  size={30}
+                  color="rgb(21,128,251)"
+                  style={{
+                    marginHorizontal: 10,
+                    marginBottom: 7
+                  }}
+                />
+      </Send>
+    );
   }
-
-  _keyboardDidShow = event => {
-    this.setState({ keyboardOffset: event.endCoordinates.height });
-  };
-
-  _keyboardDidHide = () => {
-    this.setState({ keyboardOffset: 0 });
-  };
 
   async componentDidMount() {
-    this.keyboardDidShowListener = Keyboard.addListener(
-      "keyboardDidShow",
-      this._keyboardDidShow
-    );
-    this.keyboardDidHideListener = Keyboard.addListener(
-      "keyboardDidHide",
-      this._keyboardDidHide
-    );
-
     let uid = await AsyncStorage.getItem("userUID");
     let p = this.props.navigation.state.params.data;
-    console.log(p.key);
     await this.setState({ uid: uid });
-    this.loadMessages();
+
+    System.getUserInfo(p.key)
+      .then(r => {
+        this.setState({ userEsquerdaInfo: r.data() });
+      })
+      .then(this.loadMessages)
+      .catch(e => {
+        console.log(e);
+      });
 
     let s = this.state;
     let languageSelected = await AsyncStorage.getItem("language");
@@ -177,12 +87,17 @@ export default class MessageDetail extends Component {
   sendMessage = async () => {
     let s = this.state;
     let p = this.props.navigation.state.params.data;
-    let hora = ("0" + String(moment().hour())).slice(-2)+':'+("0" + String(moment().minute())).slice(-2);
+
+    var lastID = 0;
+
+    if (s.messages.length != 0)
+      lastID = s.messages[s.messages.length - 1]["_id"];
 
     let data = {
-      hour: hora,
+      _id: lastID + 1,
+      createdAt: new Date().getTime(),
       user: s.uid,
-      message: s.newMessage
+      text: s.newMessage
     };
 
     System.sendMessage(s.uid, p.key, data);
@@ -193,6 +108,8 @@ export default class MessageDetail extends Component {
 
     await this.setState({ newMessage: "" });
 
+    System.setUnread(p.key, s.uid, 1);
+
     this.loadMessages();
   };
 
@@ -201,112 +118,57 @@ export default class MessageDetail extends Component {
     let uid = await AsyncStorage.getItem("userUID");
     let p = this.props.navigation.state.params.data;
 
+    s.userDireita = { _id: 0 };
+    s.userEsquerda = { _id: 1, name: s.userEsquerdaInfo.name };
+
     System.getListaConversas(uid, async r => {
-      s.messages = [];
+      s.messages = [
+        {
+          _id: 0,
+          text:
+            (this.state.language == "br"
+              ? textBr.mensagemPadrao
+              : textUsa.mensagemPadrao) + s.userEsquerdaInfo.name,
+          system: true
+        }
+      ];
       r.forEach(r => {
         if (r.key === p.key) {
           let messages = r.val().messages;
           Object.values(messages).forEach(r => {
             s.messages.push({
-              hour: r.hour,
-              user: r.user,
-              message: r.message
+              _id: r["_id"],
+              createdAt: r.createdAt,
+              user: r.user == s.uid ? s.userDireita : s.userEsquerda,
+              text: r.text
             });
           });
         }
       });
+      console.log(s.messages);
       await this.setState(s);
     });
     System.setUnread(s.uid, p.key, 0);
   };
 
   render() {
-    let s = this.state;
-
     return (
-      <LinearGradient
-        colors={colorsGradient}
-        start={startGradient}
-        end={endGradient}
-        style={globalStyles.screen}
-      >
-        <View style={styles.container}>
-          <View
-            style={{
-              flex: 1,
-              width: "100%",
-              // height: "100%",
-              marginBottom:
-                this.state.keyboardOffset == 0
-                  ? this.state.height - 10
-                  : this.state.keyboardOffset - 10
-            }}
-            onLayout={() => this.refs.flatList.scrollToEnd()}
-          >
-            <FlatList
-              style={{ paddingTop: 0, paddingBottom: 10 }}
-              ref="flatList"
-              onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
-              data={s.messages}
-              renderItem={({ item }) =>
-                <Mensagem data={item} user={item.user} />}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </View>
-          <InputAccessoryView backgroundColor="#ebebeb">
-            <View
-              style={{
-                flexDirection: "row",
-                flex: 1,
-                alignItems: "center"
-              }}
-              onLayout={event => {
-                var { x, y, width, height } = event.nativeEvent.layout;
-                this.setState({ height: height });
-              }}
-            >
-              <TextInput
-                style={{
-                  flex: 1,
-                  margin: 10,
-                  padding: 10,
-                  borderRadius: 100,
-                  borderWidth: StyleSheet.hairlineWidth,
-                  backgroundColor: "white"
-                }}
-                placeholder={
-                  this.state.language == "br"
-                    ? "Digite aqui sua mensagem"
-                    : "Write your message here"
-                }
-                placeholderTextColor="#666"
-                value={s.newMessage}
-                onChangeText={text => {
-                  this.setState({ newMessage: text });
-                }}
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  let p = this.props.navigation.state.params.data;
-                  System.setUnread(p.key,s.uid,1)
-                  this.sendMessage();
-                }}
-              >
-                <Icon
-                  name="arrow-circle-right"
-                  size={30}
-                  color="#666"
-                  style={{
-                    borderRadius: 100,
-                    marginVertical: 10,
-                    marginRight: 10
-                  }}
-                />
-              </TouchableOpacity>
-            </View>
-          </InputAccessoryView>
-        </View>
-      </LinearGradient>
+      <GiftedChat
+        messages={this.state.messages}
+        onSend={this.sendMessage}
+        onInputTextChanged={m => this.setState({ newMessage: m })}
+        user={{
+          _id: 0
+        }}
+        renderAvatar={null}
+        renderUsernameOnMessage={true}
+        inverted={false}
+        placeholder={
+          this.state.language == "br" ? textBr.placeholder : textUsa.placeholder
+        }
+        renderBubble={this.renderBubble}
+        renderSend={this.renderSend}
+      />
     );
   }
 }

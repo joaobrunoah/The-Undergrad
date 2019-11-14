@@ -58,9 +58,10 @@ export default class MessagesList extends Component {
 
   lastMsg(item) {
     var obj = item.messages;
+    console.log(obj);
     last = Object.keys(obj)[Object.keys(obj).length - 1];
 
-    return obj[last].message;
+    return obj[last].text;
   }
 
   unread(item) {
@@ -70,6 +71,9 @@ export default class MessagesList extends Component {
       messages = r.toJSON()[item.key]["unreadMessages"];
       messages = String(messages);
     });
+    console.log(messages);
+    console.log(typeof messages);
+    if (messages == "undefined") return 1;
     return messages;
   }
 
