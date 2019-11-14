@@ -90,6 +90,7 @@ export default class Dashboard extends Component {
   }
 
   getInfo = async () => {
+    console.log("rodou")
     let s = this.state;
     let uid = await AsyncStorage.getItem("userUID");
 

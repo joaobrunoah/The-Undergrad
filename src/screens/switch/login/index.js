@@ -218,6 +218,7 @@ export default class Login extends Component {
                 activeOpacity={0.7}
                 onPress={() => {
                   this.forgotPass;
+                  this.props.navigation.navigate("ForgotPass");
                   Keyboard.dismiss();
                 }}
               >
@@ -240,6 +241,7 @@ export default class Login extends Component {
               style={styles.cadContent}
               onPress={() => {
                 this.regs;
+                this.props.navigation.navigate("Cadastro")
                 Keyboard.dismiss();
               }}
               hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
