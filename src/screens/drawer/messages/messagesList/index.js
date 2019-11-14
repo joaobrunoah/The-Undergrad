@@ -72,9 +72,10 @@ export default class MessagesList extends Component {
       messages = String(messages);
     });
     console.log(messages);
-    console.log(typeof messages);
     if (messages == "undefined") return 1;
-    return messages;
+    else {
+      return messages;
+    }
   }
 
   render() {

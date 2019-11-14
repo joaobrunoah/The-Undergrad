@@ -21,6 +21,14 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0
+  },
+  inputToolbar: {
+    marginLeft: 15,
+        marginRight: 15,
+        marginBottom: 10,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: 'grey',
+        borderRadius: 25
   }
 });
 

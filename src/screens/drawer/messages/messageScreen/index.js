@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Text from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
 
@@ -8,6 +7,8 @@ import System from "../../../../services/api";
 
 //Icons
 import Icon from "react-native-vector-icons/FontAwesome5";
+
+import styles from '../messageScreen/styles.js'
 
 import {
   textBr,
@@ -168,6 +169,7 @@ export default class MessageDetail extends Component {
         }
         renderBubble={this.renderBubble}
         renderSend={this.renderSend}
+        locale={this.state.language == "br" ? "pt-br" : "us"}
       />
     );
   }
