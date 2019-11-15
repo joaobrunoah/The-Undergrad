@@ -6,7 +6,8 @@ class System {
   // Função para deslogar do sistema
   async logOut() {
     await firebase.auth().signOut();
-    await AsyncStorage.multiRemove(["email", "pass", "userUID"]);
+    // await AsyncStorage.multiRemove(["email", "pass", "userUID"]);
+    await AsyncStorage.clear();
   }
 
   // Verificar se existe um usuário logado

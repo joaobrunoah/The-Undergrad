@@ -8,7 +8,7 @@ import System from "../../../../services/api";
 //Icons
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-import styles from '../messageScreen/styles.js'
+import styles from "../messageScreen/styles.js";
 
 import {
   textBr,
@@ -46,27 +46,35 @@ export default class MessageDetail extends Component {
     );
   }
 
-
   renderSend(props) {
     return (
       <Send {...props}>
-          <Icon
-                  name="arrow-circle-right"
-                  size={30}
-                  color="rgb(21,128,251)"
-                  style={{
-                    marginHorizontal: 10,
-                    marginBottom: 7
-                  }}
-                />
+        <Icon
+          name="arrow-circle-right"
+          size={30}
+          color="rgb(21,128,251)"
+          style={{
+            marginHorizontal: 10,
+            marginBottom: 7
+          }}
+        />
       </Send>
     );
   }
 
   async componentDidMount() {
+    let s = this.state;
     let uid = await AsyncStorage.getItem("userUID");
     let p = this.props.navigation.state.params.data;
     await this.setState({ uid: uid });
+
+    await AsyncStorage.getItem(p.key).then(mensagens => {
+      if (mensagens != null) {
+        console.log(mensagens);
+        mensagens = JSON.parse(mensagens);
+        this.setState({ messages: mensagens });
+      }
+    });
 
     System.getUserInfo(p.key)
       .then(r => {
@@ -77,7 +85,6 @@ export default class MessageDetail extends Component {
         console.log(e);
       });
 
-    let s = this.state;
     let languageSelected = await AsyncStorage.getItem("language");
 
     s.language = languageSelected;
@@ -146,7 +153,7 @@ export default class MessageDetail extends Component {
           });
         }
       });
-      console.log(s.messages);
+      await AsyncStorage.setItem(p.key, JSON.stringify(s.messages));
       await this.setState(s);
     });
     System.setUnread(s.uid, p.key, 0);
@@ -162,7 +169,6 @@ export default class MessageDetail extends Component {
           _id: 0
         }}
         renderAvatar={null}
-        renderUsernameOnMessage={true}
         inverted={false}
         placeholder={
           this.state.language == "br" ? textBr.placeholder : textUsa.placeholder
