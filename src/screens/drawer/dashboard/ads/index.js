@@ -8,7 +8,8 @@ import {
   Dimensions,
   Clipboard,
   Vibration,
-  SafeAreaView
+  SafeAreaView,
+  Linking
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -120,7 +121,7 @@ export default class Ads extends Component {
                 <TouchableOpacity
                   style={styles.accessBtn}
                   onPress={() => {
-                    this.props.navigation.navigate("Site");
+                    Linking.openURL('https://theundergradstore.com')
                   }}
                 >
                   <Text
