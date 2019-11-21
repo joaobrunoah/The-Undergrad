@@ -42,7 +42,7 @@
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Some description</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>$(PRODUCT_NAME) would like to use your microphone (for videos)</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
@@ -84,6 +84,7 @@
 		<string>Montserrat-SemiBoldItalic.ttf</string>
 		<string>Montserrat-Thin.ttf</string>
 		<string>Montserrat-ThinItalic.ttf</string>
+		<string>Fontisto.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

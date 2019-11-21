@@ -12,6 +12,7 @@ import {
 import LinearGradient from "react-native-linear-gradient";
 import { StackActions, NavigationActions } from "react-navigation";
 import AsyncStorage from "@react-native-community/async-storage";
+import ProgressiveImage from '../../../assets/components/ProgressiveImage';
 
 // Api
 import System from "../../../services/api";
@@ -149,18 +150,23 @@ class Item extends Component {
             {p.description}
           </Text>
         </View>
-        <Image
-          source={{ uri: p.pictures[0] }}
+        <View
           style={{
             zIndex: 0,
-            position: "absolute",
             width: "100%",
-            height: 110,
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-            top: 0
+            height: 110
           }}
-        />
+        >
+          <ProgressiveImage
+            source={{ uri: p.pictures[0] }}
+            thumbnailSource={{ uri: p.pictures[1] }}
+            style={{
+              zIndex: 0,
+              width: "100%",
+              height: 110
+            }}
+          />
+        </View>
         <View
           style={{
             zIndex: 6,

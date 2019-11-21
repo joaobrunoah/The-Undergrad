@@ -1,7 +1,15 @@
 import React, { Component } from "react";
-import { TouchableOpacity, Image, View, Text, ScrollView , SafeAreaView } from "react-native";
+import {
+  TouchableOpacity,
+  Image,
+  View,
+  Text,
+  ScrollView,
+  SafeAreaView
+} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
+import ProgressiveImage from "../../../../assets/components/ProgressiveImage";
 
 // Api
 import System from "../../../../services/api";
@@ -76,7 +84,6 @@ export default class Details extends Component {
     System.getItemsUser(auxID)
       .then(r => {
         let data = r.docs.length;
-        console.log(data);
         s.sales = data;
         this.setState(s);
       })
@@ -95,12 +102,12 @@ export default class Details extends Component {
         end={endGradient}
         style={globalStyles.screen}
       >
-        <SafeAreaView/>
+        <SafeAreaView />
         <View style={styles.container}>
           <Header back={true} />
           <ScrollView>
             <View style={{ alignItems: "center" }}>
-              <View
+              <TouchableOpacity
                 style={{
                   marginTop: 10,
                   width: "90%",
@@ -110,14 +117,21 @@ export default class Details extends Component {
                   borderColor: "#0006",
                   backgroundColor: "#FFF",
                   justifyContent: "center",
-                  alignItems: "center"
+                  // alignItems: "center",
+                  overflow: "hidden"
                 }}
+                onPress={() => {
+                  this.props.navigation.navigate("Preview", {foto: s.data});
+                }}
+                activeOpacity={0.8}
               >
-                <Image
-                  style={{ width: "100%", height: "100%", borderRadius: 10 }}
+                <ProgressiveImage
+                  style={{ width: "100%", height: "100%" }}
                   source={{ uri: s.data.pictures[0] }}
+                  thumbnailSource={{ uri: s.data.pictures[1] }}
+
                 />
-              </View>
+              </TouchableOpacity>
               <View style={{ marginTop: 10 }}>
                 <Text
                   style={[
@@ -138,19 +152,23 @@ export default class Details extends Component {
                   <Text style={globalStyles.textBold}>
                     {s.textContent.sales}
                   </Text>
-                  <Text style={globalStyles.textBold}>{s.sales}</Text>
+                  <Text style={globalStyles.textBold}>
+                    {s.sales}
+                  </Text>
                 </View>
                 <View style={styles.statsItems}>
                   <View style={styles.giantCircle}>
                     <View style={styles.mediumCircle}>
-                      {s.photo === "" ? (
-                        <Icon name="user" size={30} color="#737373" solid />
-                      ) : (
-                        <Image
-                          style={{ width: 100, height: 100, borderRadius: 50 }}
-                          source={s.photo}
-                        />
-                      )}
+                      {s.photo === ""
+                        ? <Icon name="user" size={30} color="#737373" solid />
+                        : <Image
+                            style={{
+                              width: 100,
+                              height: 100,
+                              borderRadius: 50
+                            }}
+                            source={s.photo}
+                          />}
                     </View>
                   </View>
                   <Text style={[globalStyles.textBold, { fontSize: 16 }]}>
@@ -161,7 +179,9 @@ export default class Details extends Component {
                   <Text style={globalStyles.textBold}>
                     {s.textContent.star}
                   </Text>
-                  <Text style={globalStyles.textBold}>{s.userInfo.rank}</Text>
+                  <Text style={globalStyles.textBold}>
+                    {s.userInfo.rank}
+                  </Text>
                 </View>
               </View>
               <TouchableOpacity

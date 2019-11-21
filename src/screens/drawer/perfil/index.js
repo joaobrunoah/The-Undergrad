@@ -15,6 +15,7 @@ import Modal from "react-native-modalbox";
 import System from "../../../services/api";
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "rn-fetch-blob";
+import ImageResizer from "react-native-image-resizer";
 
 const Blob = RNFetchBlob.polyfill.Blob;
 const fs = RNFetchBlob.fs;
@@ -83,42 +84,48 @@ export default class Perfil extends Component {
       s.photo = { uri: r.uri };
       this.setState(s);
       if (r.uri) {
-        let uri = r.uri.replace("file://", "");
         let mime = "image/jpeg";
 
         let uploadBlob = null;
         let number = null;
 
-        RNFetchBlob.fs
-          .readFile(uri, "base64")
-          .then(data => {
-            return RNFetchBlob.polyfill.Blob.build(data, {
-              type: mime + ";BASE64"
-            });
+        ImageResizer.createResizedImage(r.uri, 200, 200, "JPEG", 100)
+          .then(response => {
+            let uri = response.uri.replace("file://", "");
+            RNFetchBlob.fs
+              .readFile(uri, "base64")
+              .then(data => {
+                return RNFetchBlob.polyfill.Blob.build(data, {
+                  type: mime + ";BASE64"
+                });
+              })
+              .then(blob => {
+                uploadBlob = blob;
+                number = Math.floor(Math.random() * 1000000000);
+                console.log("Setando a imagem: " + number);
+                return System.setUserImg(s.userID, blob, mime, number);
+              })
+              .then(() => {
+                uploadBlob.close();
+                window.XMLHttpRequest = tempWindowXMLHttpRequest;
+                console.log("Pegando a imagem: " + number);
+                return System.getURLUserImg(s.userID, number);
+              })
+              .then(url => {
+                let s = this.state;
+                s.imgLoader = false;
+                System.updateImgProfile(s.userID, { imgProfile: url });
+                this.setState(s);
+              })
+              .catch(erro => {
+                console.log(erro);
+                s.loading = false;
+                s.imgLoader = false;
+                this.setState(s);
+              });
           })
-          .then(blob => {
-            uploadBlob = blob;
-            number = Math.floor(Math.random() * 1000000000);
-            console.log("Setando a imagem: " + number);
-            return System.setUserImg(s.userID, blob, mime, number);
-          })
-          .then(() => {
-            uploadBlob.close();
-            window.XMLHttpRequest = tempWindowXMLHttpRequest;
-            console.log("Pegando a imagem: " + number);
-            return System.getURLUserImg(s.userID, number);
-          })
-          .then(url => {
-            let s = this.state;
-            s.imgLoader = false;
-            System.updateImgProfile(s.userID, { imgProfile: url });
-            this.setState(s);
-          })
-          .catch(erro => {
-            console.log(erro);
-            s.loading = false;
-            s.imgLoader = false;
-            this.setState(s);
+          .catch(e => {
+            console.log(e);
           });
       }
     });

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { HeaderBackButton , createStackNavigator } from "react-navigation";
+import {
+  createStackNavigator,
+} from "react-navigation";
 
 //Screens
 import Dashboard from "../../screens/drawer/dashboard";
@@ -9,66 +11,78 @@ import Furniture from "../../screens/drawer/stackCateg/furniture";
 import Clothing from "../../screens/drawer/stackCateg/clothing";
 import Ads from "../../screens/drawer/dashboard/ads";
 import Details from "../../screens/drawer/stackCateg/detailsScreen";
+import Preview from "../../screens/drawer/stackCateg/detailsScreen/Preview";
+
+//Transitions
+import {
+  fadeIn,
+  fadeOut
+} from "react-navigation-transitions";
 
 // Search
 import Search from "../../screens/drawer/dashboard/search";
 
+const handleCustomTransition = ({ scenes }) => {
+  const prevScene = scenes[scenes.length - 2];
+  const nextScene = scenes[scenes.length - 1];
+
+  // Custom transitions go there
+  if (
+    prevScene &&
+    prevScene.route.routeName === "Details" &&
+    nextScene.route.routeName === "Preview"
+  ) {
+    return fadeIn(750);
+  } else if (
+    prevScene &&
+    prevScene.route.routeName === "Preview" &&
+    nextScene.route.routeName === "Details"
+  ) {
+    return fadeOut(500);
+  } else {
+    return null;
+  }
+};
+
 const StackDash = createStackNavigator(
   {
     Dashboard: {
-      screen: Dashboard,
-      navigationOptions: {
-        header: null
-      },
+      screen: Dashboard
     },
     Gadgets: {
-      screen: Gadgets,
-      navigationOptions: {
-        header: null
-      },
+      screen: Gadgets
     },
     Books: {
-      screen: Books,
-      navigationOptions: {
-        header: null
-      },
+      screen: Books
     },
     Furniture: {
-      screen: Furniture,
-      navigationOptions: {
-        header: null
-      },
+      screen: Furniture
     },
     Clothing: {
-      screen: Clothing,
-      navigationOptions: {
-        header: null
-      },
+      screen: Clothing
     },
     Ads: {
-      screen: Ads,
-      navigationOptions: {
-        header: null
-      }
+      screen: Ads
     },
     Details: {
-      screen: Details,
-      navigationOptions: {
-        header: null
-      },
+      screen: Details
     },
     Search: {
-      screen: Search,
+      screen: Search
+    },
+    Preview: {
+      screen: Preview,
       navigationOptions: {
-        header: null
-      },
+        gesturesEnabled: false
+      }
     }
   },
   {
-    // defaultNavigationOptions: {
-    //   header: null
-    // },
-    mode: "screen"
+    defaultNavigationOptions: {
+      header: null
+    },
+    mode: "screen",
+    transitionConfig: nav => handleCustomTransition(nav)
   }
 );
 

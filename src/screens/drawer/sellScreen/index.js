@@ -14,7 +14,8 @@ import LinearGradient from "react-native-linear-gradient";
 import moment from "moment";
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "rn-fetch-blob";
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from "@react-native-community/async-storage";
+import ImageResizer from "react-native-image-resizer";
 
 // Api
 import System from "../../../services/api";
@@ -67,24 +68,88 @@ export default class SellScreen extends Component {
 
   takePhoto = async () => {
     let s = this.state;
-    let tempWindowXMLHttpRequest = window.XMLHttpRequest;
+    // let tempWindowXMLHttpRequest = window.XMLHttpRequest;
     s.userID = await AsyncStorage.getItem("userUID");
-    s.temp = tempWindowXMLHttpRequest;
+    // s.temp = tempWindowXMLHttpRequest;
     s.loadingImg = true;
     this.setState(s);
 
     ImagePicker.showImagePicker({}, r => {
-      window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-      window.Blob = Blob;
+      // window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+      // window.Blob = Blob;
       s.photo = { uri: r.uri };
       this.setState(s);
       if (r.uri) {
-        let uri = r.uri.replace("file://", "");
         let mime = "image/jpeg";
+        let number = Math.floor(Math.random() * 1000000000);
 
-        let uploadBlob = null;
-        let number = null;
+        this.uploadHighResPicture(number, mime, r);
 
+        console.log(s.sellInfo.pictures);
+      }
+    });
+  };
+
+  uploadLowResPicture = async (number, mime, r) => {
+    let s = this.state;
+    let resizedUri = null;
+    let uploadBlob2 = null;
+    let tempWindowXMLHttpRequest2 = window.XMLHttpRequest;
+    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+    window.Blob = Blob;
+
+    ImageResizer.createResizedImage(r.uri, 200, 200, "JPEG", 50)
+      .then(response => {
+        resizedUri = response.uri.replace("file://", "");
+        RNFetchBlob.fs
+          .readFile(resizedUri, "base64")
+          .then(data => {
+            return RNFetchBlob.polyfill.Blob.build(data, {
+              type: mime + ";BASE64"
+            });
+          })
+          .then(blob => {
+            uploadBlob2 = blob;
+            console.log("Setando a imagem: " + "thumb_" + number);
+            return System.setItemImg(s.userID, blob, mime, "thumb_" + number);
+          })
+          .then(() => {
+            uploadBlob2.close();
+            window.XMLHttpRequest = tempWindowXMLHttpRequest2;
+            console.log("Pegando a imagem: " + "thumb_" + number);
+            return System.getURLItemImg(s.userID, "thumb_" + number);
+          })
+          .then(url => {
+            let s = this.state;
+            console.log(url);
+            s.sellInfo.pictures[1] = url;
+            s.loadingImg = false;
+            this.setState(s);
+          })
+          .catch(erro => {
+            console.log(erro);
+            s.loadingImg = false;
+            this.setState(s);
+          });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  uploadHighResPicture = async (number, mime, r) => {
+    let s = this.state;
+    let uri = null;
+    let uploadBlob = null;
+    let tempWindowXMLHttpRequest = window.XMLHttpRequest;
+    s.temp = tempWindowXMLHttpRequest;
+    this.setState(s);
+    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+    window.Blob = Blob;
+
+    ImageResizer.createResizedImage(r.uri, 1080, 1080, "JPEG", 100)
+      .then(response => {
+        uri = response.uri.replace("file://", "");
         RNFetchBlob.fs
           .readFile(uri, "base64")
           .then(data => {
@@ -94,8 +159,8 @@ export default class SellScreen extends Component {
           })
           .then(blob => {
             uploadBlob = blob;
-            number = Math.floor(Math.random() * 1000000000);
             console.log("Setando a imagem: " + number);
+            console.log(blob);
             return System.setItemImg(s.userID, blob, mime, number);
           })
           .then(() => {
@@ -107,17 +172,20 @@ export default class SellScreen extends Component {
           .then(url => {
             let s = this.state;
             console.log(url);
-            s.sellInfo.pictures = [url];
+            s.sellInfo.pictures[0] = url;
             s.loadingImg = false;
             this.setState(s);
+            this.uploadLowResPicture(number,mime,r);
           })
           .catch(erro => {
             console.log(erro);
             s.loadingImg = false;
             this.setState(s);
           });
-      }
-    });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   componentWillUnmount() {
@@ -167,19 +235,18 @@ export default class SellScreen extends Component {
 
     if (s.sellInfo.description !== "") {
       if (s.categ !== "Categoria" && s.categ !== "Category") {
-        if(s.sellInfo.price !== ""){
+        if (s.sellInfo.price !== "") {
           System.registerItem(data)
-          .then(r => {
-            Alert.alert(s.textContent.warning, s.textContent.msgWarning);
-            this.props.navigation.navigate("Dashboard");
-          })
-          .catch(e => {
-            Alert.alert(s.textContent.warning, s.textContent.msgError);
-            this.props.navigation.navigate("Dashboard");
-            console.log(e);
-          });
-        }
-        else{
+            .then(r => {
+              Alert.alert(s.textContent.warning, s.textContent.msgWarning);
+              this.props.navigation.navigate("Dashboard");
+            })
+            .catch(e => {
+              Alert.alert(s.textContent.warning, s.textContent.msgError);
+              this.props.navigation.navigate("Dashboard");
+              console.log(e);
+            });
+        } else {
           Alert.alert(s.textContent.warning, s.textContent.msgError_4);
           s.loading = false;
           this.setState(s);

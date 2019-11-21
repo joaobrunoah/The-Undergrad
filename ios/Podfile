@@ -10,6 +10,10 @@ target 'TheUndergrad' do
   target 'TheUndergrad-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
+    #pod 'react-native-image-resizer', :path => '../node_modules/react-native-image-resizer'
+    pod 'React', :path => '../node_modules/react-native'
+    pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+
   end
 
   target 'TheUndergradTests' do
