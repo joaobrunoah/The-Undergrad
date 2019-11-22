@@ -7,7 +7,7 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
-  Alert
+  Alert,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -89,7 +89,7 @@ export default class Perfil extends Component {
         let uploadBlob = null;
         let number = null;
 
-        ImageResizer.createResizedImage(r.uri, 200, 200, "JPEG", 100)
+        ImageResizer.createResizedImage(r.uri, 300, 300, "JPEG", 100)
           .then(response => {
             let uri = response.uri.replace("file://", "");
             RNFetchBlob.fs

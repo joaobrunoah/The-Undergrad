@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity , ActivityIndicator } from "react-native";
 import ProgressiveImage from "../ProgressiveImage";
 
 //Styles
@@ -7,6 +7,13 @@ import { globalStyles } from "../../../screens/globalStyles";
 import styles from "./styles";
 
 class Item extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      loading: true,
+    };
+  }
   render() {
     let p = this.props.data;
     let nav = this.props.nav;
@@ -51,6 +58,7 @@ class Item extends Component {
           <ProgressiveImage
             source={{ uri: p.pictures[0] }}
             thumbnailSource={{ uri: p.pictures[1] }}
+            onLoadEnd={r => {this.setState({loading: false})}}
             style={{
               zIndex: 0,
               width: "100%",
@@ -58,6 +66,7 @@ class Item extends Component {
             }}
           />
         </View>
+        {this.state.loading ? <ActivityIndicator size="large" style={{position: "absolute"}}/> : null}
         <View
           style={{
             zIndex: 6,

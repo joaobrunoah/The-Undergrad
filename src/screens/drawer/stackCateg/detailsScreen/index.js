@@ -5,7 +5,8 @@ import {
   View,
   Text,
   ScrollView,
-  SafeAreaView
+  SafeAreaView,
+  ActivityIndicator
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -44,7 +45,8 @@ export default class Details extends Component {
       textContent: {},
       userInfo: {},
       sales: 0,
-      sellerUID: ""
+      sellerUID: "",
+      loading: true
     };
   }
 
@@ -117,11 +119,11 @@ export default class Details extends Component {
                   borderColor: "#0006",
                   backgroundColor: "#FFF",
                   justifyContent: "center",
-                  // alignItems: "center",
+                  alignItems: "center",
                   overflow: "hidden"
                 }}
                 onPress={() => {
-                  this.props.navigation.navigate("Preview", {foto: s.data});
+                  this.props.navigation.navigate("Preview", { foto: s.data });
                 }}
                 activeOpacity={0.8}
               >
@@ -129,8 +131,14 @@ export default class Details extends Component {
                   style={{ width: "100%", height: "100%" }}
                   source={{ uri: s.data.pictures[0] }}
                   thumbnailSource={{ uri: s.data.pictures[1] }}
-
+                  onLoadEnd={r => {this.setState({loading: false})}}
                 />
+                {this.state.loading
+                  ? <ActivityIndicator
+                      size="large"
+                      style={{ position: "absolute"}}
+                    />
+                  : null}
               </TouchableOpacity>
               <View style={{ marginTop: 10 }}>
                 <Text

@@ -41,7 +41,8 @@ class Item extends Component {
 
     this.state = {
       userUid: "",
-      textContent: {}
+      textContent: {},
+      loading: true
     };
   }
 
@@ -165,8 +166,10 @@ class Item extends Component {
               width: "100%",
               height: 110
             }}
+            onLoadEnd={r => {this.setState({loading: false})}}
           />
         </View>
+        {this.state.loading ? <ActivityIndicator size="large" style={{position: "absolute"}}/> : null}
         <View
           style={{
             zIndex: 6,

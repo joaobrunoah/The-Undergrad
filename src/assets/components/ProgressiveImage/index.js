@@ -4,13 +4,15 @@ import { View, StyleSheet, Animated } from 'react-native';
 const styles = StyleSheet.create({
   imageOverlay: {
     position: 'absolute',
+    width: "100%",
     left: 0,
     right: 0,
     bottom: 0,
     top: 0,
   },
   container: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#fff',
+    width: "100%",
   },
 });
 
@@ -46,7 +48,7 @@ class ProgressiveImage extends React.Component {
           source={thumbnailSource}
           style={[style, { opacity: this.thumbnailAnimated }]}
           onLoad={this.handleThumbnailLoad}
-          blurRadius={1}
+          blurRadius={10}
         />
         <Animated.Image
           {...props}
