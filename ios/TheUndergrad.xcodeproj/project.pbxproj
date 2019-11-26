@@ -1831,7 +1831,7 @@
 			baseConfigurationReference = 213504FAD595C7A998394E4D /* Pods-TheUndergrad.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 5C8Q7TG88G;
 				HEADER_SEARCH_PATHS = (
@@ -1860,7 +1860,7 @@
 				INFOPLIST_FILE = TheUndergrad/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -1878,7 +1878,7 @@
 			baseConfigurationReference = 68671CB493E3F8795579C824 /* Pods-TheUndergrad.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 5C8Q7TG88G;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1906,7 +1906,7 @@
 				INFOPLIST_FILE = TheUndergrad/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.9;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",

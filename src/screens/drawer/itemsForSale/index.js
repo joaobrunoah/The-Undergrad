@@ -169,7 +169,7 @@ class Item extends Component {
             onLoadEnd={r => {this.setState({loading: false})}}
           />
         </View>
-        {this.state.loading ? <ActivityIndicator size="large" style={{position: "absolute"}}/> : null}
+        {this.state.loading ? <ActivityIndicator size="small" style={{position: "absolute"}}/> : null}
         <View
           style={{
             zIndex: 6,
