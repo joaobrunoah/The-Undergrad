@@ -1053,7 +1053,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 5C8Q7TG88G;
+						DevelopmentTeam = 798D5FS5RP;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1831,9 +1831,9 @@
 			baseConfigurationReference = 213504FAD595C7A998394E4D /* Pods-TheUndergrad.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 5C8Q7TG88G;
+				DEVELOPMENT_TEAM = 798D5FS5RP;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)..",
@@ -1860,13 +1860,13 @@
 				INFOPLIST_FILE = TheUndergrad/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.TheUndergrad;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fluxosconsultoria.theundergrad;
 				PRODUCT_NAME = "The Undergrad";
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1878,8 +1878,8 @@
 			baseConfigurationReference = 68671CB493E3F8795579C824 /* Pods-TheUndergrad.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CURRENT_PROJECT_VERSION = 4;
-				DEVELOPMENT_TEAM = 5C8Q7TG88G;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 798D5FS5RP;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)..",
@@ -1906,13 +1906,13 @@
 				INFOPLIST_FILE = TheUndergrad/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 1.0.9;
+				MARKETING_VERSION = 1.1;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.TheUndergrad;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fluxosconsultoria.theundergrad;
 				PRODUCT_NAME = "The Undergrad";
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -65,7 +65,7 @@ export default class Cadastro extends Component {
       loading: false
     };
 
-    System.logOut();
+    // System.logOut();
   }
 
   register = async () => {
@@ -131,6 +131,8 @@ export default class Cadastro extends Component {
         })
         .catch(err => {
           console.log(err);
+          console.log(err.message)
+          if(err.message == "The email address is already in use by another account.") {Alert.alert(s.textContent.titleError, s.textContent.error_5);};
           Alert.alert(s.textContent.titleError, s.textContent.error_1);
           s.buttonDisable = false;
           s.loading = false;

@@ -51,7 +51,7 @@ export default class ForgotPass extends Component {
       loading: false
     };
 
-    System.logOut();
+    // System.logOut();
   }
 
   forgot = () => {

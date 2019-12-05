@@ -45,22 +45,30 @@ export default class MessagesList extends Component {
     System.getListaConversas(uid, async r => {
       s.conversas = [];
       r.forEach(r => {
-        s.conversas.push({
-          key: r.key,
-          messages: r.val().messages
-        });
+        if (r.val().messages != undefined) {
+          s.conversas.push({
+            key: r.key,
+            messages: r.val().messages
+          });
+        }
       });
       console.log(s.conversas);
       s.loading = false;
       await this.setState(s);
     });
+
+    console.log(s.conversas);
   }
 
   lastMsg(item) {
+    console.log(item);
+    console.log(item.messages);
     var obj = item.messages;
-    last = Object.keys(obj)[Object.keys(obj).length - 1];
+    if (obj != "undefined") {
+      last = Object.keys(obj)[Object.keys(obj).length - 1];
 
-    return obj[last].text;
+      return obj[last].text;
+    }
   }
 
   unread(item) {
