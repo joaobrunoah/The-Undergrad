@@ -63,6 +63,7 @@ export default class MessageDetail extends Component {
   }
 
   async componentDidMount() {
+    console.log(this.props.navigation.state.params);
     let s = this.state;
     let uid = await AsyncStorage.getItem("userUID");
     let p = this.props.navigation.state.params.data;
@@ -70,8 +71,8 @@ export default class MessageDetail extends Component {
 
     await AsyncStorage.getItem(p.key).then(mensagens => {
       if (mensagens != null) {
-        console.log(mensagens);
         mensagens = JSON.parse(mensagens);
+        console.log(mensagens);
         this.setState({ messages: mensagens });
       }
     });
@@ -81,6 +82,7 @@ export default class MessageDetail extends Component {
         this.setState({ userEsquerdaInfo: r.data() });
       })
       .then(this.loadMessages)
+      .then(this.sendProductMessage)
       .catch(e => {
         console.log(e);
       });
@@ -121,6 +123,35 @@ export default class MessageDetail extends Component {
     this.loadMessages();
   };
 
+  sendProductMessage = async () => {
+    let s = this.state;
+    let p = this.props.navigation.state.params.data;
+
+    if (p.description != undefined) {
+      var lastID = 0;
+
+      if (s.messages.length != 0)
+        lastID = s.messages[s.messages.length - 1]["_id"];
+
+      let data = {
+        _id: lastID + 1,
+        createdAt: new Date().getTime(),
+        text: `[${p.description} - ${s.language == "br"
+          ? "R$"
+          : "$"}${p.price}]`,
+        system: true
+      };
+
+      System.sendMessage(s.uid, p.key, data);
+
+      if (s.uid !== p.key) {
+        System.sendMessage(p.key, s.uid, data);
+      }
+
+      this.loadMessages();
+    }
+  };
+
   loadMessages = async () => {
     let s = this.state;
     let uid = await AsyncStorage.getItem("userUID");
@@ -144,12 +175,19 @@ export default class MessageDetail extends Component {
         if (r.key === p.key) {
           let messages = r.val().messages;
           Object.values(messages).forEach(r => {
-            s.messages.push({
-              _id: r["_id"],
-              createdAt: r.createdAt,
-              user: r.user == s.uid ? s.userDireita : s.userEsquerda,
-              text: r.text
-            });
+            r.system
+              ? s.messages.push({
+                  _id: r["_id"],
+                  createdAt: r.createdAt,
+                  text: r.text,
+                  system: r.system
+                })
+              : s.messages.push({
+                  _id: r["_id"],
+                  createdAt: r.createdAt,
+                  user: r.user == s.uid ? s.userDireita : s.userEsquerda,
+                  text: r.text
+                });
           });
         }
       });

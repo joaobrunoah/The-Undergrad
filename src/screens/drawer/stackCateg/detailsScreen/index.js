@@ -92,6 +92,8 @@ export default class Details extends Component {
       .catch(e => {
         console.log(e);
       });
+
+    console.log(s.data);
   }
 
   render() {
@@ -131,12 +133,14 @@ export default class Details extends Component {
                   style={{ width: "100%", height: "100%" }}
                   source={{ uri: s.data.pictures[0] }}
                   thumbnailSource={{ uri: s.data.pictures[1] }}
-                  onLoadEnd={r => {this.setState({loading: false})}}
+                  onLoadEnd={r => {
+                    this.setState({ loading: false });
+                  }}
                 />
                 {this.state.loading
                   ? <ActivityIndicator
                       size="large"
-                      style={{ position: "absolute"}}
+                      style={{ position: "absolute" }}
                     />
                   : null}
               </TouchableOpacity>
@@ -152,7 +156,8 @@ export default class Details extends Component {
               </View>
               <View style={{ alignItems: "center" }}>
                 <Text style={globalStyles.textBold}>
-                  {s.textContent.price} {Number(s.data.price).toFixed(2)}
+                  {s.textContent.price}{" "}
+                  {Number(s.data.price.replace(",", ".")).toFixed(2)}
                 </Text>
               </View>
               <View style={styles.stats}>
@@ -196,7 +201,11 @@ export default class Details extends Component {
                 activeOpacity={0.7}
                 onPress={() => {
                   this.props.navigation.navigate("MessageDetail", {
-                    data: { key: s.sellerUID }
+                    data: {
+                      key: s.sellerUID,
+                      description: s.data.description,
+                      price: s.data.price
+                    }
                   });
                 }}
                 style={{

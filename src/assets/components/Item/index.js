@@ -82,7 +82,7 @@ class Item extends Component {
           }}
         >
           <Text style={[globalStyles.textSemiBold, { color: "#0008" }]}>
-            {this.props.text.price} {Number(p.price).toFixed(2)}
+            {this.props.text.price} {Number(p.price.replace(",",".")).toFixed(2)}
           </Text>
         </View>
       </TouchableOpacity>
