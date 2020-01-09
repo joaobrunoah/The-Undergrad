@@ -60,19 +60,22 @@ const DrawerMenu = createStackNavigator(
     },
     MessageDetail: {
       screen: MessageDetail,
-      navigationOptions: ({ navigation}) => ({
-        headerLeft: () => <HeaderBackButton tintColor="#737373" onPress={() => navigation.goBack()}/>,
-        title: "The Undergrad",
-        headerTitleStyle: {
-          fontSize: 26,
-          fontFamily: "Montserrat-SemiBold",
-          textAlign: "center",
-          marginBottom: 10
-        },
-        headerStyle: {
-          backgroundColor: "#ebebeb"
-        }
-      })
+      navigationOptions: {
+        header: null
+      }
+      // navigationOptions: ({ navigation}) => ({
+      //   headerLeft: () => <HeaderBackButton tintColor="#737373" onPress={() => navigation.goBack()}/>,
+      //   title: "The Undergrad",
+      //   headerTitleStyle: {
+      //     fontSize: 26,
+      //     fontFamily: "Montserrat-SemiBold",
+      //     textAlign: "center",
+      //     marginBottom: 10
+      //   },
+      //   headerStyle: {
+      //     backgroundColor: "#ebebeb"
+      //   }
+      // })
     },
     MessageItem: {
       screen: MessageItem,

@@ -6,13 +6,11 @@ import {
   FlatList,
   ActivityIndicator,
   Image,
-  TouchableOpacity,
-  SafeAreaView
+  TouchableOpacity
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { StackActions, NavigationActions } from "react-navigation";
 import AsyncStorage from "@react-native-community/async-storage";
-import ProgressiveImage from '../../../assets/components/ProgressiveImage';
 
 // Api
 import System from "../../../services/api";
@@ -41,8 +39,7 @@ class Item extends Component {
 
     this.state = {
       userUid: "",
-      textContent: {},
-      loading: true
+      textContent: {}
     };
   }
 
@@ -151,25 +148,18 @@ class Item extends Component {
             {p.description}
           </Text>
         </View>
-        <View
+        <Image
+          source={{ uri: p.pictures[0] }}
           style={{
             zIndex: 0,
+            position: "absolute",
             width: "100%",
-            height: 110
+            height: 110,
+            borderTopLeftRadius: 10,
+            borderTopRightRadius: 10,
+            top: 0
           }}
-        >
-          <ProgressiveImage
-            source={{ uri: p.pictures[0] }}
-            thumbnailSource={{ uri: p.pictures[1] }}
-            style={{
-              zIndex: 0,
-              width: "100%",
-              height: 110
-            }}
-            onLoadEnd={r => {this.setState({loading: false})}}
-          />
-        </View>
-        {this.state.loading ? <ActivityIndicator size="small" style={{position: "absolute"}}/> : null}
+        />
         <View
           style={{
             zIndex: 6,
@@ -253,7 +243,6 @@ export default class ItemsForSale extends Component {
         end={endGradient}
         style={globalStyles.screen}
       >
-        <SafeAreaView/>
         {/* Modal */}
 
         {/* Fim Modal */}

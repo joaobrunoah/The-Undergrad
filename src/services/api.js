@@ -141,7 +141,7 @@ class System {
     return await firebase
       .firestore()
       .collection("offers")
-      .where("description", "==", item)
+      // .where("description", "==", item)
       .get();
   }
 

@@ -13,7 +13,7 @@ export const textBr = {
   msgError: "Impossível postar o item, tente novamente mais tarde",
   msgError_2: "Escolha uma categoria",
   msgError_3: "Adicione o nome do produto",
-  msgError_4: "Adicione o preço do produto"
+  msgError_4: "O preço deve conter somente números"
 };
 
 export const textUsa = {
@@ -31,5 +31,5 @@ export const textUsa = {
   msgError: "Unable to post item, please try again later",
   msgError_2: "Choose a category",
   msgError_3: "Add product name",
-  msgError_4: "Add product price"
+  msgError_4: "Price must contain only numbers"
 };

@@ -1,16 +1,7 @@
 import React, { Component } from "react";
-import {
-  TouchableOpacity,
-  Image,
-  View,
-  Text,
-  ScrollView,
-  SafeAreaView,
-  ActivityIndicator
-} from "react-native";
+import { TouchableOpacity, Image, View, Text, ScrollView } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
-import ProgressiveImage from "../../../../assets/components/ProgressiveImage";
 
 // Api
 import System from "../../../../services/api";
@@ -45,8 +36,7 @@ export default class Details extends Component {
       textContent: {},
       userInfo: {},
       sales: 0,
-      sellerUID: "",
-      loading: true
+      sellerUID: ""
     };
   }
 
@@ -86,14 +76,13 @@ export default class Details extends Component {
     System.getItemsUser(auxID)
       .then(r => {
         let data = r.docs.length;
+        console.log(data);
         s.sales = data;
         this.setState(s);
       })
       .catch(e => {
         console.log(e);
       });
-
-    console.log(s.data);
   }
 
   render() {
@@ -106,12 +95,11 @@ export default class Details extends Component {
         end={endGradient}
         style={globalStyles.screen}
       >
-        <SafeAreaView />
         <View style={styles.container}>
           <Header back={true} />
           <ScrollView>
             <View style={{ alignItems: "center" }}>
-              <TouchableOpacity
+              <View
                 style={{
                   marginTop: 10,
                   width: "90%",
@@ -121,29 +109,14 @@ export default class Details extends Component {
                   borderColor: "#0006",
                   backgroundColor: "#FFF",
                   justifyContent: "center",
-                  alignItems: "center",
-                  overflow: "hidden"
+                  alignItems: "center"
                 }}
-                onPress={() => {
-                  this.props.navigation.navigate("Preview", { foto: s.data });
-                }}
-                activeOpacity={0.8}
               >
-                <ProgressiveImage
-                  style={{ width: "100%", height: "100%" }}
+                <Image
+                  style={{ width: "100%", height: "100%", borderRadius: 10 }}
                   source={{ uri: s.data.pictures[0] }}
-                  thumbnailSource={{ uri: s.data.pictures[1] }}
-                  onLoadEnd={r => {
-                    this.setState({ loading: false });
-                  }}
                 />
-                {this.state.loading
-                  ? <ActivityIndicator
-                      size="large"
-                      style={{ position: "absolute" }}
-                    />
-                  : null}
-              </TouchableOpacity>
+              </View>
               <View style={{ marginTop: 10 }}>
                 <Text
                   style={[
@@ -156,8 +129,7 @@ export default class Details extends Component {
               </View>
               <View style={{ alignItems: "center" }}>
                 <Text style={globalStyles.textBold}>
-                  {s.textContent.price}{" "}
-                  {Number(s.data.price.replace(",", ".")).toFixed(2)}
+                  {s.textContent.price} {Number(s.data.price).toFixed(2)}
                 </Text>
               </View>
               <View style={styles.stats}>
@@ -165,23 +137,19 @@ export default class Details extends Component {
                   <Text style={globalStyles.textBold}>
                     {s.textContent.sales}
                   </Text>
-                  <Text style={globalStyles.textBold}>
-                    {s.sales}
-                  </Text>
+                  <Text style={globalStyles.textBold}>{s.sales}</Text>
                 </View>
                 <View style={styles.statsItems}>
                   <View style={styles.giantCircle}>
                     <View style={styles.mediumCircle}>
-                      {s.photo === ""
-                        ? <Icon name="user" size={30} color="#737373" solid />
-                        : <Image
-                            style={{
-                              width: 100,
-                              height: 100,
-                              borderRadius: 50
-                            }}
-                            source={s.photo}
-                          />}
+                      {s.photo === "" ? (
+                        <Icon name="user" size={30} color="#737373" solid />
+                      ) : (
+                        <Image
+                          style={{ width: 100, height: 100, borderRadius: 50 }}
+                          source={s.photo}
+                        />
+                      )}
                     </View>
                   </View>
                   <Text style={[globalStyles.textBold, { fontSize: 16 }]}>
@@ -192,20 +160,15 @@ export default class Details extends Component {
                   <Text style={globalStyles.textBold}>
                     {s.textContent.star}
                   </Text>
-                  <Text style={globalStyles.textBold}>
-                    {s.userInfo.rank}
-                  </Text>
+                  <Text style={globalStyles.textBold}>{s.userInfo.rank}</Text>
                 </View>
               </View>
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
                   this.props.navigation.navigate("MessageDetail", {
-                    data: {
-                      key: s.sellerUID,
-                      description: s.data.description,
-                      price: s.data.price
-                    }
+                    data: { key: s.sellerUID },
+                    data2: s.data
                   });
                 }}
                 style={{

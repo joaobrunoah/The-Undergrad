@@ -3,19 +3,17 @@ import {
   Image,
   Alert,
   ActivityIndicator,
+  AsyncStorage,
   View,
   Text,
   TouchableOpacity,
   ScrollView,
   TextInput,
-  SafeAreaView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import moment from "moment";
 import ImagePicker from "react-native-image-picker";
 import RNFetchBlob from "rn-fetch-blob";
-import AsyncStorage from "@react-native-community/async-storage";
-import ImageResizer from "react-native-image-resizer";
 
 // Api
 import System from "../../../services/api";
@@ -68,88 +66,24 @@ export default class SellScreen extends Component {
 
   takePhoto = async () => {
     let s = this.state;
-    // let tempWindowXMLHttpRequest = window.XMLHttpRequest;
+    let tempWindowXMLHttpRequest = window.XMLHttpRequest;
     s.userID = await AsyncStorage.getItem("userUID");
-    // s.temp = tempWindowXMLHttpRequest;
+    s.temp = tempWindowXMLHttpRequest;
     s.loadingImg = true;
     this.setState(s);
 
     ImagePicker.showImagePicker({}, r => {
-      // window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-      // window.Blob = Blob;
+      window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+      window.Blob = Blob;
       s.photo = { uri: r.uri };
       this.setState(s);
       if (r.uri) {
+        let uri = r.uri.replace("file://", "");
         let mime = "image/jpeg";
-        let number = Math.floor(Math.random() * 1000000000);
 
-        this.uploadHighResPicture(number, mime, r);
+        let uploadBlob = null;
+        let number = null;
 
-        console.log(s.sellInfo.pictures);
-      }
-    });
-  };
-
-  uploadLowResPicture = async (number, mime, r) => {
-    let s = this.state;
-    let resizedUri = null;
-    let uploadBlob2 = null;
-    let tempWindowXMLHttpRequest2 = window.XMLHttpRequest;
-    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-    window.Blob = Blob;
-
-    ImageResizer.createResizedImage(r.uri, 200, 200, "JPEG", 50)
-      .then(response => {
-        resizedUri = response.uri.replace("file://", "");
-        RNFetchBlob.fs
-          .readFile(resizedUri, "base64")
-          .then(data => {
-            return RNFetchBlob.polyfill.Blob.build(data, {
-              type: mime + ";BASE64"
-            });
-          })
-          .then(blob => {
-            uploadBlob2 = blob;
-            console.log("Setando a imagem: " + "thumb_" + number);
-            return System.setItemImg(s.userID, blob, mime, "thumb_" + number);
-          })
-          .then(() => {
-            uploadBlob2.close();
-            window.XMLHttpRequest = tempWindowXMLHttpRequest2;
-            console.log("Pegando a imagem: " + "thumb_" + number);
-            return System.getURLItemImg(s.userID, "thumb_" + number);
-          })
-          .then(url => {
-            let s = this.state;
-            console.log(url);
-            s.sellInfo.pictures[1] = url;
-            s.loadingImg = false;
-            this.setState(s);
-          })
-          .catch(erro => {
-            console.log(erro);
-            s.loadingImg = false;
-            this.setState(s);
-          });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  uploadHighResPicture = async (number, mime, r) => {
-    let s = this.state;
-    let uri = null;
-    let uploadBlob = null;
-    let tempWindowXMLHttpRequest = window.XMLHttpRequest;
-    s.temp = tempWindowXMLHttpRequest;
-    this.setState(s);
-    window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-    window.Blob = Blob;
-
-    ImageResizer.createResizedImage(r.uri, 1080, 1080, "JPEG", 100)
-      .then(response => {
-        uri = response.uri.replace("file://", "");
         RNFetchBlob.fs
           .readFile(uri, "base64")
           .then(data => {
@@ -159,8 +93,8 @@ export default class SellScreen extends Component {
           })
           .then(blob => {
             uploadBlob = blob;
+            number = Math.floor(Math.random() * 1000000000);
             console.log("Setando a imagem: " + number);
-            console.log(blob);
             return System.setItemImg(s.userID, blob, mime, number);
           })
           .then(() => {
@@ -172,20 +106,17 @@ export default class SellScreen extends Component {
           .then(url => {
             let s = this.state;
             console.log(url);
-            s.sellInfo.pictures[0] = url;
+            s.sellInfo.pictures = [url];
             s.loadingImg = false;
             this.setState(s);
-            this.uploadLowResPicture(number,mime,r);
           })
           .catch(erro => {
             console.log(erro);
             s.loadingImg = false;
             this.setState(s);
           });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+      }
+    });
   };
 
   componentWillUnmount() {
@@ -221,21 +152,22 @@ export default class SellScreen extends Component {
       });
 
     this.setState(s);
-    console.log(s.userID);
   }
 
   upOffer = () => {
     let s = this.state;
     s.loading = true;
+    s.sellInfo.price = s.sellInfo.price.replace(",", ".");
 
     this.setState(s);
 
     let data = s.sellInfo;
     console.log(data);
 
+
     if (s.sellInfo.description !== "") {
       if (s.categ !== "Categoria" && s.categ !== "Category") {
-        if (s.sellInfo.price !== "") {
+        if (!isNaN(s.sellInfo.price)) {
           System.registerItem(data)
             .then(r => {
               Alert.alert(s.textContent.warning, s.textContent.msgWarning);
@@ -273,7 +205,6 @@ export default class SellScreen extends Component {
         end={endGradient}
         style={globalStyles.screen}
       >
-        <SafeAreaView />
         {/* Modal */}
         <Modal
           swipeToClose={true}
@@ -390,26 +321,29 @@ export default class SellScreen extends Component {
         <ScrollView style={styles.container}>
           <Header back={true} />
           <TouchableOpacity onPress={this.takePhoto} style={styles.uploadArea}>
-            {s.photo === null
-              ? <Text style={[globalStyles.textSemiBold, styles.uploadText]}>
-                  {s.textContent.upImg}
-                </Text>
-              : s.loadingImg
-                ? <View
-                    style={{
-                      backgroundColor: "#FFF4",
-                      width: "100%",
-                      height: "100%",
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
-                  >
-                    <ActivityIndicator size="large" color="#FFF" />
-                  </View>
-                : <Image
-                    source={s.photo}
-                    style={{ height: "100%", width: "100%" }}
-                  />}
+            {s.photo === null ? (
+              <Text style={[globalStyles.textSemiBold, styles.uploadText]}>
+                {s.textContent.upImg}
+              </Text>
+            ) : s.loadingImg ? (
+              <View
+                style={{
+                  backgroundColor: "#FFF4",
+                  width: "100%",
+                  height: "100%",
+                  justifyContent: "center",
+                  alignItems: "center"
+                }}
+              >
+                <ActivityIndicator size="large" color="#FFF" />
+              </View>
+            ) : (
+              <Image
+                source={s.photo}
+                style={{ height: "100%", width: "100%" }}
+                resizeMode="stretch"
+              />
+            )}
           </TouchableOpacity>
           <TextInput
             multiline={false}
@@ -429,9 +363,7 @@ export default class SellScreen extends Component {
             }}
             style={[styles.description, { justifyContent: "center" }]}
           >
-            <Text style={[globalStyles.textRegular]}>
-              {s.categ}
-            </Text>
+            <Text style={[globalStyles.textRegular]}>{s.categ}</Text>
           </TouchableOpacity>
           <TextInput
             multiline={true}
@@ -447,7 +379,8 @@ export default class SellScreen extends Component {
             style={[
               globalStyles.textRegular,
               styles.description,
-              { width: "30%" }
+              { width: "30%",
+              textAlign: "center" }
             ]}
             placeholder={s.textContent.price}
           />
@@ -457,11 +390,13 @@ export default class SellScreen extends Component {
             onPress={this.upOffer}
             style={styles.uploadOfferButton}
           >
-            {s.loading
-              ? <ActivityIndicator size="small" color="#FFF" />
-              : <Text style={[globalStyles.textSemiBold, styles.uploadOffer]}>
-                  {s.textContent.upOffer}
-                </Text>}
+            {s.loading ? (
+              <ActivityIndicator size="small" color="#FFF" />
+            ) : (
+              <Text style={[globalStyles.textSemiBold, styles.uploadOffer]}>
+                {s.textContent.upOffer}
+              </Text>
+            )}
           </TouchableOpacity>
         </ScrollView>
       </LinearGradient>

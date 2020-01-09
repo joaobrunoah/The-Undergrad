@@ -1,6 +1,16 @@
 import React, { Component } from "react";
+import {
+  FlatList,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+  SafeAreaView
+} from "react-native";
+import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
-import { GiftedChat, Bubble, Send } from "react-native-gifted-chat";
+import moment from "moment";
 
 //API
 import System from "../../../../services/api";
@@ -8,12 +18,87 @@ import System from "../../../../services/api";
 //Icons
 import Icon from "react-native-vector-icons/FontAwesome5";
 
-import styles from "../messageScreen/styles.js";
+// Textos
+import { textBr, textUsa } from "../../../../assets/content/mainRoute/categs";
 
+//Components
+import Header from "../../../../assets/components/header";
+
+//Styles
 import {
-  textBr,
-  textUsa
-} from "../../../../assets/content/drawer/MessageScreen";
+  globalStyles,
+  colorsGradient,
+  startGradient,
+  endGradient
+} from "../../../globalStyles";
+import styles from "./styles";
+
+export class Mensagem extends Component {
+  constructor(props) {
+    super(props);
+    let p = this.props.data;
+
+    this.state = {
+      data: p,
+      style: { alignSelf: "flex-start" }
+    };
+  }
+
+  async componentDidMount() {
+    let s = this.state;
+    let uid = await AsyncStorage.getItem("userUID");
+    let style = {
+      paddingVertical: 5,
+      paddingHorizontal: 10,
+      maxWidth: 200,
+      marginVertical: 5,
+      borderRadius: 10
+    };
+
+    if (s.data.user == uid) {
+      s.style = {
+        ...style,
+        backgroundColor: "#66ff66",
+        alignSelf: "flex-start"
+      };
+    } else {
+      s.style = {
+        ...style,
+        backgroundColor: "#a6a6a6",
+        alignSelf: "flex-end"
+      };
+    }
+
+    this.setState(s);
+  }
+
+  render() {
+    let s = this.state;
+
+    return (
+      <View style={s.style}>
+        <Text
+          style={{
+            color: "#0008",
+            textAlign: "justify",
+            fontFamily: "Montserrat-SemiBold"
+          }}
+        >
+          {s.data.message}
+        </Text>
+        <Text
+          style={{
+            color: "#0006",
+            fontFamily: "Montserrat-SemiBold",
+            fontSize: 12
+          }}
+        >
+          {s.data.hour}
+        </Text>
+      </View>
+    );
+  }
+}
 
 export default class MessageDetail extends Component {
   constructor(props) {
@@ -25,89 +110,47 @@ export default class MessageDetail extends Component {
       data: p,
       uid: "",
       messages: [],
-      newMessage: "",
-      language: "",
-      userDireita: {},
-      userEsquerda: {},
-      userEsquerdaInfo: {}
+      newMessage: ""
     };
   }
 
-  renderBubble(props) {
-    return (
-      <Bubble
-        {...props}
-        wrapperStyle={{
-          right: {
-            backgroundColor: "rgb(21,128,251)"
-          }
-        }}
-      />
-    );
-  }
+  async componentWillMount() {
+    let s = this.state;
+    s.language = await AsyncStorage.getItem("language");
 
-  renderSend(props) {
-    return (
-      <Send {...props}>
-        <Icon
-          name="arrow-circle-right"
-          size={30}
-          color="rgb(21,128,251)"
-          style={{
-            marginHorizontal: 10,
-            marginBottom: 7
-          }}
-        />
-      </Send>
-    );
+    if (s.language === "br") {
+      s.textContent = textBr;
+    } else if (s.language === "usa") {
+      s.textContent = textUsa;
+    }
+
+    this.setState(s);
   }
 
   async componentDidMount() {
-    console.log(this.props.navigation.state.params);
-    let s = this.state;
     let uid = await AsyncStorage.getItem("userUID");
     let p = this.props.navigation.state.params.data;
+    console.log(p.key);
     await this.setState({ uid: uid });
-
-    await AsyncStorage.getItem(p.key).then(mensagens => {
-      if (mensagens != null) {
-        mensagens = JSON.parse(mensagens);
-        console.log(mensagens);
-        this.setState({ messages: mensagens });
-      }
-    });
-
-    System.getUserInfo(p.key)
-      .then(r => {
-        this.setState({ userEsquerdaInfo: r.data() });
-      })
-      .then(this.loadMessages)
-      .then(this.sendProductMessage)
-      .catch(e => {
-        console.log(e);
-      });
-
-    let languageSelected = await AsyncStorage.getItem("language");
-
-    s.language = languageSelected;
-
-    this.setState({ language: languageSelected });
+    this.loadMessages();
   }
 
   sendMessage = async () => {
     let s = this.state;
     let p = this.props.navigation.state.params.data;
-
-    var lastID = 0;
-
-    if (s.messages.length != 0)
-      lastID = s.messages[s.messages.length - 1]["_id"];
+    let d = this.props.navigation.state.params.data2;
+    let prefixo = typeof d === "undefined" ? "" : "[" + d.description + " - " + s.textContent.price + Number(d.price).toFixed(2).toString() + "]\n";
+    let hora = `${moment().hour()}:${moment()
+      .minute() < 10?"0":null}${Number(
+      moment()
+        .minute()
+        .toFixed(2)
+    )}`;
 
     let data = {
-      _id: lastID + 1,
-      createdAt: new Date().getTime(),
+      hour: hora,
       user: s.uid,
-      text: s.newMessage
+      message: prefixo + s.newMessage
     };
 
     System.sendMessage(s.uid, p.key, data);
@@ -118,38 +161,7 @@ export default class MessageDetail extends Component {
 
     await this.setState({ newMessage: "" });
 
-    System.setUnread(p.key, s.uid, 1);
-
     this.loadMessages();
-  };
-
-  sendProductMessage = async () => {
-    let s = this.state;
-    let p = this.props.navigation.state.params.data;
-
-    if (p.description != undefined) {
-      var lastID = 0;
-
-      if (s.messages.length != 0)
-        lastID = s.messages[s.messages.length - 1]["_id"];
-
-      let data = {
-        _id: lastID + 1,
-        createdAt: new Date().getTime(),
-        text: `[${p.description} - ${s.language == "br"
-          ? "R$"
-          : "$"}${p.price}]`,
-        system: true
-      };
-
-      System.sendMessage(s.uid, p.key, data);
-
-      if (s.uid !== p.key) {
-        System.sendMessage(p.key, s.uid, data);
-      }
-
-      this.loadMessages();
-    }
   };
 
   loadMessages = async () => {
@@ -157,64 +169,100 @@ export default class MessageDetail extends Component {
     let uid = await AsyncStorage.getItem("userUID");
     let p = this.props.navigation.state.params.data;
 
-    s.userDireita = { _id: 0 };
-    s.userEsquerda = { _id: 1, name: s.userEsquerdaInfo.name };
-
     System.getListaConversas(uid, async r => {
-      s.messages = [
-        {
-          _id: 0,
-          text:
-            (this.state.language == "br"
-              ? textBr.mensagemPadrao
-              : textUsa.mensagemPadrao) + s.userEsquerdaInfo.name,
-          system: true
-        }
-      ];
+      s.messages = [];
       r.forEach(r => {
         if (r.key === p.key) {
           let messages = r.val().messages;
           Object.values(messages).forEach(r => {
-            r.system
-              ? s.messages.push({
-                  _id: r["_id"],
-                  createdAt: r.createdAt,
-                  text: r.text,
-                  system: r.system
-                })
-              : s.messages.push({
-                  _id: r["_id"],
-                  createdAt: r.createdAt,
-                  user: r.user == s.uid ? s.userDireita : s.userEsquerda,
-                  text: r.text
-                });
+            s.messages.push({
+              hour: r.hour,
+              user: r.user,
+              message: r.message
+            });
+            console.log(r);
           });
         }
       });
-      await AsyncStorage.setItem(p.key, JSON.stringify(s.messages));
       await this.setState(s);
     });
-    System.setUnread(s.uid, p.key, 0);
   };
 
   render() {
+    let s = this.state;
+
     return (
-      <GiftedChat
-        messages={this.state.messages}
-        onSend={this.sendMessage}
-        onInputTextChanged={m => this.setState({ newMessage: m })}
-        user={{
-          _id: 0
-        }}
-        renderAvatar={null}
-        inverted={false}
-        placeholder={
-          this.state.language == "br" ? textBr.placeholder : textUsa.placeholder
-        }
-        renderBubble={this.renderBubble}
-        renderSend={this.renderSend}
-        locale={this.state.language == "br" ? "pt-br" : "us"}
-      />
+      <LinearGradient
+        colors={colorsGradient}
+        start={startGradient}
+        end={endGradient}
+        style={globalStyles.screen}
+      >
+        <SafeAreaView
+          style={{
+            margin: -10,
+            padding: 10,
+            backgroundColor: "#FFF",
+            zIndex: 7,
+            opacity: 0.8
+          }}
+        >
+          <Header back={true} />
+        </SafeAreaView>
+
+        <SafeAreaView style={styles.container}>
+          <View
+            style={{
+              padding: 10,
+              paddingBottom: 50,
+              height: "100%",
+              width: "100%"
+            }}
+          >
+            <FlatList
+              style={{ marginTop: 10 }}
+              ref="flatList"
+              onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
+              data={s.messages}
+              renderItem={({ item }) => (
+                <Mensagem data={item} user={item.user} />
+              )}
+              keyExtractor={(item, index) => index}
+            />
+          </View>
+          <View style={styles.messageTextArea}>
+            <TextInput
+              value={s.newMessage}
+              onChangeText={text => {
+                this.setState({ newMessage: text });
+              }}
+              placeholder="Digite aqui sua mensagem"
+              style={[
+                globalStyles.textRegular,
+                {
+                  height: 40,
+                  maxHeight: 40,
+                  width: "90%",
+                  paddingHorizontal: 10,
+                  paddingVertical: 5,
+                  flexDirection: "row",
+                  borderColor: "#CCC",
+                  borderWidth: 1,
+                  borderRadius: 5,
+                  alignItems: "center",
+                  justifyContent: "flex-start"
+                }
+              ]}
+            />
+            <TouchableOpacity
+              onPress={this.sendMessage}
+              style={{ marginRight: 5 }}
+            >
+              <Icon name="arrow-circle-right" size={24} color="#737373" />
+            </TouchableOpacity>
+          </View>
+        </SafeAreaView>
+      </LinearGradient>
     );
   }
 }
