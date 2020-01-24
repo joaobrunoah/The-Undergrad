@@ -40,6 +40,7 @@ export default class Dashboard extends Component {
     super(props);
     this.state = {
       uid: "",
+      active: false,
       unreadMessages: 0,
       textContent: {},
       data: [],
@@ -63,12 +64,20 @@ export default class Dashboard extends Component {
   async componentDidMount() {
     let s = this.state;
     s.language = await AsyncStorage.getItem("language");
-    s.uid = await AsyncStorage.getItem("userUID")
+    s.uid = await AsyncStorage.getItem("userUID");
+    this.setState(s);
 
-    if(!System.isSignedIn()){
-      System.logOut();
-      this.props.navigation.navigate("Language")
-    } 
+    System.getUserInfo(s.uid).then(r => {
+      s.active = r.data().active;
+      this.setState(s);
+    })
+    .then(() => {
+      if(!System.isSignedIn() || !s.active) {
+        System.logOut();
+        this.props.navigation.navigate("Language")
+      } 
+    });
+
     if (s.language === "br") {
       s.textContent = textBr;
     } else if (s.language === "usa") {
@@ -76,8 +85,6 @@ export default class Dashboard extends Component {
     }
 
     this.getInfo();
-
-    this.setState(s);
 
     System.getListaConversas(s.uid, async r => {
       s.unreadMessages = 0

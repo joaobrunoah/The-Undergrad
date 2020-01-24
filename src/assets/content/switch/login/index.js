@@ -8,6 +8,8 @@ export const textBr = {
   titleError: "Atenção",
   error_1: "E-mail ou senha não conferem",
   error_2: "Os campos não podem ser vazios",
+  error_3: "Endereço de email não confirmado",
+  error_4: "Usuário bloqueado",
   loading: "Carregando..."
 };
 
@@ -21,5 +23,7 @@ export const textUsa = {
   titleError: "Warning",
   error_1: "Email or password do not exist",
   error_2: "Fields cannot be empty",
+  error_3: "Unverified email address",
+  error_4: "Locked user",
   loading: "Loading..."
 };

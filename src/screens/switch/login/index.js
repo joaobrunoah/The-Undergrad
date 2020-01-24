@@ -48,7 +48,9 @@ export default class Login extends Component {
     this.state = {
       email: "",
       pass: "",
+      emailVerified: false,
       userUID: "",
+      active: false,
       textContent: {},
       hitSlop: { bottom: 20, top: 20, right: 20, left: 20 },
       disabled: false,
@@ -81,27 +83,50 @@ export default class Login extends Component {
     if (s.email !== "" && s.pass !== "") {
       System.addAuthListener(async user => {
         if (user) {
+          s.emailVerified = user.emailVerified;
           s.userUID = user.uid;
           await AsyncStorage.setItem("userUID", user.uid);
           this.setState(s);
         }
       });
-
       System.login(s.email, s.pass)
-        .then(async () => {
-          await AsyncStorage.setItem("isOn", "true")
-            .then(
-              await AsyncStorage.setItem("email", s.email).then(
-                await AsyncStorage.setItem("pass", s.pass)
+      .then(async () => {
+        if (s.emailVerified) {
+          System.getUserInfo(s.userUID)
+          .then(r => {
+            s.active = r.data().active;
+            this.setState(s);
+          })
+          .then(async () => {
+            if (s.active) {
+              await AsyncStorage.setItem("isOn", "true")
+              .then(
+                await AsyncStorage.setItem("email", s.email).then(
+                  await AsyncStorage.setItem("pass", s.pass)
+                )
               )
-            )
-            .then(() => {
-              const resetAction = StackActions.reset({
-                index: 0,
-                actions: [NavigationActions.navigate({ routeName: "Home" })]
+              .then(() => {
+                const resetAction = StackActions.reset({
+                  index: 0,
+                  actions: [NavigationActions.navigate({ routeName: "Home" })]
+                });
+                this.props.navigation.dispatch(resetAction);
               });
-              this.props.navigation.dispatch(resetAction);
-            });
+            } else {
+              Alert.alert(s.textContent.titleError, s.textContent.error_4);
+              s.disabled = false;
+              s.loading = false;
+              s.opacity = 1;
+              this.setState(s);
+            }
+          });
+        } else {
+          Alert.alert(s.textContent.titleError, s.textContent.error_3);
+          s.disabled = false;
+          s.loading = false;
+          s.opacity = 1;
+          this.setState(s);
+        }
         })
         .catch(err => {
           console.log(err);
@@ -238,7 +263,7 @@ export default class Login extends Component {
           <SafeAreaView>
             <TouchableOpacity
               activeOpacity={0.7}
-              style={styles.cadContent}
+              style={{marginTop: -70}}
               onPress={() => {
                 this.regs;
                 this.props.navigation.navigate("Cadastro")
@@ -246,7 +271,7 @@ export default class Login extends Component {
               }}
               hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
             >
-              <Text style={[globalStyles.textRegular, styles.cadText]}>
+              <Text style={[globalStyles.textRegular, styles.cadText, {fontSize: 16}]}>
                 {s.textContent.noCad}
               </Text>
             </TouchableOpacity>

@@ -102,6 +102,7 @@ export default class Cadastro extends Component {
           s.userUID = user.uid;
           s.data = { ...oldData, uid: user.uid };
           this.setState(s);
+          user.sendEmailVerification();
         }
       });
 
@@ -111,20 +112,20 @@ export default class Cadastro extends Component {
             System.registerOnFirestore(s.userUID, s.data)
               .then(async r => {
                 Alert.alert(s.textContent.titleError, s.textContent.suc);
-                await AsyncStorage.setItem("userUID", s.userUID);
-                await AsyncStorage.setItem("isOn", "true").then(
-                  await AsyncStorage.setItem("email", s.email).then(
-                    await AsyncStorage.setItem("pass", s.pass).then(() => {
+                // await AsyncStorage.setItem("userUID", s.userUID);
+                // await AsyncStorage.setItem("isOn", "true").then(
+                //   await AsyncStorage.setItem("email", s.email).then(
+                //     await AsyncStorage.setItem("pass", s.pass).then(() => {
                       const resetAction = StackActions.reset({
                         index: 0,
                         actions: [
-                          NavigationActions.navigate({ routeName: "Home" })
+                          NavigationActions.navigate({ routeName: "Login" })
                         ]
                       });
                       this.props.navigation.dispatch(resetAction);
-                    })
-                  )
-                );
+                //     })
+                //   )
+                // );
               })
               .catch(err => {});
           }
