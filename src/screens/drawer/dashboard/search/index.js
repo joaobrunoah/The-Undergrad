@@ -137,7 +137,7 @@ export default class Search extends Component {
       await this.setState(s);
     });
 
-    this.search();
+    // this.search();
   }
 
   search = () => {
@@ -154,7 +154,8 @@ export default class Search extends Component {
       .then(r => {
         r.forEach(doc => {
           s.itemsForSale.push(doc.data());
-          if(s.itemsForSale[s.itemsForSale.length - 1]["description"].toLowerCase().indexOf(s.search.toLowerCase()) == -1) {
+          if(s.itemsForSale[s.itemsForSale.length - 1]["description"].toLowerCase().indexOf(s.search.toLowerCase()) == -1 ||
+             s.itemsForSale[s.itemsForSale.length - 1]["university"] !== "/" + s.userInfo.university) {
               s.itemsForSale = s.itemsForSale.slice(0, s.itemsForSale.length - 1);
           }
         this.setState(s);
