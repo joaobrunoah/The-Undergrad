@@ -102,22 +102,7 @@ export default class MessagesList extends Component {
             <ActivityIndicator size="large" color="#0008" />
           </View>
           : <SwipeListView
-            // rightOpenValue={-75}
-            // ListEmptyComponent={
-            //   <View
-            //     style={{
-            //       flex: 1,
-            //       height: 400,
-            //       alignItems: "center",
-            //       justifyContent: "center"
-            //     }}
-            //   >
-            //     <Icon name="envelope-open" size={50} light color="#0006" />
-            //     <Text style={globalStyles.textSemiBold}>
-            //       {s.textContent.empty}
-            //     </Text>
-            //   </View>
-            // }
+            rightOpenValue={-75}
             data={s.conversas}
             renderItem={({ item }) => {
 
@@ -128,6 +113,12 @@ export default class MessagesList extends Component {
               />)
             }
             }
+            renderHiddenItem={(data, rowMap) => (
+              <View style={{ height: 80, width: 200 }}>
+                <Text>Left</Text>
+                <Text>Right</Text>
+              </View>
+            )}
           // numColumns={1}
           // horizontal={false}
           // keyExtractor={(item, index) => item.key}

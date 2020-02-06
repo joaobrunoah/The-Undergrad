@@ -21,11 +21,11 @@ class System {
 
   async isSignedIn() {
     try {
-      const token = await AsyncStorage.getItem("email");
+      let token = await AsyncStorage.getItem("email");
+      return token !== null ? true : false;
     } catch (e) {
       console.warn(e)
     }
-    return token !== null ? true : false;
   }
 
   // Login
