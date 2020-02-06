@@ -257,25 +257,25 @@ export default class Login extends Component {
                 </Text>
               </TouchableOpacity>
             </SafeAreaView>
-            <View style={styles.cadContent} />
-          </KeyboardAvoidingView>
 
-          <SafeAreaView>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={{marginTop: -70}}
-              onPress={() => {
-                this.regs;
-                this.props.navigation.navigate("Cadastro")
-                Keyboard.dismiss();
-              }}
-              hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
-            >
-              <Text style={[globalStyles.textRegular, styles.cadText, {fontSize: 16}]}>
-                {s.textContent.noCad}
-              </Text>
-            </TouchableOpacity>
-          </SafeAreaView>
+            <View style={styles.cadContent} />
+
+            <SafeAreaView>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => {
+                  this.regs;
+                  this.props.navigation.navigate("Cadastro")
+                  Keyboard.dismiss();
+                }}
+                hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
+              >
+                <Text style={[globalStyles.textRegular, styles.cadText, {fontSize: 16}]}>
+                  {s.textContent.noCad}
+                </Text>
+              </TouchableOpacity>
+            </SafeAreaView>
+          </KeyboardAvoidingView>
         </LinearGradient>
       </DismissKeyboard>
     );

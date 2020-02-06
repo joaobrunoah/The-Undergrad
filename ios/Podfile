@@ -14,6 +14,8 @@ target 'TheUndergrad' do
     pod 'React', :path => '../node_modules/react-native'
     pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
 
+    pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
   end
 
   target 'TheUndergradTests' do
