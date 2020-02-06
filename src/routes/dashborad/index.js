@@ -44,7 +44,7 @@ const StackDash = createStackNavigator(
   },
   {
     defaultNavigationOptions: {
-      header: null
+      header: false
     },
     mode: "screen"
   }

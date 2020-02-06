@@ -23,7 +23,6 @@ import { globalStyles } from "../../../globalStyles";
 export class Message extends Component {
   constructor(props) {
     super(props);
-
     let p = this.props.data;
 
     this.state = {
@@ -98,12 +97,12 @@ export class Message extends Component {
         >
           {s.imageProfile
             ? <Image
-                source={{ uri: s.imageProfile }}
-                style={styles.imgProfile}
-              />
+              source={{ uri: s.imageProfile }}
+              style={styles.imgProfile}
+            />
             : <View style={styles.imgProfile}>
-                <Icon name="user" color="#FFF" size={18} solid />
-              </View>}
+              <Icon name="user" color="#FFF" size={18} solid />
+            </View>}
 
           <View style={{ justifyContent: "flex-start", marginLeft: 20 }}>
             <Text style={[globalStyles.textRegular, styles.name]}>

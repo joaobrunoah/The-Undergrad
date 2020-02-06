@@ -26,6 +26,7 @@ export default class MessagesList extends Component {
       conversas: [],
       loading: true
     };
+    this.props = props;
   }
 
   async componentDidMount() {
@@ -101,35 +102,35 @@ export default class MessagesList extends Component {
             <ActivityIndicator size="large" color="#0008" />
           </View>
           : <SwipeListView
-            rightOpenValue={-75}
-            ListEmptyComponent={
-              <View
-                style={{
-                  flex: 1,
-                  height: 400,
-                  alignItems: "center",
-                  justifyContent: "center"
-                }}
-              >
-                <Icon name="envelope-open" size={50} light color="#0006" />
-                <Text style={globalStyles.textSemiBold}>
-                  {s.textContent.empty}
-                </Text>
-              </View>
-            }
+            // rightOpenValue={-75}
+            // ListEmptyComponent={
+            //   <View
+            //     style={{
+            //       flex: 1,
+            //       height: 400,
+            //       alignItems: "center",
+            //       justifyContent: "center"
+            //     }}
+            //   >
+            //     <Icon name="envelope-open" size={50} light color="#0006" />
+            //     <Text style={globalStyles.textSemiBold}>
+            //       {s.textContent.empty}
+            //     </Text>
+            //   </View>
+            // }
             data={s.conversas}
             renderItem={({ item }) => {
 
-              <Message
+              return (<Message
                 data={item}
                 msg={this.lastMsg(item)}
                 unread={this.unread(item)}
-              />
+              />)
             }
             }
-            numColumns={1}
-            horizontal={false}
-            keyExtractor={(item, index) => item.key}
+          // numColumns={1}
+          // horizontal={false}
+          // keyExtractor={(item, index) => item.key}
           />}
       </View>
     );
