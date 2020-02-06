@@ -37,6 +37,12 @@ target 'theUndergrad' do
   target 'theUndergradTests' do
     inherit! :search_paths
     # Pods for testing
+    #pod 'react-native-image-resizer', :path => '../node_modules/react-native-image-resizer'
+    pod 'React', :path => '../node_modules/react-native'
+    pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+
+    pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
   end
 
   use_native_modules!

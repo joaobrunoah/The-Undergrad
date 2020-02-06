@@ -1,0 +1,19 @@
+dependencies: \
+  /Users/Thiago/Downloads/The-Undergrad/node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.m \
+  /Users/Thiago/Downloads/The-Undergrad/node_modules/@react-native-community/async-storage/ios/RNCAsyncStorage.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h \
+  /Users/Thiago/Downloads/The-Undergrad/node_modules/@react-native-community/async-storage/ios/RNCAsyncStorageDelegate.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/React/RCTConvert.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/React/RCTAnimationType.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/React/RCTBorderStyle.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/React/RCTLog.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/React/RCTUtils.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/React/RCTPointerEvents.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/React/RCTTextDecorationLineType.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/yoga/Yoga.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/yoga/YGEnums.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/yoga/YGMacros.h \
+  /Users/Thiago/Downloads/The-Undergrad/ios/build/TheUndergrad/Build/Products/Debug-iphonesimulator/include/yoga/YGValue.h

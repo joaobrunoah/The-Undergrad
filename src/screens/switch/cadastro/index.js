@@ -132,9 +132,13 @@ export default class Cadastro extends Component {
         })
         .catch(err => {
           console.log(err);
-          console.log(err.message)
-          if(err.message == "The email address is already in use by another account.") {Alert.alert(s.textContent.titleError, s.textContent.error_5);};
-          Alert.alert(s.textContent.titleError, s.textContent.error_1);
+          console.log(err.message);
+
+          if(err.message && err.message.indexOf("already in use") >= 0)
+            Alert.alert(s.textContent.titleError, s.textContent.error_5);
+          else
+            Alert.alert(s.textContent.titleError, s.textContent.error_1);
+
           s.buttonDisable = false;
           s.loading = false;
           s.opacity = { opacity: 1 };
