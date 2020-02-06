@@ -19,7 +19,6 @@ import {
   startGradient,
   endGradient
 } from "../../globalStyles";
-import styles from "./styles";
 
 export default class BuyScreen extends Component {
   render() {
@@ -30,7 +29,7 @@ export default class BuyScreen extends Component {
         end={endGradient}
         style={globalStyles.screen}
       >
-        <SafeAreaView style={styles.container} />
+        <SafeAreaView style={{ flex: 1 }} />
       </LinearGradient>
     );
   }

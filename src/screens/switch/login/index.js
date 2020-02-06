@@ -180,16 +180,16 @@ export default class Login extends Component {
             style={styles.container}
           >
             <SafeAreaView>
-              <Transition shared="logo">
+              {/* <Transition shared="logo"> */}
                 <View style={styles.logoContent}>
                   <Image style={styles.logo} source={mainLogo} />
                   <Text style={[globalStyles.textRegular, styles.mainText]}>
                     The Undergrad
                   </Text>
                 </View>
-              </Transition>
+              {/* </Transition> */}
 
-              <Transition disappear="left" inline={true} delay={true}>
+              {/* <Transition disappear="left" inline={true} delay={true}> */}
                 <View style={styles.inputContent}>
                   <TextInput
                     onSubmitEditing={() => this.senhaInput.focus()}
@@ -222,9 +222,9 @@ export default class Login extends Component {
                     placeholderTextColor="#999"
                   />
                 </View>
-              </Transition>
+              {/* </Transition> */}
 
-              <Transition shared="botao1">
+              {/* <Transition shared="botao1"> */}
                 <TouchableOpacity
                   activeOpacity={0.7}
                   style={[styles.buttons, s.buttonRes, s.opacity]}
@@ -237,7 +237,7 @@ export default class Login extends Component {
                       : s.textContent.loginButton}
                   </Text>
                 </TouchableOpacity>
-              </Transition>
+              {/* </Transition> */}
               <TouchableOpacity
                 hitSlop={{ bottom: 30, top: 0, right: 20, left: 20 }}
                 activeOpacity={0.7}

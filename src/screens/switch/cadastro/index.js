@@ -15,7 +15,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { StackActions, NavigationActions } from "react-navigation";
 import moment from "moment";
 import AsyncStorage from "@react-native-community/async-storage";
-import { FluidNavigator, Transition } from "react-navigation-fluid-transitions";
+import {  Transition } from "react-navigation-fluid-transitions";
 
 // Api
 import System from "../../../services/api";
@@ -263,15 +263,15 @@ export default class Cadastro extends Component {
             style={styles.container}
           >
             <SafeAreaView style={styles.cadastroContent}>
-              <Transition shared="logo">
+              {/* <Transition shared="logo"> */}
                 <View style={styles.logoContent}>
                   <Image style={styles.logo} source={mainLogo} />
                   <Text style={[globalStyles.textRegular, styles.mainText]}>
                     The Undergrad
                   </Text>
                 </View>
-              </Transition>
-              <Transition appear="right">
+              {/* </Transition> */}
+              {/* <Transition appear="right"> */}
                 <View style={styles.inputContent}>
                   <TextInput
                     onSubmitEditing={() => this.emailInput.focus()}
@@ -344,8 +344,8 @@ export default class Cadastro extends Component {
                     placeholder={s.textContent.repPassInput}
                   />
                 </View>
-              </Transition>
-              <Transition shared="botao1">
+              {/* </Transition> */}
+              {/* <Transition shared="botao1"> */}
                 <TouchableOpacity
                   activeOpacity={0.7}
                   style={[styles.buttons, s.buttonRes, s.opacity]}
@@ -358,7 +358,7 @@ export default class Cadastro extends Component {
                       : s.textContent.cadButton}
                   </Text>
                 </TouchableOpacity>
-              </Transition>
+              {/* </Transition> */}
             </SafeAreaView>
           </KeyboardAvoidingView>
         </LinearGradient>

@@ -16,7 +16,7 @@ import RNFetchBlob from "rn-fetch-blob";
 
 const Blob = RNFetchBlob.polyfill.Blob;
 const fs = RNFetchBlob.fs;
-window.XMLHTTPRequest = RNFetchBlob.polyfill.XMLHTTPRequest;
+// window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
 
 //Icon
@@ -68,15 +68,14 @@ export default class Perfil extends Component {
 
   takePicture = async () => {
     let s = this.state;
-    let tempWindowXMLHttpRequest = window.XMLHttpRequest;
-    s.userID = await AsyncStorage.getItem("userUID");
-    s.temp = tempWindowXMLHttpRequest;
+    // let tempWindowXMLHttpRequest = window.XMLHttpRequest;
+    // s.temp = tempWindowXMLHttpRequest;
     s.loading = true;
     s.imgLoader = true;
     this.setState(s);
 
     ImagePicker.showImagePicker({}, r => {
-      window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+      // window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
       window.Blob = Blob;
       s.photo = { uri: r.uri };
       this.setState(s);
@@ -87,7 +86,7 @@ export default class Perfil extends Component {
         let uploadBlob = null;
         let number = null;
 
-        RNFetchBlob.fs
+        fs
           .readFile(uri, "base64")
           .then(data => {
             return RNFetchBlob.polyfill.Blob.build(data, {
@@ -102,7 +101,7 @@ export default class Perfil extends Component {
           })
           .then(() => {
             uploadBlob.close();
-            window.XMLHttpRequest = tempWindowXMLHttpRequest;
+            // window.XMLHttpRequest = tempWindowXMLHttpRequest;
             console.log("Pegando a imagem: " + number);
             return System.getURLUserImg(s.userID, number);
           })
@@ -127,7 +126,7 @@ export default class Perfil extends Component {
     if (s.temp === null) {
       return;
     } else {
-      window.XMLHttpRequest = s.temp;
+      // window.XMLHttpRequest = s.temp;
     }
   }
 
@@ -249,7 +248,7 @@ export default class Perfil extends Component {
                 style={{ alignItems: "center", justifyContent: "center" }}
                 onPress={() => this.props.navigation.navigate("Settings")}
               >
-                <Icon name="sliders-h" size={24} solid />
+                <Icon name="sliders-h" size={24} />
               </TouchableOpacity>
               <View style={styles.giantCircle}>
                 <View style={styles.mediumCircle}>
@@ -276,19 +275,19 @@ export default class Perfil extends Component {
                       </View>
                     ) : null}
                     {s.photo === "" ? (
-                      <Icon name="user" size={30} color="#737373" solid />
+                      <Icon name="user" size={30} color="#737373" />
                     ) : (
-                      <Image
-                        style={{
-                          width: 100,
-                          height: 100,
-                          borderRadius: 50,
-                          borderWidth: 2,
-                          borderColor: "#FFF"
-                        }}
-                        source={s.photo}
-                      />
-                    )}
+                        <Image
+                          style={{
+                            width: 100,
+                            height: 100,
+                            borderRadius: 50,
+                            borderWidth: 2,
+                            borderColor: "#FFF"
+                          }}
+                          source={s.photo}
+                        />
+                      )}
                   </TouchableOpacity>
                 </View>
               </View>
@@ -312,7 +311,7 @@ export default class Perfil extends Component {
             </Text>
           </TouchableOpacity>
           <View style={styles.lookingFor}>
-            <Icon name="map-marker-alt" size={40} solid />
+            <Icon name="map-marker-alt" size={40} />
             <Text
               style={[globalStyles.textBold, { marginTop: 10, fontSize: 14 }]}
             >
