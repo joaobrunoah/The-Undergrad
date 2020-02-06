@@ -60,3 +60,4 @@ yarn-error.log
 /ios/Pods/
 
 android/app/build
+ios/theUndergrad.xcworkspace
