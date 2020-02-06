@@ -7,7 +7,7 @@ import "./configs/StatusBarConfig";
 import Routes from "./routes/switch";
 
 //DisableConsoleYellowBox
-console.disableYellowBox = true;
+//console.disableYellowBox = true;
 
 const App = () => <Routes />;
 

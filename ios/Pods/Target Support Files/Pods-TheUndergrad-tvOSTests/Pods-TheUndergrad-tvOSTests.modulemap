@@ -1,0 +1,6 @@
+framework module Pods_TheUndergrad_tvOSTests {
+  umbrella header "Pods-TheUndergrad-tvOSTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

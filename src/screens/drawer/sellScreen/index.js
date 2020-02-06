@@ -157,24 +157,32 @@ export default class SellScreen extends Component {
   upOffer = () => {
     let s = this.state;
     s.loading = true;
+    s.sellInfo.price = s.sellInfo.price.replace(",", ".");
 
     this.setState(s);
 
     let data = s.sellInfo;
     console.log(data);
 
+
     if (s.sellInfo.description !== "") {
       if (s.categ !== "Categoria" && s.categ !== "Category") {
-        System.registerItem(data)
-          .then(r => {
-            Alert.alert(s.textContent.warning, s.textContent.msgWarning);
-            this.props.navigation.navigate("Dashboard");
-          })
-          .catch(e => {
-            Alert.alert(s.textContent.warning, s.textContent.msgError);
-            this.props.navigation.navigate("Dashboard");
-            console.log(e);
-          });
+        if (!isNaN(s.sellInfo.price)) {
+          System.registerItem(data)
+            .then(r => {
+              Alert.alert(s.textContent.warning, s.textContent.msgWarning);
+              this.props.navigation.navigate("Dashboard");
+            })
+            .catch(e => {
+              Alert.alert(s.textContent.warning, s.textContent.msgError);
+              this.props.navigation.navigate("Dashboard");
+              console.log(e);
+            });
+        } else {
+          Alert.alert(s.textContent.warning, s.textContent.msgError_4);
+          s.loading = false;
+          this.setState(s);
+        }
       } else {
         Alert.alert(s.textContent.warning, s.textContent.msgError_2);
         s.loading = false;
@@ -371,7 +379,8 @@ export default class SellScreen extends Component {
             style={[
               globalStyles.textRegular,
               styles.description,
-              { width: "30%" }
+              { width: "30%",
+              textAlign: "center" }
             ]}
             placeholder={s.textContent.price}
           />

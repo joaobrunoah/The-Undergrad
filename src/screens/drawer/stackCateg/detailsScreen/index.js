@@ -167,7 +167,8 @@ export default class Details extends Component {
                 activeOpacity={0.7}
                 onPress={() => {
                   this.props.navigation.navigate("MessageDetail", {
-                    data: { key: s.sellerUID }
+                    data: { key: s.sellerUID },
+                    data2: s.data
                   });
                 }}
                 style={{

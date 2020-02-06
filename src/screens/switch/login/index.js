@@ -48,15 +48,15 @@ export default class Login extends Component {
     this.state = {
       email: "",
       pass: "",
+      emailVerified: false,
       userUID: "",
+      active: false,
       textContent: {},
       hitSlop: { bottom: 20, top: 20, right: 20, left: 20 },
       disabled: false,
       opacity: { opacity: 1 },
       loading: false
     };
-
-    System.logOut();
   }
 
   async componentWillMount() {
@@ -81,28 +81,55 @@ export default class Login extends Component {
     this.setState(s);
 
     if (s.email !== "" && s.pass !== "") {
-      System.addAuthListener(user => {
+      System.addAuthListener(async user => {
         if (user) {
+          s.emailVerified = user.emailVerified;
           s.userUID = user.uid;
-          AsyncStorage.setItem("userUID", user.uid);
+          await AsyncStorage.setItem("userUID", user.uid);
           this.setState(s);
         }
       });
-
       System.login(s.email, s.pass)
-        .then(async () => {
-          await AsyncStorage.setItem("isOn", "true").then(
-            await AsyncStorage.setItem("email", s.email).then(
-              await AsyncStorage.setItem("pass", s.pass)
-            )
-          );
-          const resetAction = StackActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: "Home" })]
+      .then(async () => {
+        if (s.emailVerified) {
+          System.getUserInfo(s.userUID)
+          .then(r => {
+            s.active = r.data().active;
+            this.setState(s);
+          })
+          .then(async () => {
+            if (s.active) {
+              await AsyncStorage.setItem("isOn", "true")
+              .then(
+                await AsyncStorage.setItem("email", s.email).then(
+                  await AsyncStorage.setItem("pass", s.pass)
+                )
+              )
+              .then(() => {
+                const resetAction = StackActions.reset({
+                  index: 0,
+                  actions: [NavigationActions.navigate({ routeName: "Home" })]
+                });
+                this.props.navigation.dispatch(resetAction);
+              });
+            } else {
+              Alert.alert(s.textContent.titleError, s.textContent.error_4);
+              s.disabled = false;
+              s.loading = false;
+              s.opacity = 1;
+              this.setState(s);
+            }
           });
-          this.props.navigation.dispatch(resetAction);
+        } else {
+          Alert.alert(s.textContent.titleError, s.textContent.error_3);
+          s.disabled = false;
+          s.loading = false;
+          s.opacity = 1;
+          this.setState(s);
+        }
         })
         .catch(err => {
+          console.log(err);
           Alert.alert(s.textContent.titleError, s.textContent.error_1);
           s.disabled = false;
           s.loading = false;
@@ -168,7 +195,7 @@ export default class Login extends Component {
                     onSubmitEditing={() => this.senhaInput.focus()}
                     style={[styles.inputArea, globalStyles.textRegular]}
                     multiline={false}
-                    autoCapitalize={false}
+                    autoCapitalize="none"
                     autoCorrect={false}
                     returnKeyType="next"
                     value={s.email}
@@ -176,6 +203,7 @@ export default class Login extends Component {
                       this.setState({ email: email });
                     }}
                     keyboardType="email-address"
+                    placeholderTextColor="#999"
                     placeholder={s.textContent.emailInput}
                   />
                   <TextInput
@@ -191,6 +219,7 @@ export default class Login extends Component {
                       this.setState({ pass: pass });
                     }}
                     placeholder={s.textContent.passInput}
+                    placeholderTextColor="#999"
                   />
                 </View>
               </Transition>
@@ -199,7 +228,7 @@ export default class Login extends Component {
                 <TouchableOpacity
                   activeOpacity={0.7}
                   style={[styles.buttons, s.buttonRes, s.opacity]}
-                  onPress={this.checkUni}
+                  onPress={this.signIn}
                   disabled={s.buttonDisable}
                 >
                   <Text style={[globalStyles.textRegular, styles.textButton]}>
@@ -212,7 +241,11 @@ export default class Login extends Component {
               <TouchableOpacity
                 hitSlop={{ bottom: 30, top: 0, right: 20, left: 20 }}
                 activeOpacity={0.7}
-                onPress={this.forgotPass}
+                onPress={() => {
+                  this.forgotPass;
+                  this.props.navigation.navigate("ForgotPass");
+                  Keyboard.dismiss();
+                }}
               >
                 <Text
                   style={[
@@ -224,21 +257,25 @@ export default class Login extends Component {
                 </Text>
               </TouchableOpacity>
             </SafeAreaView>
-            <View style={styles.cadContent} />
-          </KeyboardAvoidingView>
 
-          <SafeAreaView>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              style={styles.cadContent}
-              onPress={this.regs}
-              hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
-            >
-              <Text style={[globalStyles.textRegular, styles.cadText]}>
-                {s.textContent.noCad}
-              </Text>
-            </TouchableOpacity>
-          </SafeAreaView>
+            <View style={styles.cadContent} />
+
+            <SafeAreaView>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => {
+                  this.regs;
+                  this.props.navigation.navigate("Cadastro")
+                  Keyboard.dismiss();
+                }}
+                hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
+              >
+                <Text style={[globalStyles.textRegular, styles.cadText, {fontSize: 16}]}>
+                  {s.textContent.noCad}
+                </Text>
+              </TouchableOpacity>
+            </SafeAreaView>
+          </KeyboardAvoidingView>
         </LinearGradient>
       </DismissKeyboard>
     );

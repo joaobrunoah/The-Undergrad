@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StatusBar } from "react-native";
 import { withNavigation } from "react-navigation";
+import System from '../../../services/api'
 
 //Styles
 import styles from "./styles";
@@ -33,6 +34,7 @@ export class Header extends Component {
 
     return (
       <View style={styles.areaContainer}>
+        <StatusBar barStyle="dark-content" />
         <View style={styles.container}>
           {s.back ? (
             <TouchableOpacity
@@ -60,7 +62,7 @@ export class Header extends Component {
               activeOpacity={0.5}
               onPress={this.navMessage}
             >
-              <Icon name="comment-alt" size={24} color="#737373" solid />
+              <Icon name="comment-alt" size={24} color={this.props.unread ? "rgb(21,128,251)" : "#737373"} solid />
             </TouchableOpacity>
           )}
         </View>

@@ -1,15 +1,24 @@
 import firebase from "./firebaseConnection";
 import "firebase/firestore";
+import AsyncStorage from "@react-native-community/async-storage";
 
 class System {
   // Função para deslogar do sistema
   async logOut() {
     await firebase.auth().signOut();
+    // await AsyncStorage.multiRemove(["email", "pass", "userUID"]);
+    await AsyncStorage.clear();
   }
 
   // Verificar se existe um usuário logado
   async addAuthListener(callback) {
     await firebase.auth().onAuthStateChanged(callback);
+  }
+
+  async isSignedIn() {
+    const token = await AsyncStorage.getItem("email");
+
+    return token !== null ? true : false;
   }
 
   // Login
@@ -29,11 +38,7 @@ class System {
 
   // Registrar no Firestore
   async registerOnFirestore(uid, data) {
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(uid)
-      .set(data);
+    await firebase.firestore().collection("users").doc(uid).set(data);
   }
 
   // Verifica se a Universidade está cadastrada
@@ -56,11 +61,7 @@ class System {
 
   // Busca os dados de cadastro do User no Firestore
   async getUserInfo(userUID) {
-    return await firebase
-      .firestore()
-      .collection("users")
-      .doc(userUID)
-      .get();
+    return await firebase.firestore().collection("users").doc(userUID).get();
   }
 
   // Setar a pasta imgs e a offers com a imagem tento o mesmo nome do UID do User
@@ -85,11 +86,7 @@ class System {
 
   // Pegar URL da Foto de Perfil
   async updateImgProfile(userUID, img) {
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(userUID)
-      .update(img);
+    await firebase.firestore().collection("users").doc(userUID).update(img);
   }
 
   // Pegar URL da Foto
@@ -144,17 +141,17 @@ class System {
     return await firebase
       .firestore()
       .collection("offers")
-      .where("description", "==", item)
+      // .where("description", "==", item)
       .get();
+  }
+
+  async getEveryItem() {
+    return await firebase.firestore().collection("offers").get();
   }
 
   // Registrar oferta no Firestore
   async registerItem(data) {
-    await firebase
-      .firestore()
-      .collection("offers")
-      .doc()
-      .set(data);
+    await firebase.firestore().collection("offers").doc().set(data);
   }
 
   // Busca todos os itens do usuario
@@ -168,11 +165,7 @@ class System {
 
   // Deleta um item do usuário
   async deleteItemsUser(itemId) {
-    await firebase
-      .firestore()
-      .collection("offers")
-      .doc(itemId)
-      .delete();
+    await firebase.firestore().collection("offers").doc(itemId).delete();
   }
 
   //Verifica atualizações do Chat
@@ -194,6 +187,42 @@ class System {
       .child("messages")
       .push()
       .set(data);
+  }
+
+  async setUnread(uid, sentUid, numero) {
+    var messages = 0;
+    this.getListaConversas(uid, async r => {
+      messages = r.toJSON()[sentUid]["unreadMessages"];
+    });
+    messages = messages + 1;
+    await firebase
+      .database()
+      .ref("chats")
+      .child(uid)
+      .child(sentUid)
+      .update({ unreadMessages: numero ? messages : 0 });
+  }
+
+  async getAllUnread(uid) {
+    var unread;
+    this.getListaConversas(uid, async r => {
+      r.forEach(r => {
+        unread += r.val().unreadMessages;
+      });
+    });
+    console.log(unread)
+    
+  }
+
+  async AsyncStorageContent() {
+    AsyncStorage.getAllKeys((err, keys) => {
+      AsyncStorage.multiGet(keys, (error, stores) => {
+        stores.map((result, i, store) => {
+          console.log({ [store[i][0]]: store[i][1] });
+          return true;
+        });
+      });
+    });
   }
 }
 

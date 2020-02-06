@@ -51,7 +51,7 @@ export default class ForgotPass extends Component {
       loading: false
     };
 
-    System.logOut();
+    // System.logOut();
   }
 
   forgot = () => {
@@ -129,7 +129,7 @@ export default class ForgotPass extends Component {
                     onSubmitEditing={this.forgot}
                     style={[styles.inputArea, globalStyles.textRegular]}
                     multiline={false}
-                    autoCapitalize={false}
+                    autoCapitalize={"none"}
                     autoCorrect={false}
                     returnKeyType="go"
                     value={s.email}
@@ -137,6 +137,7 @@ export default class ForgotPass extends Component {
                       this.setState({ email: email });
                     }}
                     keyboardType="email-address"
+                    placeholderTextColor="#999"
                     placeholder={s.textContent.emailInput}
                   />
                 </Transition>

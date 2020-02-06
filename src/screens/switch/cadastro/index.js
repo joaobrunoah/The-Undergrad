@@ -65,7 +65,7 @@ export default class Cadastro extends Component {
       loading: false
     };
 
-    System.logOut();
+    // System.logOut();
   }
 
   register = async () => {
@@ -102,6 +102,7 @@ export default class Cadastro extends Component {
           s.userUID = user.uid;
           s.data = { ...oldData, uid: user.uid };
           this.setState(s);
+          user.sendEmailVerification();
         }
       });
 
@@ -111,27 +112,33 @@ export default class Cadastro extends Component {
             System.registerOnFirestore(s.userUID, s.data)
               .then(async r => {
                 Alert.alert(s.textContent.titleError, s.textContent.suc);
-                await AsyncStorage.setItem("userUID", s.userUID);
-                await AsyncStorage.setItem("isOn", "true").then(
-                  await AsyncStorage.setItem("email", s.email).then(
-                    await AsyncStorage.setItem("pass", s.pass).then(() => {
+                // await AsyncStorage.setItem("userUID", s.userUID);
+                // await AsyncStorage.setItem("isOn", "true").then(
+                //   await AsyncStorage.setItem("email", s.email).then(
+                //     await AsyncStorage.setItem("pass", s.pass).then(() => {
                       const resetAction = StackActions.reset({
                         index: 0,
                         actions: [
-                          NavigationActions.navigate({ routeName: "Home" })
+                          NavigationActions.navigate({ routeName: "Login" })
                         ]
                       });
                       this.props.navigation.dispatch(resetAction);
-                    })
-                  )
-                );
+                //     })
+                //   )
+                // );
               })
               .catch(err => {});
           }
         })
         .catch(err => {
           console.log(err);
-          Alert.alert(s.textContent.titleError, s.textContent.error_1);
+          console.log(err.message);
+
+          if(err.message && err.message.indexOf("already in use") >= 0)
+            Alert.alert(s.textContent.titleError, s.textContent.error_5);
+          else
+            Alert.alert(s.textContent.titleError, s.textContent.error_1);
+
           s.buttonDisable = false;
           s.loading = false;
           s.opacity = { opacity: 1 };
@@ -159,41 +166,47 @@ export default class Cadastro extends Component {
 
     let uniDomain = s.email.split("@", 2);
 
-    System.checkUni(uniDomain[1])
-      .then(r => {
-        if (r.docs.length !== 0) {
-          s.uniID = r.docs[0].ref.id;
-          s.university = r.docs[0].ref.path;
-          System.getUniData(r.docs[0].ref.id)
-            .then(r => {
-              let data = r.data();
-              s.universityName = data.name;
-              s.data.universityName = data.name;
-              this.setState(s);
-              this.register();
-            })
-            .catch(e => {
-              Alert.alert(s.textContent.titleError, s.textContent.error_3);
-              s.buttonDisable = false;
-              s.loading = false;
-              s.opacity = { opacity: 1 };
-              this.setState(s);
-            });
-        } else {
+    uniDomain[1] = uniDomain[1] == "poli.ufrj.br" ? "ufrj.br" : uniDomain[1];
+
+    if (s.pass.length < 6) {
+      Alert.alert(s.textContent.titleError, s.textContent.error_4);
+    } else {
+      System.checkUni(uniDomain[1])
+        .then(r => {
+          if (r.docs.length !== 0) {
+            s.uniID = r.docs[0].ref.id;
+            s.university = r.docs[0].ref.path;
+            System.getUniData(r.docs[0].ref.id)
+              .then(r => {
+                let data = r.data();
+                s.universityName = data.name;
+                s.data.universityName = data.name;
+                this.setState(s);
+                this.register();
+              })
+              .catch(e => {
+                Alert.alert(s.textContent.titleError, s.textContent.error_3);
+                s.buttonDisable = false;
+                s.loading = false;
+                s.opacity = { opacity: 1 };
+                this.setState(s);
+              });
+          } else {
+            Alert.alert(s.textContent.titleError, s.textContent.error_3);
+            s.buttonDisable = false;
+            s.loading = false;
+            s.opacity = { opacity: 1 };
+            this.setState(s);
+          }
+        })
+        .catch(error => {
           Alert.alert(s.textContent.titleError, s.textContent.error_3);
           s.buttonDisable = false;
           s.loading = false;
           s.opacity = { opacity: 1 };
           this.setState(s);
-        }
-      })
-      .catch(error => {
-        Alert.alert(s.textContent.titleError, s.textContent.error_3);
-        s.buttonDisable = false;
-        s.loading = false;
-        s.opacity = { opacity: 1 };
-        this.setState(s);
-      });
+        });
+    }
   };
 
   checkPass = repPass => {
@@ -272,13 +285,14 @@ export default class Cadastro extends Component {
                       this.setState({ name: name });
                     }}
                     keyboardType="default"
+                    placeholderTextColor="#999"
                     placeholder={s.textContent.nameInput}
                   />
                   <TextInput
                     onSubmitEditing={() => this.senhaInput.focus()}
                     ref={input => (this.emailInput = input)}
                     style={[styles.inputArea, globalStyles.textRegular]}
-                    autoCapitalize={false}
+                    autoCapitalize="none"
                     multiline={false}
                     autoCorrect={false}
                     returnKeyType="next"
@@ -287,6 +301,7 @@ export default class Cadastro extends Component {
                       this.setState({ email: email });
                     }}
                     keyboardType="email-address"
+                    placeholderTextColor="#999"
                     placeholder={s.textContent.emailInput}
                   />
                   <TextInput
@@ -305,6 +320,7 @@ export default class Cadastro extends Component {
                     onChangeText={pass => {
                       this.setState({ pass: pass });
                     }}
+                    placeholderTextColor="#999"
                     placeholder={s.textContent.passInput}
                   />
                   <TextInput
@@ -324,6 +340,7 @@ export default class Cadastro extends Component {
                       this.checkPass(repPass);
                       this.setState({ repPass: repPass });
                     }}
+                    placeholderTextColor="#999"
                     placeholder={s.textContent.repPassInput}
                   />
                 </View>

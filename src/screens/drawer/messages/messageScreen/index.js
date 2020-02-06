@@ -18,6 +18,9 @@ import System from "../../../../services/api";
 //Icons
 import Icon from "react-native-vector-icons/FontAwesome5";
 
+// Textos
+import { textBr, textUsa } from "../../../../assets/content/mainRoute/categs";
+
 //Components
 import Header from "../../../../assets/components/header";
 
@@ -111,6 +114,19 @@ export default class MessageDetail extends Component {
     };
   }
 
+  async componentWillMount() {
+    let s = this.state;
+    s.language = await AsyncStorage.getItem("language");
+
+    if (s.language === "br") {
+      s.textContent = textBr;
+    } else if (s.language === "usa") {
+      s.textContent = textUsa;
+    }
+
+    this.setState(s);
+  }
+
   async componentDidMount() {
     let uid = await AsyncStorage.getItem("userUID");
     let p = this.props.navigation.state.params.data;
@@ -122,7 +138,10 @@ export default class MessageDetail extends Component {
   sendMessage = async () => {
     let s = this.state;
     let p = this.props.navigation.state.params.data;
-    let hora = `${moment().hour()}:${Number(
+    let d = this.props.navigation.state.params.data2;
+    let prefixo = typeof d === "undefined" ? "" : "[" + d.description + " - " + s.textContent.price + Number(d.price).toFixed(2).toString() + "]\n";
+    let hora = `${moment().hour()}:${moment()
+      .minute() < 10?"0":""}${Number(
       moment()
         .minute()
         .toFixed(2)
@@ -131,7 +150,7 @@ export default class MessageDetail extends Component {
     let data = {
       hour: hora,
       user: s.uid,
-      message: s.newMessage
+      message: prefixo + s.newMessage
     };
 
     System.sendMessage(s.uid, p.key, data);
@@ -195,6 +214,7 @@ export default class MessageDetail extends Component {
           <View
             style={{
               padding: 10,
+              paddingBottom: 50,
               height: "100%",
               width: "100%"
             }}

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { createAppContainer, createStackNavigator } from "react-navigation";
 import { FluidNavigator, Transition } from "react-navigation-fluid-transitions";
+import AsyncStorage from '@react-native-community/async-storage';
 
 //Screens
 import Home from "../drawer";
@@ -9,6 +10,12 @@ import Preload from "../../screens/switch/preload";
 import Login from "../../screens/switch/login";
 import Cadastro from "../../screens/switch/cadastro";
 import ForgotPass from "../../screens/switch/forgotpass";
+
+isSignedIn = async () => {
+  const user = await AsyncStorage.getItem("language");
+
+  return (user !== null) ? true : false;
+};
 
 const SwitchMenu = FluidNavigator(
   {
@@ -33,7 +40,7 @@ const SwitchMenu = FluidNavigator(
   },
   {
     mode: "screen",
-    initialRouteName: "Home",
+    initialRouteName: "Preload",
     defaultNavigationOptions: {
       header: null
     }

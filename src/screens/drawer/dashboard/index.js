@@ -39,6 +39,9 @@ export default class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      uid: "",
+      active: false,
+      unreadMessages: 0,
       textContent: {},
       data: [],
       spotOne: "",
@@ -61,6 +64,19 @@ export default class Dashboard extends Component {
   async componentDidMount() {
     let s = this.state;
     s.language = await AsyncStorage.getItem("language");
+    s.uid = await AsyncStorage.getItem("userUID");
+    this.setState(s);
+
+    System.getUserInfo(s.uid).then(r => {
+      s.active = r.data().active;
+      this.setState(s);
+    })
+    .then(() => {
+      if(!System.isSignedIn() || !s.active) {
+        System.logOut();
+        this.props.navigation.navigate("Language")
+      } 
+    });
 
     if (s.language === "br") {
       s.textContent = textBr;
@@ -70,10 +86,17 @@ export default class Dashboard extends Component {
 
     this.getInfo();
 
-    this.setState(s);
+    System.getListaConversas(s.uid, async r => {
+      s.unreadMessages = 0
+      r.forEach(r => {
+        s.unreadMessages += r.val().unreadMessages;
+      });
+      this.setState(s)
+    });
   }
 
   getInfo = async () => {
+    console.log("rodou")
     let s = this.state;
     let uid = await AsyncStorage.getItem("userUID");
 
@@ -154,7 +177,7 @@ export default class Dashboard extends Component {
         style={globalStyles.screen}
       >
         <SafeAreaView style={styles.container}>
-          <Header />
+          <Header unread={this.state.unreadMessages}/>
           <SearchBar />
           <ScrollView>
             <Categories />
@@ -241,7 +264,7 @@ export default class Dashboard extends Component {
                 <TouchableOpacity
                   disabled={s.disable}
                   onPress={() => {
-                    this.props.navigation.navigate("Ads", {
+                    this.props.navigation.navigate("Ads", { 
                       data: s.spotFour
                     });
                   }}

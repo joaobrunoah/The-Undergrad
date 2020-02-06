@@ -149,6 +149,9 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-screens')
+    implementation project(':react-native-photo-view')
+    implementation project(':react-native-image-resizer')
     implementation project(':rn-fetch-blob')
     implementation project(':react-native-image-picker')
     implementation project(':@react-native-community_async-storage')

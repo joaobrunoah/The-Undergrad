@@ -3,6 +3,9 @@ package com.theundergrad;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.swmansion.rnscreens.RNScreensPackage;
+import com.reactnative.photoview.PhotoViewPackage;
+import fr.bamlab.rnimageresizer.ImageResizerPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.imagepicker.ImagePickerPackage;
 import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
@@ -29,6 +32,9 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNScreensPackage(),
+            new PhotoViewPackage(),
+            new ImageResizerPackage(),
             new RNFetchBlobPackage(),
             new ImagePickerPackage(),
             new AsyncStoragePackage(),

@@ -137,25 +137,32 @@ export default class Search extends Component {
       await this.setState(s);
     });
 
-    this.search();
+    // this.search();
   }
 
   search = () => {
     let s = this.state;
+    if (s.search == "") {
+      return null;
+    }
     s.loading = true;
     s.itemsForSale = [];
     this.setState(s);
     console.log(s.userInfo);
 
-    System.getSearchItem(s.search)
+    System.getSearchItem(/*s.search*/)
       .then(r => {
         r.forEach(doc => {
           s.itemsForSale.push(doc.data());
-          this.setState(s);
+          if(s.itemsForSale[s.itemsForSale.length - 1]["description"].toLowerCase().indexOf(s.search.toLowerCase()) == -1 ||
+             s.itemsForSale[s.itemsForSale.length - 1]["university"] !== "/" + s.userInfo.university) {
+              s.itemsForSale = s.itemsForSale.slice(0, s.itemsForSale.length - 1);
+          }
+        this.setState(s);
         });
 
         s.loading = false;
-        s.search = "";
+        // s.search = "";
         this.setState(s);
         console.log(s.itemsForSale);
       })
@@ -163,6 +170,7 @@ export default class Search extends Component {
         console.log(e);
       });
   };
+
 
   render() {
     let s = this.state;
@@ -180,7 +188,9 @@ export default class Search extends Component {
           <TextInput
             value={s.search}
             onChangeText={text => {
-              this.setState({ search: text });
+              s.search = text;
+              this.setState(s);
+              this.search();
             }}
             onSubmitEditing={() => {
               this.setState({ search: "" });
@@ -200,7 +210,7 @@ export default class Search extends Component {
               ...globalStyles.textRegular
             }}
           />
-          {s.loading ? (
+          {s.search != ""?(s.loading ? (
             <View
               style={{
                 flex: 1,
@@ -240,7 +250,7 @@ export default class Search extends Component {
               )}
               keyExtractor={(item, index) => index}
             />
-          )}
+          )):null}
         </View>
       </LinearGradient>
     );

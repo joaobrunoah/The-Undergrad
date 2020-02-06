@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { createStackNavigator } from "react-navigation";
+import {
+  createStackNavigator,
+} from "react-navigation";
 
 //Screens
 import Dashboard from "../../screens/drawer/dashboard";
@@ -8,7 +10,6 @@ import Books from "../../screens/drawer/stackCateg/books";
 import Furniture from "../../screens/drawer/stackCateg/furniture";
 import Clothing from "../../screens/drawer/stackCateg/clothing";
 import Ads from "../../screens/drawer/dashboard/ads";
-import Site from "../../screens/drawer/dashboard/ads/webView";
 import Details from "../../screens/drawer/stackCateg/detailsScreen";
 
 // Search
@@ -33,9 +34,6 @@ const StackDash = createStackNavigator(
     },
     Ads: {
       screen: Ads
-    },
-    Site: {
-      screen: Site
     },
     Details: {
       screen: Details

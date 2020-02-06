@@ -17,6 +17,7 @@ import {
   endGradient
 } from "../../globalStyles";
 import styles from "./styles";
+// import AsyncStorage from "@react-native-community/async-storage";
 
 export default class Preload extends Component {
   constructor(props) {
@@ -24,16 +25,16 @@ export default class Preload extends Component {
     this.state = {};
   }
 
-  async componentDidMount() {
-    System.addAuthListener(user => {
-      if (user) {
+  componentWillMount() {
+    System.isSignedIn().then((token) => {
+      if (token) {
         const resetAction = StackActions.reset({
           index: 0,
           actions: [NavigationActions.navigate({ routeName: "Home" })]
         });
         this.props.navigation.dispatch(resetAction);
       } else {
-        System.logOut();
+        // System.logOut();
         const resetAction = StackActions.reset({
           index: 0,
           actions: [NavigationActions.navigate({ routeName: "Language" })]
