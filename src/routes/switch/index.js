@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { createAppContainer, createStackNavigator } from "react-navigation";
-import { FluidNavigator, Transition } from "react-navigation-fluid-transitions";
+import { createAppContainer } from "react-navigation";
+import { createStackNavigator } from 'react-navigation-stack';
+//import { Transition, fromLeft } from "react-navigation-transitions";
 import AsyncStorage from '@react-native-community/async-storage';
 
 //Screens
@@ -17,7 +18,7 @@ isSignedIn = async () => {
   return (user !== null) ? true : false;
 };
 
-const SwitchMenu = FluidNavigator(
+const SwitchMenu = createStackNavigator(
   {
     Preload: {
       screen: Preload

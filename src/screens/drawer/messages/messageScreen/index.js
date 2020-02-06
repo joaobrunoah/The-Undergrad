@@ -141,11 +141,11 @@ export default class MessageDetail extends Component {
     let d = this.props.navigation.state.params.data2;
     let prefixo = typeof d === "undefined" ? "" : "[" + d.description + " - " + s.textContent.price + Number(d.price).toFixed(2).toString() + "]\n";
     let hora = `${moment().hour()}:${moment()
-      .minute() < 10?"0":""}${Number(
-      moment()
-        .minute()
-        .toFixed(2)
-    )}`;
+      .minute() < 10 ? "0" : ""}${Number(
+        moment()
+          .minute()
+          .toFixed(2)
+      )}`;
 
     let data = {
       hour: hora,
@@ -184,6 +184,7 @@ export default class MessageDetail extends Component {
           });
         }
       });
+      await System.setUnread(uid, p.key, 0);
       await this.setState(s);
     });
   };

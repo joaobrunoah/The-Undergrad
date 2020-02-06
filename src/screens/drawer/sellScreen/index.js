@@ -37,6 +37,7 @@ import {
 import styles from "./styles";
 
 export default class SellScreen extends Component {
+
   constructor(props) {
     super(props);
 
@@ -66,14 +67,14 @@ export default class SellScreen extends Component {
 
   takePhoto = async () => {
     let s = this.state;
-    let tempWindowXMLHttpRequest = window.XMLHttpRequest;
+    //let tempWindowXMLHttpRequest = window.XMLHttpRequest;
     s.userID = await AsyncStorage.getItem("userUID");
-    s.temp = tempWindowXMLHttpRequest;
+    //s.temp = tempWindowXMLHttpRequest;
     s.loadingImg = true;
     this.setState(s);
 
     ImagePicker.showImagePicker({}, r => {
-      window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+      //window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
       window.Blob = Blob;
       s.photo = { uri: r.uri };
       this.setState(s);
@@ -99,7 +100,7 @@ export default class SellScreen extends Component {
           })
           .then(() => {
             uploadBlob.close();
-            window.XMLHttpRequest = tempWindowXMLHttpRequest;
+            //window.XMLHttpRequest = tempWindowXMLHttpRequest;
             console.log("Pegando a imagem: " + number);
             return System.getURLItemImg(s.userID, number);
           })
@@ -120,7 +121,7 @@ export default class SellScreen extends Component {
   };
 
   componentWillUnmount() {
-    window.XMLHttpRequest = this.state.temp;
+    //window.XMLHttpRequest = this.state.temp;
   }
 
   async componentDidMount() {

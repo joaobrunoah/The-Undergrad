@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { createStackNavigator, HeaderBackButton } from "react-navigation";
+import { HeaderBackButton } from "react-navigation";
+import { createStackNavigator } from 'react-navigation-stack';
 
 //Screens
 import Perfil from "../../screens/drawer/perfil";

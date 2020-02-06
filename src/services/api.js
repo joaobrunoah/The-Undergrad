@@ -179,6 +179,7 @@ class System {
 
   // Envia mensagem
   async sendMessage(uid, sentUid, data) {
+    await this.setUnread(sentUid, uid, 1);
     await firebase
       .database()
       .ref("chats")
@@ -187,6 +188,16 @@ class System {
       .child("messages")
       .push()
       .set(data);
+  }
+
+  async deleteMessages(uid, sentUid) {
+    await firebase
+      .database()
+      .ref("chats")
+      .child(uid)
+      .child(sentUid)
+      .child("messages")
+      .remove();
   }
 
   async setUnread(uid, sentUid, numero) {
@@ -211,7 +222,7 @@ class System {
       });
     });
     console.log(unread)
-    
+
   }
 
   async AsyncStorageContent() {
