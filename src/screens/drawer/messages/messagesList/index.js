@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ActivityIndicator, View, Text, TouchableOpacity } from "react-native";
+import { ActivityIndicator, View, Text, TouchableOpacity, Alert } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { SwipeListView } from "react-native-swipe-list-view";
 
@@ -87,7 +87,20 @@ export default class MessagesList extends Component {
   }
   delete = async (item) => {
     try {
-      if (window.confirm("Tem certeza de que deseja apagar essas mensagens?")) await System.deleteMessages(this.state.uid, item.key);
+      let other_user_name = await System.getUserInfo(item.key).then((user) => { return user.data().name }).catch((e) => { return 'unknown User' });
+      Alert.alert(
+        'Você tem certeza de que deseja apagar?',
+        `Apagar as mensagens de ${other_user_name}?`,
+        [
+          {
+            text: 'Cancel',
+            onPress: () => { },
+            style: 'cancel',
+          },
+          { text: 'OK', onPress: async () => await System.deleteMessages(this.state.uid, item.key) },
+        ],
+        { cancelable: false },
+      );
     } catch (e) {
       console.warn(e)
     }
