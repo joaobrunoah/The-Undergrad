@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import { SwipeListView } from "react-native-swipe-list-view";
 
 // Icon
-import Icon from "react-native-vector-icons/FontAwesome5";
+import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 
 //API
 import System from "../../../../services/api";
@@ -86,14 +86,19 @@ export default class MessagesList extends Component {
     }
   }
   delete = async (item) => {
+
     try {
       let other_user_name = await System.getUserInfo(item.key).then((user) => { return user.data().name }).catch((e) => { return 'unknown User' });
       Alert.alert(
-        'Você tem certeza de que deseja apagar?',
-        `Apagar as mensagens de ${other_user_name}?`,
+        this.state.language === 'br' ? 'Você tem certeza de que deseja apagar?'
+          : this.state.language === 'usa' ? 'Are you sure that you want to delete?'
+            : 'Você tem certeza de que deseja apagar?',
+        this.state.language === 'br' ? `Apagar as mensagens de ${other_user_name}?`
+          : this.state.language === 'usa' ? `Delete the messages of ${other_user_name}?`
+            : `Apagar as mensagens de ${other_user_name}?`,
         [
           {
-            text: 'Cancel',
+            text: this.state.language === 'br' ? 'Cancelar' : this.state.language === 'usa' ? 'Cancel' : 'Cancelar',
             onPress: () => { },
             style: 'cancel',
           },
@@ -144,7 +149,7 @@ export default class MessagesList extends Component {
                 paddingLeft: 15,
               }}>
                 <TouchableOpacity onPress={() => { this.delete(item) }}>
-                  <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Delete</Text>
+                  <FontAwesomeIcon name={'trash-o'} style={{ color: 'white', fontWeight: 'bold', paddingRight: 7 }} size={35} />
                 </TouchableOpacity>
               </View>
             )}
