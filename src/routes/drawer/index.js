@@ -20,49 +20,49 @@ const DrawerMenu = createStackNavigator(
     StackDash: {
       screen: StackDash,
       navigationOptions: {
-        header: null
+        header: false
       }
     },
     Perfil: {
       screen: Perfil,
       navigationOptions: {
-        header: null
+        header: false
       }
     },
     Settings: {
       screen: Settings,
       navigationOptions: {
-        header: null
+        header: false
       }
     },
     ItemsForSale: {
       screen: ItemsForSale,
       navigationOptions: {
-        header: null
+        header: false
       }
     },
     SellScreen: {
       screen: SellScreen,
       navigationOptions: {
-        header: null
+        header: false
       }
     },
     BuyScreen: {
       screen: BuyScreen,
       navigationOptions: {
-        header: null
+        header: false
       }
     },
     Messages: {
       screen: Messages,
       navigationOptions: {
-        header: null
+        header: false
       }
     },
     MessageDetail: {
       screen: MessageDetail,
       navigationOptions: {
-        header: null
+        header: false
       }
       // navigationOptions: ({ navigation}) => ({
       //   headerLeft: () => <HeaderBackButton tintColor="#737373" onPress={() => navigation.goBack()}/>,
@@ -81,7 +81,7 @@ const DrawerMenu = createStackNavigator(
     MessageItem: {
       screen: MessageItem,
       navigationOptions: {
-        header: null
+        header: false
       }
     }
   },

@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const styles = StyleSheet.create({
   container: {
@@ -8,7 +9,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: "#CCC",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: '#E4E8EA',
   },
   imgProfile: {
     width: 55,
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat-SemiBold"
   },
   msg: {},
-  unread:{
+  unread: {
     position: "absolute",
     backgroundColor: "rgb(21,128,251)",
     minWidth: 20,

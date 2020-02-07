@@ -12,13 +12,20 @@ class System {
 
   // Verificar se existe um usuário logado
   async addAuthListener(callback) {
-    await firebase.auth().onAuthStateChanged(callback);
+    try {
+      await firebase.auth().onAuthStateChanged(callback);
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   async isSignedIn() {
-    const token = await AsyncStorage.getItem("email");
-
-    return token !== null ? true : false;
+    try {
+      let token = await AsyncStorage.getItem("email");
+      return token !== null ? true : false;
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Login
@@ -28,176 +35,264 @@ class System {
 
   // Register
   async register(email, pass) {
-    return await firebase.auth().createUserWithEmailAndPassword(email, pass);
+    try {
+      return await firebase.auth().createUserWithEmailAndPassword(email, pass);
+    } catch (e) {
+      return console.warn(e)
+    }
   }
 
   // Esqueci a senha
   async forgotPass(email) {
-    return await firebase.auth().sendPasswordResetEmail(email);
+    try {
+      return await firebase.auth().sendPasswordResetEmail(email);
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Registrar no Firestore
   async registerOnFirestore(uid, data) {
-    await firebase.firestore().collection("users").doc(uid).set(data);
+    try {
+      await firebase.firestore().collection("users").doc(uid).set(data);
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Verifica se a Universidade está cadastrada
   async checkUni(domain) {
-    return await firebase
-      .firestore()
-      .collection("universities")
-      .where("domain", "==", domain)
-      .get();
+    try {
+      return await firebase
+        .firestore()
+        .collection("universities")
+        .where("domain", "==", domain)
+        .get();
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Busca os dados da Universidade passada por parâmetro
   async getUniData(uniID) {
-    return await firebase
-      .firestore()
-      .collection("universities")
-      .doc(uniID)
-      .get();
+    try {
+      return await firebase
+        .firestore()
+        .collection("universities")
+        .doc(uniID)
+        .get();
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Busca os dados de cadastro do User no Firestore
   async getUserInfo(userUID) {
-    return await firebase.firestore().collection("users").doc(userUID).get();
+    try {
+      return await firebase.firestore().collection("users").doc(userUID).get();
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Setar a pasta imgs e a offers com a imagem tento o mesmo nome do UID do User
   async setItemImg(userUID, img, mime, numer) {
-    return await firebase
-      .storage()
-      .ref()
-      .child("imgs")
-      .child(`offers/${userUID}/${numer}.jpg`)
-      .put(img, { contentType: mime });
+    try {
+      return await firebase
+        .storage()
+        .ref()
+        .child("imgs")
+        .child(`offers/${userUID}/${numer}.jpg`)
+        .put(img, { contentType: mime });
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Setar a pasta imgs e a profile com a imagem tento o mesmo nome do UID do User
   async setUserImg(userUID, img, mime, numer) {
-    return await firebase
-      .storage()
-      .ref()
-      .child("imgs")
-      .child(`profile/${userUID}/${numer}.jpg`)
-      .put(img, { contentType: mime });
+    try {
+      return await firebase
+        .storage()
+        .ref()
+        .child("imgs")
+        .child(`profile/${userUID}/${numer}.jpg`)
+        .put(img, { contentType: mime });
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Pegar URL da Foto de Perfil
   async updateImgProfile(userUID, img) {
-    await firebase.firestore().collection("users").doc(userUID).update(img);
+    try {
+      await firebase.firestore().collection("users").doc(userUID).update(img);
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Pegar URL da Foto
   async getURLUserImg(userUID, number) {
-    return await firebase
-      .storage()
-      .ref()
-      .child("imgs")
-      .child(`profile/${userUID}/${number}.jpg`)
-      .getDownloadURL();
+    try {
+      return await firebase
+        .storage()
+        .ref()
+        .child("imgs")
+        .child(`profile/${userUID}/${number}.jpg`)
+        .getDownloadURL();
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Pegar URL da Foto
   async getURLItemImg(userUID, number) {
-    return await firebase
-      .storage()
-      .ref()
-      .child("imgs")
-      .child(`offers/${userUID}/${number}.jpg`)
-      .getDownloadURL();
+    try {
+      return await firebase
+        .storage()
+        .ref()
+        .child("imgs")
+        .child(`offers/${userUID}/${number}.jpg`)
+        .getDownloadURL();
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Busca os dados dos ADS
   async getADS(university) {
-    return await firebase
-      .firestore()
-      .collection("ads")
-      .where("university", "==", university)
-      .get();
+    try {
+      return await firebase
+        .firestore()
+        .collection("ads")
+        .where("university", "==", university)
+        .get();
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Busca as categorias cadastradas
   async getCategories(categ) {
-    return await firebase
-      .firestore()
-      .collection("categories")
-      .where("description.en", "==", categ)
-      .get();
+    try {
+      return await firebase
+        .firestore()
+        .collection("categories")
+        .where("description.en", "==", categ)
+        .get();
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Busca os itens da categoria desejada
   async getItemsCateg(categID) {
-    return await firebase
-      .firestore()
-      .collection("offers")
-      .where("category", "==", categID)
-      .get();
+    try {
+      return await firebase
+        .firestore()
+        .collection("offers")
+        .where("category", "==", categID)
+        .get();
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Busca as itens cadastrados
   async getSearchItem(item) {
-    return await firebase
-      .firestore()
-      .collection("offers")
-      // .where("description", "==", item)
-      .get();
+    try {
+      return await firebase
+        .firestore()
+        .collection("offers")
+        // .where("description", "==", item)
+        .get();
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   async getEveryItem() {
-    return await firebase.firestore().collection("offers").get();
+    try {
+      return await firebase.firestore().collection("offers").get();
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Registrar oferta no Firestore
   async registerItem(data) {
-    await firebase.firestore().collection("offers").doc().set(data);
+    try {
+      await firebase.firestore().collection("offers").doc().set(data);
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Busca todos os itens do usuario
   async getItemsUser(userId) {
-    return await firebase
-      .firestore()
-      .collection("offers")
-      .where("user", "==", userId)
-      .get();
+    try {
+      return await firebase
+        .firestore()
+        .collection("offers")
+        .where("user", "==", userId)
+        .get();
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Deleta um item do usuário
   async deleteItemsUser(itemId) {
-    await firebase.firestore().collection("offers").doc(itemId).delete();
+    try {
+      await firebase.firestore().collection("offers").doc(itemId).delete();
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   //Verifica atualizações do Chat
   async getListaConversas(uid, callback) {
-    return await firebase
-      .database()
-      .ref("chats")
-      .child(uid)
-      .on("value", callback);
+    try {
+      return await firebase
+        .database()
+        .ref("chats")
+        .child(uid)
+        .on("value", callback);
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   // Envia mensagem
   async sendMessage(uid, sentUid, data) {
-    await this.setUnread(sentUid, uid, 1);
-    await firebase
-      .database()
-      .ref("chats")
-      .child(uid)
-      .child(sentUid)
-      .child("messages")
-      .push()
-      .set(data);
+    try {
+      await this.setUnread(sentUid, uid, 1);
+      await firebase
+        .database()
+        .ref("chats")
+        .child(uid)
+        .child(sentUid)
+        .child("messages")
+        .push()
+        .set(data);
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   async deleteMessages(uid, sentUid) {
-    await firebase
-      .database()
-      .ref("chats")
-      .child(uid)
-      .child(sentUid)
-      .child("messages")
-      .remove();
+    try {
+      await firebase
+        .database()
+        .ref("chats")
+        .child(uid)
+        .child(sentUid)
+        .child("messages")
+        .set(null);
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   async setUnread(uid, sentUid, numero) {
@@ -206,12 +301,16 @@ class System {
       messages = r.toJSON()[sentUid]["unreadMessages"];
     });
     messages = messages + 1;
-    await firebase
-      .database()
-      .ref("chats")
-      .child(uid)
-      .child(sentUid)
-      .update({ unreadMessages: numero ? messages : 0 });
+    try {
+      await firebase
+        .database()
+        .ref("chats")
+        .child(uid)
+        .child(sentUid)
+        .update({ unreadMessages: numero ? messages : 0 });
+    } catch (e) {
+      console.warn(e)
+    }
   }
 
   async getAllUnread(uid) {
