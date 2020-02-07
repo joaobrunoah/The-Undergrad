@@ -153,9 +153,6 @@ export default class MessagesList extends Component {
                 </TouchableOpacity>
               </View>
             )}
-          // numColumns={1}
-          // horizontal={false}
-          // keyExtractor={(item, index) => item.key}
           />}
       </View>
     );
