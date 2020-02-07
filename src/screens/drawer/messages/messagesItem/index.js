@@ -85,7 +85,7 @@ export class Message extends Component {
     return (
       <TouchableOpacity
         onPress={this.messageDetail}
-        activeOpacity={0.7}
+        activeOpacity={1}
         style={styles.container}
       >
         <SafeAreaView

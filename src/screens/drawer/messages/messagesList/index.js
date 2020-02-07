@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import { ActivityIndicator, View, Text, FlatList } from "react-native";
+import { ActivityIndicator, View, Text, TouchableOpacity } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-import { SwipeListView } from "react-native-swipe-list-view"
+import { SwipeListView } from "react-native-swipe-list-view";
+
 // Icon
 import Icon from "react-native-vector-icons/FontAwesome5";
 
@@ -84,6 +85,13 @@ export default class MessagesList extends Component {
       return messages;
     }
   }
+  delete = async (item) => {
+    try {
+      if (window.confirm("Tem certeza de que deseja apagar essas mensagens?")) await System.deleteMessages(this.state.uid, item.key);
+    } catch (e) {
+      console.warn(e)
+    }
+  }
 
   render() {
     let s = this.state;
@@ -104,6 +112,7 @@ export default class MessagesList extends Component {
           : <SwipeListView
             rightOpenValue={-75}
             data={s.conversas}
+            disableRightSwipe
             renderItem={({ item }) => {
 
               return (<Message
@@ -113,10 +122,17 @@ export default class MessagesList extends Component {
               />)
             }
             }
-            renderHiddenItem={(data, rowMap) => (
-              <View style={{ height: 80, width: 200 }}>
-                <Text>Left</Text>
-                <Text>Right</Text>
+            renderHiddenItem={({ item }) => (
+              <View style={{
+                alignItems: 'center',
+                backgroundColor: '#DF2020',
+                flex: 1,
+                flexDirection: 'row-reverse',
+                paddingLeft: 15,
+              }}>
+                <TouchableOpacity onPress={() => { this.delete(item) }}>
+                  <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Delete</Text>
+                </TouchableOpacity>
               </View>
             )}
           // numColumns={1}

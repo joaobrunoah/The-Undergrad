@@ -289,7 +289,7 @@ class System {
         .child(uid)
         .child(sentUid)
         .child("messages")
-        .remove();
+        .set(null);
     } catch (e) {
       console.warn(e)
     }
