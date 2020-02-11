@@ -150,9 +150,9 @@ export default class Dashboard extends Component {
         } else if (data.spot === 7) {
           s.spotSeven = data;
           this.setState(s);
-        } else {
-          return;
         }
+
+        alert(s.spotOne);
       }
     });
 

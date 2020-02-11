@@ -113,8 +113,6 @@ export default class Books extends Component {
       userInfo: {},
       userUid: ""
     };
-
-    console.log("Books");
   }
 
   async componentDidMount() {
@@ -133,7 +131,6 @@ export default class Books extends Component {
     System.getUserInfo(s.userUid).then(r => {
       s.userInfo = r.data();
       this.setState(s);
-      console.log(s.userInfo.university);
     });
 
     System.getCategories("Books")
@@ -151,17 +148,14 @@ export default class Books extends Component {
               } else {
                 return;
               }
-              console.log(auxUni[2]);
-              console.log(auxUserUni[1]);
             });
           });
         });
         s.loading = false;
         this.setState(s);
-        console.log(s.itemsForSale);
       })
       .catch(e => {
-        console.log(e);
+        console.warn(e);
       });
   }
 

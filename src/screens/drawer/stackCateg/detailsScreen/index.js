@@ -64,10 +64,9 @@ export default class Details extends Component {
           s.photo = "";
         }
         this.setState(s);
-        console.log(s.userInfo);
       })
       .catch(e => {
-        console.log(e);
+        console.warn(e);
       });
 
     let auxID = `/users/${uid[2]}`;
@@ -76,12 +75,11 @@ export default class Details extends Component {
     System.getItemsUser(auxID)
       .then(r => {
         let data = r.docs.length;
-        console.log(data);
         s.sales = data;
         this.setState(s);
       })
       .catch(e => {
-        console.log(e);
+        console.warn(e);
       });
   }
 

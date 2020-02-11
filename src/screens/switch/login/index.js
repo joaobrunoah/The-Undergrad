@@ -129,7 +129,7 @@ export default class Login extends Component {
         }
         })
         .catch(err => {
-          console.log(err);
+          console.warn(err);
           Alert.alert(s.textContent.titleError, s.textContent.error_1);
           s.disabled = false;
           s.loading = false;

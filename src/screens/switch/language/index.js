@@ -65,8 +65,6 @@ export default class Language extends Component {
       return;
     }
     this.setState(s);
-
-    console.log(s.textContent);
   };
 
   getLanguage = () => {

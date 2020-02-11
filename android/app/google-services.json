@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "712368372491",
+    "firebase_url": "https://app-venda.firebaseio.com",
+    "project_id": "app-venda",
+    "storage_bucket": "app-venda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712368372491:android:0aed8635fe90d9bd",
+        "android_client_info": {
+          "package_name": "com.fluxosconsultoria.appvenda"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "712368372491-ara45eb3v0n1e3sf8hu0okqc4unkcuja.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz5gN95nGlhqWTVn5NO8quUzedV8XzTcw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "712368372491-ara45eb3v0n1e3sf8hu0okqc4unkcuja.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "712368372491-247fhclanrtul7v9flphiv2g0av3d6e4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.TheUndergrad"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712368372491:android:25961d312341081721400e",
+        "android_client_info": {
+          "package_name": "com.fluxosconsultoria.theundergrad"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "712368372491-ara45eb3v0n1e3sf8hu0okqc4unkcuja.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBz5gN95nGlhqWTVn5NO8quUzedV8XzTcw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "712368372491-ara45eb3v0n1e3sf8hu0okqc4unkcuja.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "712368372491-247fhclanrtul7v9flphiv2g0av3d6e4.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.TheUndergrad"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

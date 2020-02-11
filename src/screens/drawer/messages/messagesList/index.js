@@ -54,17 +54,12 @@ export default class MessagesList extends Component {
           });
         }
       });
-      console.log(s.conversas);
       s.loading = false;
       await this.setState(s);
     });
-
-    console.log(s.conversas);
   }
 
   lastMsg(item) {
-    console.log(item);
-    console.log(item.messages);
     var obj = item.messages;
     if (obj != "undefined") {
       last = Object.keys(obj)[Object.keys(obj).length - 1];

@@ -48,7 +48,6 @@ export class Message extends Component {
       s.uni = aux[1];
       s.imageProfile = r.data().imgProfile;
       this.setState(s);
-      console.log(r.data());
     });
     // this.loadMessages()
   }

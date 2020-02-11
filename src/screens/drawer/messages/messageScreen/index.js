@@ -58,14 +58,14 @@ export class Mensagem extends Component {
     if (s.data.user == uid) {
       s.style = {
         ...style,
-        backgroundColor: "#66ff66",
-        alignSelf: "flex-start"
+        backgroundColor: "#c0ffa2",
+        alignSelf: "flex-end"
       };
     } else {
       s.style = {
         ...style,
         backgroundColor: "#a6a6a6",
-        alignSelf: "flex-end"
+        alignSelf: "flex-start"
       };
     }
 
@@ -166,21 +166,40 @@ export default class MessageDetail extends Component {
     let p = this.props.navigation.state.params.data;
 
     System.getListaConversas(uid, async r => {
-      s.messages = [];
+
+      let messageArray = [];
       r.forEach(r => {
         if (r.key === p.key) {
           let messages = r.val().messages;
-          Object.values(messages).forEach(r => {
-            s.messages.push({
-              hour: r.hour,
-              user: r.user,
-              message: r.message
-            });
-          });
+
+          for (let param in messages) {
+            if(messages.hasOwnProperty(param)) {
+              let message = messages[param];
+              message.id = param;
+
+              messageArray.push({
+                id: message.id,
+                hour: message.hour,
+                user: message.user,
+                message: message.message
+              });
+            }
+          }
         }
       });
+
       await System.setUnread(uid, p.key, 0);
-      await this.setState(s);
+      messageArray = messageArray.sort((a,b) => {
+        console.log(a.id.localeCompare(b.id));
+        return a.id.localeCompare(b.id);
+      });
+
+      for (let i = 0; i < messageArray.length; i++) {
+        let message = messageArray[i];
+        console.log(`${message.id} disse: ${message.message}`);
+      }
+
+      await this.setState({messages:messageArray});
     });
   };
 
@@ -219,7 +238,7 @@ export default class MessageDetail extends Component {
               style={{ marginTop: 10 }}
               ref="flatList"
               onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
-              data={s.messages.sort((a,b) => {return a.full_time - b.full_time;})}
+              data={s.messages}
               renderItem={({ item }) => (
                 <Mensagem data={item} user={item.user} />
               )}

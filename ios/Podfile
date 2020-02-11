@@ -34,6 +34,9 @@ target 'theUndergrad' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
+
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+
   target 'theUndergradTests' do
     inherit! :search_paths
     # Pods for testing

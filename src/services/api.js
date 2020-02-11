@@ -1,14 +1,12 @@
 import firebase from "./firebaseConnection";
-import auth from '@react-native-firebase/auth';
-import database from '@react-native-firebase/database';
-import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from "@react-native-community/async-storage";
 
-const firebaseAppAuth = auth();
-const firebaseAppFirestore = firestore();
-const firebaseAppDatabase = database();
+const firebaseAppAuth = firebase.auth();
+const firebaseAppFirestore = firebase.firestore();
+const firebaseAppDatabase = firebase.database();
 
 class System {
+
   // Função para deslogar do sistema
   async logOut() {
     await firebaseAppAuth.signOut();
@@ -59,7 +57,17 @@ class System {
 
   // Registrar no Firestore
   async registerOnFirestore(uid, data) {
+
+    let fcmToken = null;
+
     try {
+      fcmToken = await firebase.messaging().getToken();
+    } catch (err) {
+      console.warn(err);
+    }
+
+    try {
+      if(fcmToken) data.fcmToken = fcmToken;
       await firebaseAppFirestore.collection("users").doc(uid).set(data);
     } catch (e) {
       console.warn(e)
@@ -94,11 +102,34 @@ class System {
 
   // Busca os dados de cadastro do User no Firestore
   async getUserInfo(userUID) {
+
+    let userObj = null;
+
     try {
-      return await firebaseAppFirestore.collection("users").doc(userUID).get();
+      userObj = await firebaseAppFirestore.collection("users").doc(userUID).get();
     } catch (e) {
       console.warn(e)
     }
+
+    let fcmToken = null;
+
+    try {
+      fcmToken = await firebase.messaging().getToken();
+    } catch (err) {
+      console.warn(err);
+    }
+    let userObjData = userObj && userObj.data ? userObj.data() : undefined;
+
+    if(userObjData && (!userObjData.fcmToken || userObjData.fcmToken !== fcmToken)) {
+      userObjData.fcmToken = fcmToken;
+      try {
+        await firebaseAppFirestore.collection("users").doc(userObjData.uid).set(userObjData);
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+
+    return userObj;
   }
 
   // Setar a pasta imgs e a offers com a imagem tento o mesmo nome do UID do User
@@ -168,8 +199,11 @@ class System {
 
   // Busca os dados dos ADS
   async getADS(university) {
+
+    let adsObj = null;
+
     try {
-      return await firebase
+      adsObj = await firebase
         .firestore()
         .collection("ads")
         .where("university", "==", university)
@@ -177,6 +211,8 @@ class System {
     } catch (e) {
       console.warn(e)
     }
+
+    return adsObj;
   }
 
   // Busca as categorias cadastradas
@@ -272,7 +308,7 @@ class System {
   // Envia mensagem
   async sendMessage(uid, sentUid, data) {
     try {
-      await this.setUnread(sentUid, uid, 1);
+      //await this.setUnread(sentUid, uid, 1);
       await firebaseAppDatabase
         .ref("chats")
         .child(uid)

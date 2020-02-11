@@ -128,11 +128,12 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.theundergrad"
+        applicationId "com.fluxosconsultoria.theundergrad"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 30
+        versionName "2.0.0"
+        multiDexEnabled true
     }
     splits {
         abi {
@@ -179,8 +180,16 @@ android {
 }
 
 dependencies {
+    implementation project(':react-native-firebase')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
+    implementation 'com.android.support:multidex:1.0.3'
+    implementation "com.google.firebase:firebase-core:+"
+    implementation "com.google.firebase:firebase-messaging:+"
+    implementation "com.google.firebase:firebase-auth:+"
+    implementation "com.google.firebase:firebase-firestore:+"
+    implementation "com.google.firebase:firebase-database:+"
+    implementation 'me.leolin:ShortcutBadger:1.1.21@aar'
 
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
@@ -199,3 +208,4 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+apply plugin: "com.google.gms.google-services"
