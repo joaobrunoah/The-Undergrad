@@ -49,14 +49,12 @@ export class Message extends Component {
       s.imageProfile = r.data().imgProfile;
       this.setState(s);
     });
-    // this.loadMessages()
   }
 
   // loadMessages = async () => {
   //   let s = this.state;
   //   let uid = await AsyncStorage.getItem("userUID");
   //   let p = this.props.data;
-  //   console.log(p)
 
   //   System.getListaConversas(uid, async r => {
   //     s.messages = [];
@@ -69,7 +67,6 @@ export class Message extends Component {
   //             user: r.user,
   //             message: r.message
   //           });
-  //           console.log(r);
   //         });
   //         s.lastMessage = s.messages[s.messages.length - 1].message
   //       }

@@ -36,7 +36,9 @@ export default class Details extends Component {
       textContent: {},
       userInfo: {},
       sales: 0,
-      sellerUID: ""
+      sellerUID: "",
+      uniID: "",
+      coin: ""
     };
   }
 
@@ -63,14 +65,22 @@ export default class Details extends Component {
         } else {
           s.photo = "";
         }
+
+        let uni = s.userInfo.university.split("/", 2);
+        s.uniID = uni[1];
+
         this.setState(s);
+
+        System.getUniData(s.uniID).then(universityCb => {
+          let coin = universityCb.data().coin;
+          this.setState({ coin: coin });
+        });
       })
       .catch(e => {
         console.warn(e);
       });
 
     let auxID = `/users/${uid[2]}`;
-    // console.log(auxID);
 
     System.getItemsUser(auxID)
       .then(r => {
@@ -127,7 +137,7 @@ export default class Details extends Component {
               </View>
               <View style={{ alignItems: "center" }}>
                 <Text style={globalStyles.textBold}>
-                  {s.textContent.price} {Number(s.data.price).toFixed(2)}
+                  {s.textContent.price} {this.state.coin ? this.state.coin : '$'} {Number(s.data.price).toFixed(2)}
                 </Text>
               </View>
               <View style={styles.stats}>
@@ -143,11 +153,11 @@ export default class Details extends Component {
                       {s.photo === "" ? (
                         <Icon name="user" size={30} color="#737373" solid />
                       ) : (
-                        <Image
-                          style={{ width: 100, height: 100, borderRadius: 50 }}
-                          source={s.photo}
-                        />
-                      )}
+                          <Image
+                            style={{ width: 100, height: 100, borderRadius: 50 }}
+                            source={s.photo}
+                          />
+                        )}
                     </View>
                   </View>
                   <Text style={[globalStyles.textBold, { fontSize: 16 }]}>

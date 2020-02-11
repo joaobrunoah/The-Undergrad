@@ -132,6 +132,7 @@ export default class Cadastro extends Component {
         })
         .catch(err => {
           console.warn(err);
+          console.warn(err.message);
 
           if(err.message && err.message.indexOf("already in use") >= 0)
             Alert.alert(s.textContent.titleError, s.textContent.error_5);

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
-import { ActivityIndicator, View, Text, TouchableOpacity } from "react-native";
+import { ActivityIndicator, View, Text, TouchableOpacity, Alert } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
 import { SwipeListView } from "react-native-swipe-list-view";
 
 // Icon
-import Icon from "react-native-vector-icons/FontAwesome5";
+import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 
 //API
 import System from "../../../../services/api";
@@ -81,8 +81,26 @@ export default class MessagesList extends Component {
     }
   }
   delete = async (item) => {
+
     try {
-      if (window.confirm("Tem certeza de que deseja apagar essas mensagens?")) await System.deleteMessages(this.state.uid, item.key);
+      let other_user_name = await System.getUserInfo(item.key).then((user) => { return user.data().name }).catch((e) => { return 'unknown User' });
+      Alert.alert(
+        this.state.language === 'br' ? 'Você tem certeza de que deseja apagar?'
+          : this.state.language === 'usa' ? 'Are you sure that you want to delete?'
+            : 'Você tem certeza de que deseja apagar?',
+        this.state.language === 'br' ? `Apagar as mensagens de ${other_user_name}?`
+          : this.state.language === 'usa' ? `Delete the messages of ${other_user_name}?`
+            : `Apagar as mensagens de ${other_user_name}?`,
+        [
+          {
+            text: this.state.language === 'br' ? 'Cancelar' : this.state.language === 'usa' ? 'Cancel' : 'Cancelar',
+            onPress: () => { },
+            style: 'cancel',
+          },
+          { text: 'OK', onPress: async () => await System.deleteMessages(this.state.uid, item.key) },
+        ],
+        { cancelable: false },
+      );
     } catch (e) {
       console.warn(e)
     }
@@ -126,13 +144,10 @@ export default class MessagesList extends Component {
                 paddingLeft: 15,
               }}>
                 <TouchableOpacity onPress={() => { this.delete(item) }}>
-                  <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}>Delete</Text>
+                  <FontAwesomeIcon name={'trash-o'} style={{ color: 'white', fontWeight: 'bold', paddingRight: 7 }} size={35} />
                 </TouchableOpacity>
               </View>
             )}
-          // numColumns={1}
-          // horizontal={false}
-          // keyExtractor={(item, index) => item.key}
           />}
       </View>
     );

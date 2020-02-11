@@ -171,7 +171,6 @@ export default class MessageDetail extends Component {
       r.forEach(r => {
         if (r.key === p.key) {
           let messages = r.val().messages;
-
           for (let param in messages) {
             if(messages.hasOwnProperty(param)) {
               let message = messages[param];
@@ -190,15 +189,8 @@ export default class MessageDetail extends Component {
 
       await System.setUnread(uid, p.key, 0);
       messageArray = messageArray.sort((a,b) => {
-        console.log(a.id.localeCompare(b.id));
         return a.id.localeCompare(b.id);
       });
-
-      for (let i = 0; i < messageArray.length; i++) {
-        let message = messageArray[i];
-        console.log(`${message.id} disse: ${message.message}`);
-      }
-
       await this.setState({messages:messageArray});
     });
   };

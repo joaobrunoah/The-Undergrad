@@ -97,7 +97,7 @@ class Item extends Component {
           }}
         >
           <Text style={[globalStyles.textSemiBold, { color: "#0008" }]}>
-            {this.props.text.price} {Number(p.price).toFixed(2)}
+            {this.props.text.price} {this.props.coin} {Number(p.price).toFixed(2)}
           </Text>
         </View>
       </TouchableOpacity>
@@ -115,7 +115,8 @@ export default class Search extends Component {
       itemsForSale: [],
       userInfo: {},
       userUid: "",
-      search: ""
+      search: "",
+      coin: ""
     };
   }
 
@@ -134,7 +135,12 @@ export default class Search extends Component {
 
     System.getUserInfo(s.userUid).then(async r => {
       s.userInfo = r.data();
-      await this.setState(s);
+      let uniID = s.userInfo.university.split("/", 2)[1];
+      System.getUniData(uniID).then(universityCb => {
+        let coin = universityCb.data().coin;
+        this.setState({ coin: coin });
+      });
+      this.setState(s);
     });
 
     // this.search();
@@ -153,11 +159,11 @@ export default class Search extends Component {
       .then(r => {
         r.forEach(doc => {
           s.itemsForSale.push(doc.data());
-          if(s.itemsForSale[s.itemsForSale.length - 1]["description"].toLowerCase().indexOf(s.search.toLowerCase()) == -1 ||
-             s.itemsForSale[s.itemsForSale.length - 1]["university"] !== "/" + s.userInfo.university) {
-              s.itemsForSale = s.itemsForSale.slice(0, s.itemsForSale.length - 1);
+          if (s.itemsForSale[s.itemsForSale.length - 1]["description"].toLowerCase().indexOf(s.search.toLowerCase()) == -1 ||
+            s.itemsForSale[s.itemsForSale.length - 1]["university"] !== "/" + s.userInfo.university) {
+            s.itemsForSale = s.itemsForSale.slice(0, s.itemsForSale.length - 1);
           }
-        this.setState(s);
+          this.setState(s);
         });
 
         s.loading = false;
@@ -208,7 +214,7 @@ export default class Search extends Component {
               ...globalStyles.textRegular
             }}
           />
-          {s.search != ""?(s.loading ? (
+          {s.search != "" ? (s.loading ? (
             <View
               style={{
                 flex: 1,
@@ -219,36 +225,37 @@ export default class Search extends Component {
               <ActivityIndicator size="large" color="#0008" />
             </View>
           ) : (
-            <FlatList
-              ListEmptyComponent={
-                <View
-                  style={{
-                    flex: 1,
-                    height: 400,
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}
-                >
-                  <Icon name="surprise" size={50} light color="#0006" />
-                  <Text style={globalStyles.textSemiBold}>
-                    {s.textContent.items}
-                  </Text>
-                </View>
-              }
-              style={{ marginTop: 20 }}
-              data={s.itemsForSale}
-              columnWrapperStyle={{ justifyContent: "space-around" }}
-              numColumns={2}
-              renderItem={({ item }) => (
-                <Item
-                  text={s.textContent}
-                  data={item}
-                  nav={this.props.navigation}
-                />
-              )}
-              keyExtractor={(item, index) => index}
-            />
-          )):null}
+              <FlatList
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      flex: 1,
+                      height: 400,
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Icon name="surprise" size={50} light color="#0006" />
+                    <Text style={globalStyles.textSemiBold}>
+                      {s.textContent.items}
+                    </Text>
+                  </View>
+                }
+                style={{ marginTop: 20 }}
+                data={s.itemsForSale}
+                columnWrapperStyle={{ justifyContent: "space-around" }}
+                numColumns={2}
+                renderItem={({ item }) => (
+                  <Item
+                    text={s.textContent}
+                    data={item}
+                    nav={this.props.navigation}
+                    coin={this.state.coin ? this.state.coin : "$"}
+                  />
+                )}
+                keyExtractor={(item, index) => index}
+              />
+            )) : null}
         </View>
       </LinearGradient>
     );

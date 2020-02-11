@@ -99,7 +99,6 @@ export default class SellScreen extends Component {
           })
           .then(() => {
             uploadBlob.close();
-            //window.XMLHttpRequest = tempWindowXMLHttpRequest;
             return System.getURLItemImg(s.userID, number);
           })
           .then(url => {
@@ -333,12 +332,12 @@ export default class SellScreen extends Component {
                 <ActivityIndicator size="large" color="#FFF" />
               </View>
             ) : (
-              <Image
-                source={s.photo}
-                style={{ height: "100%", width: "100%" }}
-                resizeMode="stretch"
-              />
-            )}
+                  <Image
+                    source={s.photo}
+                    style={{ height: "100%", width: "100%" }}
+                    resizeMode="stretch"
+                  />
+                )}
           </TouchableOpacity>
           <TextInput
             multiline={false}
@@ -374,8 +373,10 @@ export default class SellScreen extends Component {
             style={[
               globalStyles.textRegular,
               styles.description,
-              { width: "30%",
-              textAlign: "center" }
+              {
+                width: "30%",
+                textAlign: "center"
+              }
             ]}
             placeholder={s.textContent.price}
           />
@@ -388,10 +389,10 @@ export default class SellScreen extends Component {
             {s.loading ? (
               <ActivityIndicator size="small" color="#FFF" />
             ) : (
-              <Text style={[globalStyles.textSemiBold, styles.uploadOffer]}>
-                {s.textContent.upOffer}
-              </Text>
-            )}
+                <Text style={[globalStyles.textSemiBold, styles.uploadOffer]}>
+                  {s.textContent.upOffer}
+                </Text>
+              )}
           </TouchableOpacity>
         </ScrollView>
       </LinearGradient>

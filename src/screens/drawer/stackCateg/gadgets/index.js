@@ -33,6 +33,18 @@ import styles from "./styles";
 import Header from "../../../../assets/components/header";
 
 class Item extends Component {
+
+  state = { coin: '' }
+
+  async componentDidMount() {
+    console.log(this.props.data);
+    let uniID = this.props.uniID;
+    System.getUniData(uniID).then(universityCb => {
+      let coin = universityCb.data().coin;
+      this.setState({ coin: coin });
+    });
+  }
+
   render() {
     let p = this.props.data;
     let nav = this.props.nav;
@@ -94,7 +106,7 @@ class Item extends Component {
           }}
         >
           <Text style={[globalStyles.textSemiBold, { color: "#0008" }]}>
-            {this.props.text.price} {Number(p.price).toFixed(2)}
+            {this.props.text.price} {this.state.coin ? this.state.coin : '$'} {Number(p.price).toFixed(2)}
           </Text>
         </View>
       </TouchableOpacity>
@@ -111,10 +123,10 @@ export default class Gadgets extends Component {
       loading: true,
       itemsForSale: [],
       userInfo: {},
-      userUid: ""
+      userUid: "",
+      uniID: "",
     };
 
-    console.log("Tec");
   }
 
   async componentDidMount() {
@@ -132,6 +144,8 @@ export default class Gadgets extends Component {
 
     System.getUserInfo(s.userUid).then(r => {
       s.userInfo = r.data();
+      let uni = r.data().university.split("/", 2);
+      s.uniID = uni[1];
       this.setState(s);
     });
 
@@ -191,36 +205,37 @@ export default class Gadgets extends Component {
               <ActivityIndicator size="large" color="#0008" />
             </View>
           ) : (
-            <FlatList
-              ListEmptyComponent={
-                <View
-                  style={{
-                    flex: 1,
-                    height: 400,
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}
-                >
-                  <Icon name="surprise" size={50} light color="#0006" />
-                  <Text style={globalStyles.textSemiBold}>
-                    {s.textContent.emptyList}
-                  </Text>
-                </View>
-              }
-              style={{ marginTop: 20 }}
-              data={s.itemsForSale}
-              columnWrapperStyle={{ justifyContent: "space-around" }}
-              numColumns={2}
-              renderItem={({ item }) => (
-                <Item
-                  text={s.textContent}
-                  data={item}
-                  nav={this.props.navigation}
-                />
-              )}
-              keyExtractor={(item, index) => index}
-            />
-          )}
+              <FlatList
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      flex: 1,
+                      height: 400,
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Icon name="surprise" size={50} light color="#0006" />
+                    <Text style={globalStyles.textSemiBold}>
+                      {s.textContent.emptyList}
+                    </Text>
+                  </View>
+                }
+                style={{ marginTop: 20 }}
+                data={s.itemsForSale}
+                columnWrapperStyle={{ justifyContent: "space-around" }}
+                numColumns={2}
+                renderItem={({ item }) => (
+                  <Item
+                    text={s.textContent}
+                    data={item}
+                    nav={this.props.navigation}
+                    uniID={this.state.uniID}
+                  />
+                )}
+                keyExtractor={(item, index) => index}
+              />
+            )}
         </SafeAreaView>
       </LinearGradient>
     );

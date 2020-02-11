@@ -16,7 +16,6 @@ import RNFetchBlob from "rn-fetch-blob";
 
 const Blob = RNFetchBlob.polyfill.Blob;
 const fs = RNFetchBlob.fs;
-// window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
 
 //Icon
@@ -68,14 +67,11 @@ export default class Perfil extends Component {
 
   takePicture = async () => {
     let s = this.state;
-    // let tempWindowXMLHttpRequest = window.XMLHttpRequest;
-    // s.temp = tempWindowXMLHttpRequest;
     s.loading = true;
     s.imgLoader = true;
     this.setState(s);
 
     ImagePicker.showImagePicker({}, r => {
-      // window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
       window.Blob = Blob;
       s.photo = { uri: r.uri };
       this.setState(s);
@@ -100,7 +96,6 @@ export default class Perfil extends Component {
           })
           .then(() => {
             uploadBlob.close();
-            // window.XMLHttpRequest = tempWindowXMLHttpRequest;
             return System.getURLUserImg(s.userID, number);
           })
           .then(url => {

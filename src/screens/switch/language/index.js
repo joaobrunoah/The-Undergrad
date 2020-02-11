@@ -90,8 +90,7 @@ export default class Language extends Component {
     this.refs.Use.close();
     setTimeout(() => {
       this.refs.Terms.open();
-    }, 1000);
-
+    }, 600);
   };
 
   showConfirm = () => {
