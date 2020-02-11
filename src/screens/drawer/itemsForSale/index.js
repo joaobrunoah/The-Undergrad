@@ -85,7 +85,7 @@ class Item extends Component {
                 this.props.nav.dispatch(resetAction);
               })
               .catch(e => {
-                console.log(e);
+                console.warn(e);
                 Alert.alert(s.textContent.alertTitle, s.textContent.alertUnsuc);
               });
           }
@@ -93,7 +93,7 @@ class Item extends Component {
         this.setState(s);
       })
       .catch(e => {
-        console.log(e);
+        console.warn(e);
       });
   };
 
@@ -212,7 +212,6 @@ export default class ItemsForSale extends Component {
     System.getUserInfo(s.userUid).then(r => {
       s.userInfo = r.data();
       this.setState(s);
-      console.log(s.userInfo.university);
     });
 
     let auxID = `/users/${s.userUid}`;
@@ -225,11 +224,10 @@ export default class ItemsForSale extends Component {
           this.setState(s);
         });
         s.loading = false;
-        console.log(data);
         this.setState(s);
       })
       .catch(e => {
-        console.log(e);
+        console.warn(e);
       });
   }
 

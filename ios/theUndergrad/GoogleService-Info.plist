@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>712368372491-8dm71bkkpfulv6sb8oopbmk482keq6vi.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.712368372491-8dm71bkkpfulv6sb8oopbmk482keq6vi</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAnYUu0-VsmpsuRir76WL9__j5YbHfuRdg</string>
+	<key>GCM_SENDER_ID</key>
+	<string>712368372491</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.fluxosconsultoria.theundergrad</string>
+	<key>PROJECT_ID</key>
+	<string>app-venda</string>
+	<key>STORAGE_BUCKET</key>
+	<string>app-venda.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:712368372491:ios:64cde6e88db53e5a</string>
+	<key>DATABASE_URL</key>
+	<string>https://app-venda.firebaseio.com</string>
+</dict>
+</plist>

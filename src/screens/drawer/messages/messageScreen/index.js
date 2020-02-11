@@ -130,7 +130,6 @@ export default class MessageDetail extends Component {
   async componentDidMount() {
     let uid = await AsyncStorage.getItem("userUID");
     let p = this.props.navigation.state.params.data;
-    console.log(p.key);
     await this.setState({ uid: uid });
     this.loadMessages();
   }
@@ -140,14 +139,11 @@ export default class MessageDetail extends Component {
     let p = this.props.navigation.state.params.data;
     let d = this.props.navigation.state.params.data2;
     let prefixo = typeof d === "undefined" ? "" : "[" + d.description + " - " + s.textContent.price + Number(d.price).toFixed(2).toString() + "]\n";
-    let hora = `${moment().hour()}:${moment()
-      .minute() < 10 ? "0" : ""}${Number(
-        moment()
-          .minute()
-          .toFixed(2)
-      )}`;
+    let hora = moment().format('HH:mm');
+    let full_date = moment().format('YYYYMMDDHHmmss');
 
     let data = {
+      full_date: full_date,
       hour: hora,
       user: s.uid,
       message: prefixo + s.newMessage
@@ -180,7 +176,6 @@ export default class MessageDetail extends Component {
               user: r.user,
               message: r.message
             });
-            console.log(r);
           });
         }
       });
@@ -224,7 +219,7 @@ export default class MessageDetail extends Component {
               style={{ marginTop: 10 }}
               ref="flatList"
               onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
-              data={s.messages}
+              data={s.messages.sort((a,b) => {return a.full_time - b.full_time;})}
               renderItem={({ item }) => (
                 <Mensagem data={item} user={item.user} />
               )}

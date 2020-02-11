@@ -148,7 +148,6 @@ export default class Search extends Component {
     s.loading = true;
     s.itemsForSale = [];
     this.setState(s);
-    console.log(s.userInfo);
 
     System.getSearchItem(/*s.search*/)
       .then(r => {
@@ -164,10 +163,9 @@ export default class Search extends Component {
         s.loading = false;
         // s.search = "";
         this.setState(s);
-        console.log(s.itemsForSale);
       })
       .catch(e => {
-        console.log(e);
+        console.warn(e);
       });
   };
 

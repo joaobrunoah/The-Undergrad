@@ -76,7 +76,7 @@ export default class Ads extends Component {
         // dismissed
       }
     } catch (error) {
-      console.log(error.message);
+      console.warn(error.message);
     }
   };
 

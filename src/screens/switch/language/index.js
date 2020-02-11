@@ -90,8 +90,9 @@ export default class Language extends Component {
 
   changeModal = async () => {
     this.refs.Use.close();
-    console.log("desceu");
-    this.refs.Terms.open();
+    setTimeout(() => {
+      this.refs.Terms.open();
+    }, 1000);
 
   };
 

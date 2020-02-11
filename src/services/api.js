@@ -1,11 +1,17 @@
 import firebase from "./firebaseConnection";
-import "firebase/firestore";
+import auth from '@react-native-firebase/auth';
+import database from '@react-native-firebase/database';
+import firestore from '@react-native-firebase/firestore';
 import AsyncStorage from "@react-native-community/async-storage";
+
+const firebaseAppAuth = auth();
+const firebaseAppFirestore = firestore();
+const firebaseAppDatabase = database();
 
 class System {
   // Função para deslogar do sistema
   async logOut() {
-    await firebase.auth().signOut();
+    await firebaseAppAuth.signOut();
     // await AsyncStorage.multiRemove(["email", "pass", "userUID"]);
     await AsyncStorage.clear();
   }
@@ -13,7 +19,7 @@ class System {
   // Verificar se existe um usuário logado
   async addAuthListener(callback) {
     try {
-      await firebase.auth().onAuthStateChanged(callback);
+      await firebaseAppAuth.onAuthStateChanged(callback);
     } catch (e) {
       console.warn(e)
     }
@@ -30,13 +36,13 @@ class System {
 
   // Login
   async login(email, pass) {
-    return await firebase.auth().signInWithEmailAndPassword(email, pass);
+    return await firebaseAppAuth.signInWithEmailAndPassword(email, pass);
   }
 
   // Register
   async register(email, pass) {
     try {
-      return await firebase.auth().createUserWithEmailAndPassword(email, pass);
+      return await firebaseAppAuth.createUserWithEmailAndPassword(email, pass);
     } catch (e) {
       return console.warn(e)
     }
@@ -45,7 +51,7 @@ class System {
   // Esqueci a senha
   async forgotPass(email) {
     try {
-      return await firebase.auth().sendPasswordResetEmail(email);
+      return await firebaseAppAuth.sendPasswordResetEmail(email);
     } catch (e) {
       console.warn(e)
     }
@@ -54,7 +60,7 @@ class System {
   // Registrar no Firestore
   async registerOnFirestore(uid, data) {
     try {
-      await firebase.firestore().collection("users").doc(uid).set(data);
+      await firebaseAppFirestore.collection("users").doc(uid).set(data);
     } catch (e) {
       console.warn(e)
     }
@@ -89,7 +95,7 @@ class System {
   // Busca os dados de cadastro do User no Firestore
   async getUserInfo(userUID) {
     try {
-      return await firebase.firestore().collection("users").doc(userUID).get();
+      return await firebaseAppFirestore.collection("users").doc(userUID).get();
     } catch (e) {
       console.warn(e)
     }
@@ -126,7 +132,7 @@ class System {
   // Pegar URL da Foto de Perfil
   async updateImgProfile(userUID, img) {
     try {
-      await firebase.firestore().collection("users").doc(userUID).update(img);
+      await firebaseAppFirestore.collection("users").doc(userUID).update(img);
     } catch (e) {
       console.warn(e)
     }
@@ -214,7 +220,7 @@ class System {
 
   async getEveryItem() {
     try {
-      return await firebase.firestore().collection("offers").get();
+      return await firebaseAppFirestore.collection("offers").get();
     } catch (e) {
       console.warn(e)
     }
@@ -223,7 +229,7 @@ class System {
   // Registrar oferta no Firestore
   async registerItem(data) {
     try {
-      await firebase.firestore().collection("offers").doc().set(data);
+      await firebaseAppFirestore.collection("offers").doc().set(data);
     } catch (e) {
       console.warn(e)
     }
@@ -245,7 +251,7 @@ class System {
   // Deleta um item do usuário
   async deleteItemsUser(itemId) {
     try {
-      await firebase.firestore().collection("offers").doc(itemId).delete();
+      await firebaseAppFirestore.collection("offers").doc(itemId).delete();
     } catch (e) {
       console.warn(e)
     }
@@ -254,8 +260,7 @@ class System {
   //Verifica atualizações do Chat
   async getListaConversas(uid, callback) {
     try {
-      return await firebase
-        .database()
+      return await firebaseAppDatabase
         .ref("chats")
         .child(uid)
         .on("value", callback);
@@ -268,8 +273,7 @@ class System {
   async sendMessage(uid, sentUid, data) {
     try {
       await this.setUnread(sentUid, uid, 1);
-      await firebase
-        .database()
+      await firebaseAppDatabase
         .ref("chats")
         .child(uid)
         .child(sentUid)
@@ -283,8 +287,7 @@ class System {
 
   async deleteMessages(uid, sentUid) {
     try {
-      await firebase
-        .database()
+      await firebaseAppDatabase
         .ref("chats")
         .child(uid)
         .child(sentUid)
@@ -302,8 +305,7 @@ class System {
     });
     messages = messages + 1;
     try {
-      await firebase
-        .database()
+      await firebaseAppDatabase
         .ref("chats")
         .child(uid)
         .child(sentUid)
@@ -320,7 +322,6 @@ class System {
         unread += r.val().unreadMessages;
       });
     });
-    console.log(unread)
 
   }
 
@@ -328,7 +329,6 @@ class System {
     AsyncStorage.getAllKeys((err, keys) => {
       AsyncStorage.multiGet(keys, (error, stores) => {
         stores.map((result, i, store) => {
-          console.log({ [store[i][0]]: store[i][1] });
           return true;
         });
       });
