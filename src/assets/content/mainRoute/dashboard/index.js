@@ -8,7 +8,7 @@ export const textBr = {
   search: "Pesquisar",
   spot: "Espaço disponível",
   items: "Sem resultados",
-  price: "Preço: R$"
+  price: "Preço:"
 };
 
 export const textUsa = {
@@ -21,5 +21,5 @@ export const textUsa = {
   search: "Search",
   spot: "Spot Available",
   items: "No results",
-  price: "Price: U$"
+  price: "Price:"
 };

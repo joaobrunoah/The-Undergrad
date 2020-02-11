@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, Text, TouchableOpacity , ActivityIndicator } from "react-native";
+import { View, Text, TouchableOpacity, ActivityIndicator } from "react-native";
 import ProgressiveImage from "../ProgressiveImage";
 
 //Styles
@@ -7,13 +7,14 @@ import { globalStyles } from "../../../screens/globalStyles";
 import styles from "./styles";
 
 class Item extends Component {
+  state = {
+    loading: true,
+  };
   constructor(props) {
     super(props);
-
-    this.state = {
-      loading: true,
-    };
   }
+
+
   render() {
     let p = this.props.data;
     let nav = this.props.nav;
@@ -58,7 +59,7 @@ class Item extends Component {
           <ProgressiveImage
             source={{ uri: p.pictures[0] }}
             thumbnailSource={{ uri: p.pictures[1] }}
-            onLoadEnd={r => {this.setState({loading: false})}}
+            onLoadEnd={r => { this.setState({ loading: false }) }}
             style={{
               zIndex: 0,
               width: "100%",
@@ -66,7 +67,7 @@ class Item extends Component {
             }}
           />
         </View>
-        {this.state.loading ? <ActivityIndicator size="small" style={{position: "absolute"}}/> : null}
+        {this.state.loading ? <ActivityIndicator size="small" style={{ position: "absolute" }} /> : null}
         <View
           style={{
             zIndex: 6,
@@ -82,7 +83,8 @@ class Item extends Component {
           }}
         >
           <Text style={[globalStyles.textSemiBold, { color: "#0008" }]}>
-            {this.props.text.price} {Number(p.price.replace(",",".")).toFixed(2)}
+            {/*TODO*/}
+            {this.props.text.price} {Number(p.price.replace(",", ".")).toFixed(2)}
           </Text>
         </View>
       </TouchableOpacity>

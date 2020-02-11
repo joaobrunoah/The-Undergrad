@@ -96,18 +96,14 @@ export default class Dashboard extends Component {
   }
 
   getInfo = async () => {
-    console.log("rodou")
     let s = this.state;
     let uid = await AsyncStorage.getItem("userUID");
 
     System.getUserInfo(uid).then(r => {
-      console.log(r.data());
       let uni = r.data().university.split("/", 2);
-      console.log(uni);
       let newUni = uni[1];
       System.getUniData(newUni).then(r => {
         let initials = r.data().initials;
-        console.log(initials);
         this.getADS(initials);
       });
     });
@@ -122,20 +118,16 @@ export default class Dashboard extends Component {
         this.checkADS(r);
       })
       .catch(e => {
-        console.log(e);
       });
   };
 
   checkADS = r => {
     let s = this.state;
     let date = new Date();
-    console.log(date);
 
     r.forEach(doc => {
       let data = doc.data();
-      console.log(data.dueDate);
       if (data.dueDate >= date) {
-        // console.log(data);
         if (data.spot === 1) {
           s.spotOne = data;
           this.setState(s);

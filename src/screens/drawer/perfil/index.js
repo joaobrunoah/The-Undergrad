@@ -16,7 +16,6 @@ import RNFetchBlob from "rn-fetch-blob";
 
 const Blob = RNFetchBlob.polyfill.Blob;
 const fs = RNFetchBlob.fs;
-// window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 window.Blob = Blob;
 
 //Icon
@@ -68,14 +67,11 @@ export default class Perfil extends Component {
 
   takePicture = async () => {
     let s = this.state;
-    // let tempWindowXMLHttpRequest = window.XMLHttpRequest;
-    // s.temp = tempWindowXMLHttpRequest;
     s.loading = true;
     s.imgLoader = true;
     this.setState(s);
 
     ImagePicker.showImagePicker({}, r => {
-      // window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
       window.Blob = Blob;
       s.photo = { uri: r.uri };
       this.setState(s);
@@ -96,13 +92,10 @@ export default class Perfil extends Component {
           .then(blob => {
             uploadBlob = blob;
             number = Math.floor(Math.random() * 1000000000);
-            console.log("Setando a imagem: " + number);
             return System.setUserImg(s.userID, blob, mime, number);
           })
           .then(() => {
             uploadBlob.close();
-            // window.XMLHttpRequest = tempWindowXMLHttpRequest;
-            console.log("Pegando a imagem: " + number);
             return System.getURLUserImg(s.userID, number);
           })
           .then(url => {
@@ -112,7 +105,7 @@ export default class Perfil extends Component {
             this.setState(s);
           })
           .catch(erro => {
-            console.log(erro);
+            console.warn(erro);
             s.loading = false;
             s.imgLoader = false;
             this.setState(s);
@@ -155,8 +148,6 @@ export default class Perfil extends Component {
           s.photo = "";
         }
         s.disable = false;
-        console.log(data);
-        console.log(s.photo);
         s.imgLoader = false;
         this.setState(s);
       })
@@ -170,12 +161,11 @@ export default class Perfil extends Component {
     System.getItemsUser(auxID)
       .then(r => {
         let data = r.docs.length;
-        console.log(data);
         s.sales = data;
         this.setState(s);
       })
       .catch(e => {
-        console.log(e);
+        console.warn(e);
       });
 
     this.setState(s);

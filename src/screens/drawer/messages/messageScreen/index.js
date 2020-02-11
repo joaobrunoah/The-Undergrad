@@ -130,7 +130,6 @@ export default class MessageDetail extends Component {
   async componentDidMount() {
     let uid = await AsyncStorage.getItem("userUID");
     let p = this.props.navigation.state.params.data;
-    console.log(p.key);
     await this.setState({ uid: uid });
     this.loadMessages();
   }
@@ -180,7 +179,6 @@ export default class MessageDetail extends Component {
               user: r.user,
               message: r.message
             });
-            console.log(r);
           });
         }
       });

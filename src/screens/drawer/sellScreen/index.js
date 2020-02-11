@@ -95,24 +95,20 @@ export default class SellScreen extends Component {
           .then(blob => {
             uploadBlob = blob;
             number = Math.floor(Math.random() * 1000000000);
-            console.log("Setando a imagem: " + number);
             return System.setItemImg(s.userID, blob, mime, number);
           })
           .then(() => {
             uploadBlob.close();
-            //window.XMLHttpRequest = tempWindowXMLHttpRequest;
-            console.log("Pegando a imagem: " + number);
             return System.getURLItemImg(s.userID, number);
           })
           .then(url => {
             let s = this.state;
-            console.log(url);
             s.sellInfo.pictures = [url];
             s.loadingImg = false;
             this.setState(s);
           })
           .catch(erro => {
-            console.log(erro);
+            console.warn(erro);
             s.loadingImg = false;
             this.setState(s);
           });
@@ -146,10 +142,9 @@ export default class SellScreen extends Component {
         s.sellInfo.university = `/${r.data().university}`;
         s.sellInfo.user = `/users/${s.userID}`;
         s.sellInfo.userId = s.userID;
-        console.log(r.data());
       })
       .catch(e => {
-        console.log(e);
+        console.warn(e);
       });
 
     this.setState(s);
@@ -163,7 +158,6 @@ export default class SellScreen extends Component {
     this.setState(s);
 
     let data = s.sellInfo;
-    console.log(data);
 
 
     if (s.sellInfo.description !== "") {
@@ -177,7 +171,7 @@ export default class SellScreen extends Component {
             .catch(e => {
               Alert.alert(s.textContent.warning, s.textContent.msgError);
               this.props.navigation.navigate("Dashboard");
-              console.log(e);
+              console.warn(e);
             });
         } else {
           Alert.alert(s.textContent.warning, s.textContent.msgError_4);
@@ -339,12 +333,12 @@ export default class SellScreen extends Component {
                 <ActivityIndicator size="large" color="#FFF" />
               </View>
             ) : (
-              <Image
-                source={s.photo}
-                style={{ height: "100%", width: "100%" }}
-                resizeMode="stretch"
-              />
-            )}
+                  <Image
+                    source={s.photo}
+                    style={{ height: "100%", width: "100%" }}
+                    resizeMode="stretch"
+                  />
+                )}
           </TouchableOpacity>
           <TextInput
             multiline={false}
@@ -380,8 +374,10 @@ export default class SellScreen extends Component {
             style={[
               globalStyles.textRegular,
               styles.description,
-              { width: "30%",
-              textAlign: "center" }
+              {
+                width: "30%",
+                textAlign: "center"
+              }
             ]}
             placeholder={s.textContent.price}
           />
@@ -394,10 +390,10 @@ export default class SellScreen extends Component {
             {s.loading ? (
               <ActivityIndicator size="small" color="#FFF" />
             ) : (
-              <Text style={[globalStyles.textSemiBold, styles.uploadOffer]}>
-                {s.textContent.upOffer}
-              </Text>
-            )}
+                <Text style={[globalStyles.textSemiBold, styles.uploadOffer]}>
+                  {s.textContent.upOffer}
+                </Text>
+              )}
           </TouchableOpacity>
         </ScrollView>
       </LinearGradient>

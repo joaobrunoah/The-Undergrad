@@ -85,7 +85,7 @@ class Item extends Component {
                 this.props.nav.dispatch(resetAction);
               })
               .catch(e => {
-                console.log(e);
+                console.warn(e);
                 Alert.alert(s.textContent.alertTitle, s.textContent.alertUnsuc);
               });
           }
@@ -93,7 +93,7 @@ class Item extends Component {
         this.setState(s);
       })
       .catch(e => {
-        console.log(e);
+        console.warn(e);
       });
   };
 
@@ -111,7 +111,7 @@ class Item extends Component {
             [
               {
                 text: s.textContent.alertCancel,
-                onPress: () => console.log("Cancel Pressed"),
+                onPress: () => { },
                 style: "cancel"
               },
               {
@@ -212,7 +212,6 @@ export default class ItemsForSale extends Component {
     System.getUserInfo(s.userUid).then(r => {
       s.userInfo = r.data();
       this.setState(s);
-      console.log(s.userInfo.university);
     });
 
     let auxID = `/users/${s.userUid}`;
@@ -225,11 +224,10 @@ export default class ItemsForSale extends Component {
           this.setState(s);
         });
         s.loading = false;
-        console.log(data);
         this.setState(s);
       })
       .catch(e => {
-        console.log(e);
+        console.warn(e);
       });
   }
 
@@ -252,8 +250,7 @@ export default class ItemsForSale extends Component {
             style={[
               globalStyles.textBold,
               { fontSize: 20, marginVertical: 10, textAlign: "center" }
-            ]}
-          >
+            ]}>
             {s.textContent.yourItemsFor}
           </Text>
           <View style={styles.separator} />
@@ -268,36 +265,36 @@ export default class ItemsForSale extends Component {
               <ActivityIndicator size="large" color="#0008" />
             </View>
           ) : (
-            <FlatList
-              ListEmptyComponent={
-                <View
-                  style={{
-                    flex: 1,
-                    height: 400,
-                    alignItems: "center",
-                    justifyContent: "center"
-                  }}
-                >
-                  <Icon name="surprise" size={50} light color="#0006" />
-                  <Text style={globalStyles.textSemiBold}>
-                    {s.textContent.emptyList}
-                  </Text>
-                </View>
-              }
-              style={{ marginTop: 20 }}
-              data={s.itemsForSale}
-              columnWrapperStyle={{ justifyContent: "space-around" }}
-              numColumns={2}
-              renderItem={({ item }) => (
-                <Item
-                  text={s.textContent}
-                  data={item}
-                  nav={this.props.navigation}
-                />
-              )}
-              keyExtractor={(item, index) => index}
-            />
-          )}
+              <FlatList
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      flex: 1,
+                      height: 400,
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    <Icon name="surprise" size={50} light color="#0006" />
+                    <Text style={globalStyles.textSemiBold}>
+                      {s.textContent.emptyList}
+                    </Text>
+                  </View>
+                }
+                style={{ marginTop: 20 }}
+                data={s.itemsForSale}
+                columnWrapperStyle={{ justifyContent: "space-around" }}
+                numColumns={2}
+                // renderItem={({ item }) => (
+                //   <Item
+                //     text={s.textContent}
+                //     data={item}
+                //     nav={this.props.navigation}
+                //   />
+                // )}
+                keyExtractor={(item, index) => index}
+              />
+            )}
         </View>
       </LinearGradient>
     );

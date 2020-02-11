@@ -66,7 +66,6 @@ export default class Language extends Component {
     }
     this.setState(s);
 
-    console.log(s.textContent);
   };
 
   getLanguage = () => {
@@ -90,7 +89,6 @@ export default class Language extends Component {
 
   changeModal = async () => {
     this.refs.Use.close();
-    console.log("desceu");
     this.refs.Terms.open();
 
   };
