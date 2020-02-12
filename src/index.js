@@ -48,20 +48,20 @@ const App = () => {
   };
 
   const messageListener = async () => {
-    const notificationListener = firebase.notifications().onNotification((notification) => {
-      const { title, body } = notification;
-      showAlert(title, body);
-    });
+    // const notificationListener = firebase.notifications().onNotification((notification) => {
+    //   const { title, body } = notification;
+    //   showAlert(title, body);
+    // });
 
     const notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
       const { title, body } = notificationOpen.notification;
-      showAlert(title, body);
+      //showAlert(title, body);
     });
 
     const notificationOpen = await firebase.notifications().getInitialNotification();
     if (notificationOpen) {
       const { title, body } = notificationOpen.notification;
-      showAlert(title, body);
+      //showAlert(title, body);
     }
 
     const messageListener = firebase.messaging().onMessage((message) => {

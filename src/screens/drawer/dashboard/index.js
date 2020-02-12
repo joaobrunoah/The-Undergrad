@@ -128,7 +128,10 @@ export default class Dashboard extends Component {
 
     r.forEach(doc => {
       let data = doc.data();
-      if (data.dueDate >= date) {
+
+      console.log(data.dueDate.seconds*1000);
+
+      if (data.dueDate.seconds*1000 >= date) {
         if (data.spot === 1) {
           s.spotOne = data;
           this.setState(s);
@@ -151,8 +154,6 @@ export default class Dashboard extends Component {
           s.spotSeven = data;
           this.setState(s);
         }
-
-        alert(s.spotOne);
       }
     });
 

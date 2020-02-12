@@ -111,21 +111,27 @@ class System {
       console.warn(e)
     }
 
-    let fcmToken = null;
+    let curUserUID = await AsyncStorage.getItem("userUID");
 
-    try {
-      fcmToken = await firebase.messaging().getToken();
-    } catch (err) {
-      console.warn(err);
-    }
-    let userObjData = userObj && userObj.data ? userObj.data() : undefined;
+    if(userUID === curUserUID) {
 
-    if(userObjData && (!userObjData.fcmToken || userObjData.fcmToken !== fcmToken)) {
-      userObjData.fcmToken = fcmToken;
+      let fcmToken = null;
+
       try {
-        await firebaseAppFirestore.collection("users").doc(userObjData.uid).set(userObjData);
+        fcmToken = await firebase.messaging().getToken();
       } catch (err) {
         console.warn(err);
+      }
+
+      let userObjData = userObj && userObj.data ? userObj.data() : undefined;
+
+      if(userObjData && (!userObjData.fcmToken || userObjData.fcmToken !== fcmToken)) {
+        userObjData.fcmToken = fcmToken;
+        try {
+          await firebaseAppFirestore.collection("users").doc(userObjData.uid).set(userObjData);
+        } catch (err) {
+          console.warn(err);
+        }
       }
     }
 
