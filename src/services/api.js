@@ -67,7 +67,7 @@ class System {
     }
 
     try {
-      if(fcmToken) data.fcmToken = fcmToken;
+      if (fcmToken) data.fcmToken = fcmToken;
       await firebaseAppFirestore.collection("users").doc(uid).set(data);
     } catch (e) {
       console.warn(e)
@@ -113,7 +113,7 @@ class System {
 
     let curUserUID = await AsyncStorage.getItem("userUID");
 
-    if(userUID === curUserUID) {
+    if (userUID === curUserUID) {
 
       let fcmToken = null;
 
@@ -125,7 +125,7 @@ class System {
 
       let userObjData = userObj && userObj.data ? userObj.data() : undefined;
 
-      if(userObjData && (!userObjData.fcmToken || userObjData.fcmToken !== fcmToken)) {
+      if (userObjData && (!userObjData.fcmToken || userObjData.fcmToken !== fcmToken)) {
         userObjData.fcmToken = fcmToken;
         try {
           await firebaseAppFirestore.collection("users").doc(userObjData.uid).set(userObjData);
@@ -279,7 +279,7 @@ class System {
   // Envia mensagem
   async sendMessage(uid, sentUid, data) {
     try {
-      //await this.setUnread(sentUid, uid, 1);
+      await this.setUnread(sentUid, uid, false);
       await firebaseAppDatabase
         .ref("chats")
         .child(uid)
@@ -305,18 +305,15 @@ class System {
     }
   }
 
-  async setUnread(uid, sentUid, numero) {
-    var messages = 0;
-    this.getListaConversas(uid, async r => {
-      messages = r.toJSON()[sentUid]["unreadMessages"];
-    });
-    messages = messages + 1;
+  async setUnread(uid, sentUid, is_reading = false) {
     try {
       await firebaseAppDatabase
-        .ref("chats")
-        .child(uid)
-        .child(sentUid)
-        .update({ unreadMessages: numero ? messages : 0 });
+        .ref(`chats/${uid}/${sentUid}`)
+        .once("value", async (value) => {
+          await firebaseAppDatabase
+            .ref(`chats/${uid}/${sentUid}`)
+            .update({ "unreadMessages": is_reading ? 0 : value.val().unreadMessages + 1 })
+        });
     } catch (e) {
       console.warn(e)
     }

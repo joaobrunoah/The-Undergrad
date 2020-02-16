@@ -72,19 +72,6 @@ export default class MessagesList extends Component {
     }
   }
 
-  unread(item) {
-    var s = this.state;
-    var messages;
-    System.getListaConversas(s.uid, async r => {
-      messages = r.toJSON()[item.key]["unreadMessages"];
-      messages = String(messages);
-    });
-    if (messages == "undefined") return 1;
-    else {
-      return messages;
-    }
-  }
-
   delete = async (item) => {
 
     try {
@@ -148,7 +135,7 @@ export default class MessagesList extends Component {
               return (<Message
                 data={item}
                 msg={this.lastMsg(item)}
-                unread={this.unread(item)}
+                uid={this.state.uid}
               />)
             }
             }

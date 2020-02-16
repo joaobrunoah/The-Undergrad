@@ -30,8 +30,11 @@ export class Message extends Component {
       nome: "",
       uni: "",
       messages: [],
-      lastMessage: ""
+      lastMessage: "",
+      unread: 0,
+      uid: this.props.uid,
     };
+    this.unread();
   }
 
   messageDetail = () => {
@@ -75,6 +78,17 @@ export class Message extends Component {
   //   })
   // };
 
+  async unread() {
+    var s = this.state;
+    var messages;
+
+    await System.getListaConversas(s.uid, async r => {
+      messages = r.toJSON()[this.props.data.key]["unreadMessages"];
+      this.setState({ unread: String(messages) });
+    });
+  }
+
+
   render() {
     let s = this.state;
 
@@ -113,14 +127,14 @@ export class Message extends Component {
             </Text>
           </View>
         </SafeAreaView>
-        {this.props.unread != "0" &&
+        {this.state.unread != 0 ?
           <View style={styles.unread}>
             <Text
               style={{ color: "white", textAlign: "center", fontWeight: "600" }}
             >
-              {this.props.unread}
+              {this.state.unread}
             </Text>
-          </View>}
+          </View> : null}
       </TouchableOpacity>
     );
   }

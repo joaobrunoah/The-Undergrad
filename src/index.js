@@ -65,7 +65,6 @@ const App = () => {
     }
 
     const messageListener = firebase.messaging().onMessage((message) => {
-      console.log(JSON.stringify(message));
     });
   };
 
