@@ -267,14 +267,13 @@ class System {
 
   //Verifica atualizações do Chat
   async getListaConversas(uid, callback) {
-    try {
-      return await firebaseAppDatabase
-        .ref("chats")
-        .child(uid)
-        .on("value", callback);
-    } catch (e) {
-      console.warn(e)
-    }
+    firebaseAppDatabase
+      .ref("chats")
+      .child(uid)
+      .on("value", (r) => {
+        console.log('here!');
+        callback(r);
+      });
   }
 
   // Envia mensagem

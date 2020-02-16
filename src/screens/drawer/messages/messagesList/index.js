@@ -31,38 +31,42 @@ export default class MessagesList extends Component {
   }
 
   async componentDidMount() {
-    let s = this.state;
-    s.language = await AsyncStorage.getItem("language");
-    var uid = await AsyncStorage.getItem("userUID");
-    s.uid = uid;
+    const language = await AsyncStorage.getItem("language");
+    const uid = await AsyncStorage.getItem("userUID");
+    let textContent = textUsa;
 
-    if (s.language === "br") {
-      s.textContent = textBr;
-    } else if (s.language === "usa") {
-      s.textContent = textUsa;
+    if (language === "br") {
+      textContent = textBr;
     }
 
-    this.setState(s);
+    this.setState({
+      language,
+      uid,
+      textContent
+    });
 
     System.getListaConversas(uid, async r => {
-      s.conversas = [];
+      let conversas = [];
       r.forEach(r => {
         if (r.val().messages != undefined) {
-          s.conversas.push({
+          conversas.push({
             key: r.key,
             messages: r.val().messages
           });
         }
       });
-      s.loading = false;
-      await this.setState(s);
+      let loading = false;
+      await this.setState({
+        loading,
+        conversas
+      });
     });
   }
 
   lastMsg(item) {
-    var obj = item.messages;
+    let obj = item.messages;
     if (obj != "undefined") {
-      last = Object.keys(obj)[Object.keys(obj).length - 1];
+      let last = Object.keys(obj)[Object.keys(obj).length - 1];
 
       return obj[last].text;
     }
@@ -80,6 +84,7 @@ export default class MessagesList extends Component {
       return messages;
     }
   }
+
   delete = async (item) => {
 
     try {
@@ -124,7 +129,19 @@ export default class MessagesList extends Component {
           </View>
           : <SwipeListView
             rightOpenValue={-75}
-            data={s.conversas}
+            // Order by last message sent
+            data={s.conversas.sort((a,b) => {
+              const lastTalkTime = (obj) => {
+                let keys = [];
+                for (let prop in obj.messages) {
+                  if(obj.messages.hasOwnProperty(prop)) {
+                    keys.push(prop);
+                  }
+                }
+                return keys.sort().pop();
+              };
+              return lastTalkTime(b).localeCompare(lastTalkTime(a));
+            })}
             disableRightSwipe
             renderItem={({ item }) => {
 
