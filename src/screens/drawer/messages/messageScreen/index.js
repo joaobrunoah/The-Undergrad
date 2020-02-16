@@ -131,6 +131,7 @@ export default class MessageDetail extends Component {
     let uid = await AsyncStorage.getItem("userUID");
     let p = this.props.navigation.state.params.data;
     await this.setState({ uid: uid });
+    await System.setUnread(uid, p.key, true);
     this.loadMessages();
   }
 
@@ -186,8 +187,8 @@ export default class MessageDetail extends Component {
           }
         }
       });
+      console.log('here');
 
-      await System.setUnread(uid, p.key, true);
       messageArray = messageArray.sort((a, b) => {
         return a.id.localeCompare(b.id);
       });

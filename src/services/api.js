@@ -272,6 +272,12 @@ class System {
         .ref("chats")
         .child(uid)
         .on("value", callback);
+          // .off("value", () => {
+          //   firebaseAppDatabase
+          //     .ref("chats")
+          //     .child(uid)
+          //     .on("value", callback);
+          // });
     } catch (e) {
       console.warn(e)
     }
@@ -310,11 +316,11 @@ class System {
     try {
       await firebaseAppDatabase
         .ref(`chats/${uid}/${sentUid}`)
-        .on("value", async (value) => {
+        .once("value", async (value) => {
           await firebaseAppDatabase
             .ref(`chats/${uid}/${sentUid}`)
-            .update({ "unreadMessages": is_reading ? 0 : (value.val() > -1 ? value.val().unreadMessages + 1 : 0) });
-        })
+            .update({ "unreadMessages": is_reading ? 0 : value.val().unreadMessages + 1 })
+        });
     } catch (e) {
       console.warn(e)
     }
