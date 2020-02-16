@@ -221,7 +221,6 @@ export default class ItemsForSale extends Component {
         let data = r.docs;
         data.forEach(doc => {
           s.itemsForSale.push(doc.data());
-          this.setState(s);
         });
         s.loading = false;
         this.setState(s);
@@ -285,13 +284,13 @@ export default class ItemsForSale extends Component {
                 data={s.itemsForSale}
                 columnWrapperStyle={{ justifyContent: "space-around" }}
                 numColumns={2}
-                // renderItem={({ item }) => (
-                //   <Item
-                //     text={s.textContent}
-                //     data={item}
-                //     nav={this.props.navigation}
-                //   />
-                // )}
+                renderItem={({ item }) => (
+                  <Item
+                    text={s.textContent}
+                    data={item}
+                    nav={this.props.navigation}
+                  />
+                )}
                 keyExtractor={(item, index) => index}
               />
             )}
