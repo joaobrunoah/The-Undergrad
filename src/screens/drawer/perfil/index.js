@@ -5,7 +5,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  SafeAreaView
+  SafeAreaView, Platform
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -66,51 +66,36 @@ export default class Perfil extends Component {
   }
 
   takePicture = async () => {
-    let s = this.state;
-    s.loading = true;
-    s.imgLoader = true;
-    this.setState(s);
 
-    ImagePicker.showImagePicker({}, r => {
-      window.Blob = Blob;
-      s.photo = { uri: r.uri };
-      this.setState(s);
-      if (r.uri) {
-        let uri = r.uri.replace("file://", "");
-        let mime = "image/jpeg";
+    const userUID = await AsyncStorage.getItem("userUID");
 
-        let uploadBlob = null;
-        let number = null;
+    this.setState({
+      userID: userUID,
+      loading: true,
+      imgLoader: true
+    });
 
-        fs
-          .readFile(uri, "base64")
-          .then(data => {
-            return RNFetchBlob.polyfill.Blob.build(data, {
-              type: mime + ";BASE64"
-            });
-          })
-          .then(blob => {
-            uploadBlob = blob;
-            number = Math.floor(Math.random() * 1000000000);
-            return System.setUserImg(s.userID, blob, mime, number);
-          })
-          .then(() => {
-            uploadBlob.close();
-            return System.getURLUserImg(s.userID, number);
-          })
-          .then(url => {
-            let s = this.state;
-            s.imgLoader = false;
-            System.updateImgProfile(s.userID, { imgProfile: url });
-            this.setState(s);
-          })
-          .catch(erro => {
-            console.warn(erro);
-            s.loading = false;
-            s.imgLoader = false;
-            this.setState(s);
-          });
+    ImagePicker.showImagePicker({noData: true}, async r => {
+      if(r.didCancel) {
+        this.setState({
+          loading : false,
+          imgLoader: true
+        });
+        return;
       }
+
+      let uploadResponse = await System.setItemImg(userUID, 'profile',r, Platform.OS);
+
+      const imgUrl = uploadResponse.downloadURL;
+
+      await System.updateImgProfile(userUID, { imgProfile: imgUrl });
+
+      this.setState({
+        photo: {uri: r.uri},
+        loading : false,
+        imgLoader: false
+      });
+
     });
   };
 

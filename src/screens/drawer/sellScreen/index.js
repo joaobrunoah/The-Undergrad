@@ -81,7 +81,7 @@ export default class SellScreen extends Component {
         return;
       }
 
-      let uploadResponse = await System.setItemImg(userUID, r, Platform.OS);
+      let uploadResponse = await System.setItemImg(userUID, 'offers', r, Platform.OS);
 
       const imgUrl = uploadResponse.downloadURL;
 

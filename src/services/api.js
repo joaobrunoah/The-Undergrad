@@ -139,7 +139,7 @@ class System {
   }
 
   // Setar a pasta imgs e a offers com a imagem tento o mesmo nome do UID do User
-  async setItemImg(userUID, imagePickerResponse, platformOS) {
+  async setItemImg(userUID, type, imagePickerResponse, platformOS) {
 
     const getFileLocalPath = response => {
       const { path, uri } = response;
@@ -148,7 +148,7 @@ class System {
 
     const createStorageReferenceToFile = response => {
       const { fileName } = response;
-      return firebase.storage().ref(`imgs/offers/${userUID}/${fileName}`);
+      return firebase.storage().ref(`imgs/${type}/${userUID}/${fileName}`);
     };
 
     try {
@@ -160,52 +160,10 @@ class System {
     }
   }
 
-  // Setar a pasta imgs e a profile com a imagem tento o mesmo nome do UID do User
-  async setUserImg(userUID, img, mime, numer) {
-    try {
-      return await firebase
-        .storage()
-        .ref()
-        .child("imgs")
-        .child(`profile/${userUID}/${numer}.jpg`)
-        .put(img, { contentType: mime });
-    } catch (e) {
-      console.warn(e)
-    }
-  }
-
   // Pegar URL da Foto de Perfil
   async updateImgProfile(userUID, img) {
     try {
       await firebaseAppFirestore.collection("users").doc(userUID).update(img);
-    } catch (e) {
-      console.warn(e)
-    }
-  }
-
-  // Pegar URL da Foto
-  async getURLUserImg(userUID, number) {
-    try {
-      return await firebase
-        .storage()
-        .ref()
-        .child("imgs")
-        .child(`profile/${userUID}/${number}.jpg`)
-        .getDownloadURL();
-    } catch (e) {
-      console.warn(e)
-    }
-  }
-
-  // Pegar URL da Foto
-  async getURLItemImg(userUID, number) {
-    try {
-      return await firebase
-        .storage()
-        .ref()
-        .child("imgs")
-        .child(`offers/${userUID}/${number}.jpg`)
-        .getDownloadURL();
     } catch (e) {
       console.warn(e)
     }
