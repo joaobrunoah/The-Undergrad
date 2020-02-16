@@ -18,6 +18,7 @@ import io.invertase.firebase.database.RNFirebaseDatabasePackage;
 import io.invertase.firebase.firestore.RNFirebaseFirestorePackage;
 import io.invertase.firebase.messaging.RNFirebaseMessagingPackage;
 import io.invertase.firebase.notifications.RNFirebaseNotificationsPackage;
+import io.invertase.firebase.storage.RNFirebaseStoragePackage;
 
 public class MainApplication extends MultiDexApplication implements ReactApplication {
 
@@ -39,6 +40,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           packages.add(new RNFirebaseFirestorePackage());
           packages.add(new RNFirebaseMessagingPackage());
           packages.add(new RNFirebaseNotificationsPackage());
+          packages.add(new RNFirebaseStoragePackage());
           return packages;
         }
 

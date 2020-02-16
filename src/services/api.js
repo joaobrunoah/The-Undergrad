@@ -139,14 +139,22 @@ class System {
   }
 
   // Setar a pasta imgs e a offers com a imagem tento o mesmo nome do UID do User
-  async setItemImg(userUID, img, mime, numer) {
+  async setItemImg(userUID, imagePickerResponse, platformOS) {
+
+    const getFileLocalPath = response => {
+      const { path, uri } = response;
+      return platformOS === 'android' ? path : uri;
+    };
+
+    const createStorageReferenceToFile = response => {
+      const { fileName } = response;
+      return firebase.storage().ref(`imgs/offers/${userUID}/${fileName}`);
+    };
+
     try {
-      return await firebase
-        .storage()
-        .ref()
-        .child("imgs")
-        .child(`offers/${userUID}/${numer}.jpg`)
-        .put(img, { contentType: mime });
+      const fileSource = getFileLocalPath(imagePickerResponse);
+      const storageRef = createStorageReferenceToFile(imagePickerResponse);
+      return storageRef.putFile(fileSource);
     } catch (e) {
       console.warn(e)
     }
