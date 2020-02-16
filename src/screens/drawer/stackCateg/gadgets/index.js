@@ -37,7 +37,6 @@ class Item extends Component {
   state = { coin: '' }
 
   async componentDidMount() {
-    console.log(this.props.data);
     let uniID = this.props.uniID;
     System.getUniData(uniID).then(universityCb => {
       let coin = universityCb.data().coin;

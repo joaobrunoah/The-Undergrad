@@ -172,7 +172,7 @@ export default class MessageDetail extends Component {
         if (r.key === p.key) {
           let messages = r.val().messages;
           for (let param in messages) {
-            if(messages.hasOwnProperty(param)) {
+            if (messages.hasOwnProperty(param)) {
               let message = messages[param];
               message.id = param;
 
@@ -187,11 +187,11 @@ export default class MessageDetail extends Component {
         }
       });
 
-      await System.setUnread(uid, p.key, 0);
-      messageArray = messageArray.sort((a,b) => {
+      await System.setUnread(uid, p.key, true);
+      messageArray = messageArray.sort((a, b) => {
         return a.id.localeCompare(b.id);
       });
-      await this.setState({messages:messageArray});
+      await this.setState({ messages: messageArray });
     });
   };
 

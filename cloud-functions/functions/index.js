@@ -14,7 +14,6 @@ exports.sendPushNotification = functions.database
 
     if (JSON.stringify(event).indexOf(user_id_to) < 0) {
       // SEND PUSH
-      console.log('SEND PUSH TO USER: ' + user_id_to);
 
       let userObj = await admin
         .firestore()
