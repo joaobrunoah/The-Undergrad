@@ -34,8 +34,12 @@ target 'theUndergrad' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase'
+  pod 'Firebase/Core', '~> 6.13.0'
+  pod 'Firebase/Auth', '~> 6.13.0'
+  pod 'Firebase/Database', '~> 6.13.0'
+  pod 'Firebase/Firestore', '~> 6.13.0'
+  pod 'Firebase/Messaging', '~> 6.13.0'
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
 
   target 'theUndergradTests' do
     inherit! :search_paths

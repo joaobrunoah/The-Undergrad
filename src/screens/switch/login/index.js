@@ -260,15 +260,14 @@ export default class Login extends Component {
 
             <View style={styles.cadContent} />
 
-            <SafeAreaView>
+            <SafeAreaView style={{marginTop: 30}}>
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
                   this.regs;
-                  this.props.navigation.navigate("Cadastro")
+                  this.props.navigation.navigate("Cadastro");
                   Keyboard.dismiss();
                 }}
-                style={{marginTop: 30}}
                 hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
               >
                 <Text style={[globalStyles.textRegular, styles.cadText, {fontSize: 16}]}>
