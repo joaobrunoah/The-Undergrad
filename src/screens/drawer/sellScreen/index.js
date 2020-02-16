@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
+  Platform
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import moment from "moment";
@@ -66,53 +67,32 @@ export default class SellScreen extends Component {
   }
 
   takePhoto = async () => {
-    let s = this.state;
-    //let tempWindowXMLHttpRequest = window.XMLHttpRequest;
-    s.userID = await AsyncStorage.getItem("userUID");
-    //s.temp = tempWindowXMLHttpRequest;
-    s.loadingImg = true;
-    this.setState(s);
 
-    ImagePicker.showImagePicker({}, r => {
-      //window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-      window.Blob = Blob;
-      s.photo = { uri: r.uri };
-      this.setState(s);
-      if (r.uri) {
-        let uri = r.uri.replace("file://", "");
-        let mime = "image/jpeg";
+    const userUID = await AsyncStorage.getItem("userUID");
 
-        let uploadBlob = null;
-        let number = null;
+    this.setState({
+      userID: userUID,
+      loadingImg: true
+    });
 
-        RNFetchBlob.fs
-          .readFile(uri, "base64")
-          .then(data => {
-            return RNFetchBlob.polyfill.Blob.build(data, {
-              type: mime + ";BASE64"
-            });
-          })
-          .then(blob => {
-            uploadBlob = blob;
-            number = Math.floor(Math.random() * 1000000000);
-            return System.setItemImg(s.userID, blob, mime, number);
-          })
-          .then(() => {
-            uploadBlob.close();
-            return System.getURLItemImg(s.userID, number);
-          })
-          .then(url => {
-            let s = this.state;
-            s.sellInfo.pictures = [url];
-            s.loadingImg = false;
-            this.setState(s);
-          })
-          .catch(erro => {
-            console.warn(erro);
-            s.loadingImg = false;
-            this.setState(s);
-          });
+    ImagePicker.showImagePicker({noData: true}, async r => {
+      if(r.didCancel) {
+        this.setState({loadingImg : false});
+        return;
       }
+
+      let uploadResponse = await System.setItemImg(userUID, 'offers', r, Platform.OS);
+
+      const imgUrl = uploadResponse.downloadURL;
+
+      let sellInfo = this.state.sellInfo;
+
+      sellInfo.pictures = [imgUrl];
+      this.setState({
+        sellInfo: sellInfo,
+        photo: {uri: r.uri},
+        loadingImg: false
+      });
     });
   };
 
@@ -190,7 +170,6 @@ export default class SellScreen extends Component {
   };
 
   render() {
-    let s = this.state;
 
     return (
       <LinearGradient
@@ -216,9 +195,9 @@ export default class SellScreen extends Component {
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => {
-              let oldData = s.sellInfo;
+              let oldData = this.state.sellInfo;
               this.setState({
-                categ: s.language === "br" ? "Tecnologia" : "Gadgets",
+                categ: this.state.language === "br" ? "Tecnologia" : "Gadgets",
                 sellInfo: {
                   ...oldData,
                   category: "8PY3ZBsMlNIwhYtEwgGH",
@@ -234,16 +213,16 @@ export default class SellScreen extends Component {
                 { marginVertical: 10, fontSize: 16 }
               ]}
             >
-              {s.textContent.gadgets}
+              {this.state.textContent.gadgets}
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => {
-              let oldData = s.sellInfo;
+              let oldData = this.state.sellInfo;
               this.setState({
-                categ: s.language === "br" ? "Livros" : "Books",
+                categ: this.state.language === "br" ? "Livros" : "Books",
                 sellInfo: {
                   ...oldData,
                   category: "N3iUL6ynRStM5GIHpOvm",
@@ -259,15 +238,15 @@ export default class SellScreen extends Component {
                 { marginVertical: 10, fontSize: 16 }
               ]}
             >
-              {s.textContent.books}
+              {this.state.textContent.books}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => {
-              let oldData = s.sellInfo;
+              let oldData = this.state.sellInfo;
               this.setState({
-                categ: s.language === "br" ? "Roupas" : "Clothing",
+                categ: this.state.language === "br" ? "Roupas" : "Clothing",
                 sellInfo: {
                   ...oldData,
                   category: "cKZwtt8QrAEY3xwcWUJl",
@@ -283,15 +262,15 @@ export default class SellScreen extends Component {
                 { marginVertical: 10, fontSize: 16 }
               ]}
             >
-              {s.textContent.clothing}
+              {this.state.textContent.clothing}
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => {
-              let oldData = s.sellInfo;
+              let oldData = this.state.sellInfo;
               this.setState({
-                categ: s.language === "br" ? "Móveis" : "Furniture",
+                categ: this.state.language === "br" ? "Móveis" : "Furniture",
                 sellInfo: {
                   ...oldData,
                   category: "pafcKINwS2mP1AVVu49T",
@@ -307,7 +286,7 @@ export default class SellScreen extends Component {
                 { marginVertical: 10, fontSize: 16 }
               ]}
             >
-              {s.textContent.furniture}
+              {this.state.textContent.furniture}
             </Text>
           </TouchableOpacity>
         </Modal>
@@ -315,11 +294,7 @@ export default class SellScreen extends Component {
         <ScrollView style={styles.container}>
           <Header back={true} />
           <TouchableOpacity onPress={this.takePhoto} style={styles.uploadArea}>
-            {s.photo === null ? (
-              <Text style={[globalStyles.textSemiBold, styles.uploadText]}>
-                {s.textContent.upImg}
-              </Text>
-            ) : s.loadingImg ? (
+            {this.state.loadingImg ? (
               <View
                 style={{
                   backgroundColor: "#FFF4",
@@ -331,24 +306,28 @@ export default class SellScreen extends Component {
               >
                 <ActivityIndicator size="large" color="#FFF" />
               </View>
+            ) : this.state.photo === null ? (
+              <Text style={[globalStyles.textSemiBold, styles.uploadText]}>
+                {this.state.textContent.upImg}
+              </Text>
             ) : (
-                  <Image
-                    source={s.photo}
-                    style={{ height: "100%", width: "100%" }}
-                    resizeMode="stretch"
-                  />
-                )}
+              <Image
+                source={this.state.photo}
+                style={{ height: "100%", width: "100%" }}
+                resizeMode="cover"
+              />
+            )}
           </TouchableOpacity>
           <TextInput
             multiline={false}
             maxLength={80}
-            value={s.sellInfo.description}
+            value={this.state.sellInfo.description}
             onChangeText={text => {
-              let oldData = s.sellInfo;
+              let oldData = this.state.sellInfo;
               this.setState({ sellInfo: { ...oldData, description: text } });
             }}
             style={[globalStyles.textRegular, styles.description]}
-            placeholder={s.textContent.description}
+            placeholder={this.state.textContent.description}
           />
           <TouchableOpacity
             activeOpacity={0.7}
@@ -357,14 +336,14 @@ export default class SellScreen extends Component {
             }}
             style={[styles.description, { justifyContent: "center" }]}
           >
-            <Text style={[globalStyles.textRegular]}>{s.categ}</Text>
+            <Text style={[globalStyles.textRegular]}>{this.state.categ}</Text>
           </TouchableOpacity>
           <TextInput
             multiline={true}
             maxLength={150}
-            value={s.sellInfo.price}
+            value={this.state.sellInfo.price}
             onChangeText={text => {
-              let oldData = s.sellInfo;
+              let oldData = this.state.sellInfo;
               this.setState({
                 sellInfo: { ...oldData, price: text }
               });
@@ -378,19 +357,19 @@ export default class SellScreen extends Component {
                 textAlign: "center"
               }
             ]}
-            placeholder={s.textContent.price}
+            placeholder={this.state.textContent.price}
           />
           <TouchableOpacity
-            disabled={s.loadingImg ? false : s.loading ? s.loading : s.loading}
+            disabled={this.state.loadingImg ? false : this.state.loading}
             activeOpacity={0.7}
             onPress={this.upOffer}
             style={styles.uploadOfferButton}
           >
-            {s.loading ? (
+            {this.state.loading ? (
               <ActivityIndicator size="small" color="#FFF" />
             ) : (
                 <Text style={[globalStyles.textSemiBold, styles.uploadOffer]}>
-                  {s.textContent.upOffer}
+                  {this.state.textContent.upOffer}
                 </Text>
               )}
           </TouchableOpacity>
