@@ -187,13 +187,20 @@ export default class MessageDetail extends Component {
           }
         }
       });
-      console.log('here');
 
       messageArray = messageArray.sort((a, b) => {
-        return a.id.localeCompare(b.id);
+        if(a && a.id && b && b.id) {
+          return a.id.localeCompare(b.id);
+        } else {
+          if (!a || !a.id) {
+            return -1;
+          } else {
+            return 1;
+          }
+        }
       });
       await this.setState({ messages: messageArray });
-    });
+    }, 'Actual Conversation');
   };
 
   render() {

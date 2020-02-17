@@ -82,10 +82,10 @@ export class Message extends Component {
     var s = this.state;
     var messages;
 
-    await System.getListaConversas(s.uid, async r => {
+    System.getListaConversas(s.uid, async r => {
       messages = r.toJSON()[this.props.data.key]["unreadMessages"];
       this.setState({ unread: String(messages) });
-    });
+    }, 'Message Item');
   }
 
 

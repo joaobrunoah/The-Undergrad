@@ -60,7 +60,7 @@ export default class MessagesList extends Component {
         loading,
         conversas
       });
-    });
+    }, 'Message List');
   }
 
   lastMsg(item) {

@@ -7,6 +7,10 @@ const firebaseAppDatabase = firebase.database();
 
 class System {
 
+  static conversas = [];
+  static isWatcherRunning = false;
+  static messagesCb = {};
+
   // Função para deslogar do sistema
   async logOut() {
     await firebaseAppAuth.signOut();
@@ -265,15 +269,37 @@ class System {
     }
   }
 
+  watchMessages(uid) {
+    if(!System.isWatcherRunning) {
+      System.isWatcherRunning = true;
+      firebaseAppDatabase
+        .ref("chats")
+        .child(uid)
+        .on("value", (r) => {
+          console.log('here!');
+          System.conversas = r;
+          for (let prop in System.messagesCb) {
+            if(System.messagesCb.hasOwnProperty(prop)) {
+              console.log(prop);
+              System.messagesCb[prop](r);
+            }
+          }
+        });
+    }
+  }
+
   //Verifica atualizações do Chat
-  async getListaConversas(uid, callback) {
-    firebaseAppDatabase
-      .ref("chats")
-      .child(uid)
-      .on("value", (r) => {
-        console.log('here!');
-        callback(r);
-      });
+  getListaConversas(uid, callback, callbackName) {
+
+    if(callbackName) {
+      System.messagesCb[callbackName] = callback;
+    }
+
+    this.watchMessages(uid);
+
+    if(System.conversas) {
+      callback(System.conversas);
+    }
   }
 
   // Envia mensagem
@@ -317,16 +343,6 @@ class System {
     } catch (e) {
       console.warn(e)
     }
-  }
-
-  async getAllUnread(uid) {
-    var unread;
-    this.getListaConversas(uid, async r => {
-      r.forEach(r => {
-        unread += r.val().unreadMessages;
-      });
-    });
-
   }
 
   async AsyncStorageContent() {

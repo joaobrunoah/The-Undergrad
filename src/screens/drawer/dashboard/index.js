@@ -87,12 +87,12 @@ export default class Dashboard extends Component {
     this.getInfo();
 
     System.getListaConversas(s.uid, async r => {
-      s.unreadMessages = 0
+      s.unreadMessages = 0;
       r.forEach(r => {
         s.unreadMessages += r.val().unreadMessages;
       });
       this.setState(s)
-    });
+    }, 'UnreadMessages');
   }
 
   getInfo = async () => {
