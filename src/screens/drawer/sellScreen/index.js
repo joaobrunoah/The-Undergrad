@@ -343,6 +343,11 @@ export default class SellScreen extends Component {
             maxLength={150}
             value={this.state.sellInfo.price}
             onChangeText={text => {
+
+              if(isNaN(text)) {
+                return;
+              }
+
               let oldData = this.state.sellInfo;
               this.setState({
                 sellInfo: { ...oldData, price: text }
