@@ -266,9 +266,6 @@ export default class Perfil extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
-              <Text style={[globalStyles.textBold, { fontSize: 16 }]}>
-                {s.userData.name === "" ? s.textContent.name : s.userData.name}
-              </Text>
             </View>
             <View style={[styles.statsItems, { maxWidth: 75, width: 75 }]}>
               <Text style={globalStyles.textBold}>{s.textContent.stars}</Text>
@@ -277,6 +274,9 @@ export default class Perfil extends Component {
               </Text>
             </View>
           </View>
+          <Text style={[globalStyles.textBold, { fontSize: 16, width: '100%', textAlign: 'center' }]}>
+            {s.userData.name === "" ? s.textContent.name : s.userData.name}
+          </Text>
           <TouchableOpacity
             style={styles.itemsForSale}
             onPress={() => this.props.navigation.navigate("ItemsForSale")}

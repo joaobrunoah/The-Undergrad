@@ -160,9 +160,6 @@ export default class Details extends Component {
                         )}
                     </View>
                   </View>
-                  <Text style={[globalStyles.textBold, { fontSize: 16 }]}>
-                    {s.userInfo.name}
-                  </Text>
                 </View>
                 <View style={[styles.statsItems, { maxWidth: 75, width: 75 }]}>
                   <Text style={globalStyles.textBold}>
@@ -171,6 +168,9 @@ export default class Details extends Component {
                   <Text style={globalStyles.textBold}>{s.userInfo.rank}</Text>
                 </View>
               </View>
+              <Text style={[globalStyles.textBold, { fontSize: 16, textAlign: 'center', width: '100%' }]}>
+                {s.userInfo.name}
+              </Text>
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
