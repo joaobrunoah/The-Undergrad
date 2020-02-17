@@ -48,7 +48,6 @@ export default class Login extends Component {
     this.state = {
       email: "",
       pass: "",
-      emailVerified: false,
       userUID: "",
       active: false,
       textContent: {},
@@ -68,7 +67,6 @@ export default class Login extends Component {
     } else if (language === "usa") {
       s.textContent = textUsa;
     }
-
     this.setState(s);
   }
 
@@ -79,54 +77,59 @@ export default class Login extends Component {
     s.disabled = true;
     s.opacity = { opacity: 0.7 };
     this.setState(s);
-
+    // System.addAuthListener(async user => {
+    //   if (user) {
+    //     s.emailVerified = user.emailVerified;
+    //     console.log('here1');
+    //     s.userUID = user.uid;
+    //     await AsyncStorage.setItem("userUID", user.uid);
+    //     this.setState(s);
+    //   }
+    // });
+    System.signOut();
     if (s.email !== "" && s.pass !== "") {
-      System.addAuthListener(async user => {
-        if (user) {
-          s.emailVerified = user.emailVerified;
-          s.userUID = user.uid;
-          await AsyncStorage.setItem("userUID", user.uid);
-          this.setState(s);
-        }
-      });
       System.login(s.email, s.pass)
-      .then(async () => {
-        if (s.emailVerified) {
-          System.getUserInfo(s.userUID)
-          .then(r => {
-            s.active = r.data().active;
-            this.setState(s);
-          })
-          .then(async () => {
-            if (s.active) {
-              await AsyncStorage.setItem("isOn", "true")
-              .then(
-                await AsyncStorage.setItem("email", s.email).then(
-                  await AsyncStorage.setItem("pass", s.pass)
-                )
-              )
-              .then(() => {
-                const resetAction = StackActions.reset({
-                  index: 0,
-                  actions: [NavigationActions.navigate({ routeName: "Home" })]
-                });
-                this.props.navigation.dispatch(resetAction);
-              });
-            } else {
-              Alert.alert(s.textContent.titleError, s.textContent.error_4);
-              s.disabled = false;
-              s.loading = false;
-              s.opacity = 1;
+        .then(async () => {
+          let user = System.getUser();
+          console.log(user);
+          await AsyncStorage.setItem("userUID", user.uid);
+          System.getUserInfo(user.uid)
+            .then(r => {
+              s.active = r.data().active;
               this.setState(s);
-            }
-          });
-        } else {
-          Alert.alert(s.textContent.titleError, s.textContent.error_3);
-          s.disabled = false;
-          s.loading = false;
-          s.opacity = 1;
-          this.setState(s);
-        }
+            })
+            .then(async () => {
+              if (s.active) {
+                await AsyncStorage.setItem("isOn", "true")
+                  .then(
+                    await AsyncStorage.setItem("email", s.email).then(
+                      await AsyncStorage.setItem("pass", s.pass)
+                    )
+                  )
+                  .then(() => {
+                    if (!System.getUser().emailVerified) {
+                      Alert.alert(s.textContent.titleError, s.textContent.error_3);
+                      s.disabled = false;
+                      s.loading = false;
+                      s.opacity = 1;
+                      this.setState(s);
+                      System.signOut();
+                    } else {
+                      const resetAction = StackActions.reset({
+                        index: 0,
+                        actions: [NavigationActions.navigate({ routeName: "Home" })]
+                      });
+                      this.props.navigation.dispatch(resetAction);
+                    }
+                  });
+              } else {
+                Alert.alert(s.textContent.titleError, s.textContent.error_4);
+                s.disabled = false;
+                s.loading = false;
+                s.opacity = 1;
+                this.setState(s);
+              }
+            });
         })
         .catch(err => {
           console.warn(err);
@@ -181,62 +184,62 @@ export default class Login extends Component {
           >
             <SafeAreaView>
               {/* <Transition shared="logo"> */}
-                <View style={styles.logoContent}>
-                  <Image style={styles.logo} source={mainLogo} />
-                  <Text style={[globalStyles.textRegular, styles.mainText]}>
-                    The Undergrad
+              <View style={styles.logoContent}>
+                <Image style={styles.logo} source={mainLogo} />
+                <Text style={[globalStyles.textRegular, styles.mainText]}>
+                  The Undergrad
                   </Text>
-                </View>
+              </View>
               {/* </Transition> */}
 
               {/* <Transition disappear="left" inline={true} delay={true}> */}
-                <View style={styles.inputContent}>
-                  <TextInput
-                    onSubmitEditing={() => this.senhaInput.focus()}
-                    style={[styles.inputArea, globalStyles.textRegular]}
-                    multiline={false}
-                    autoCapitalize="none"
-                    autoCorrect={false}
-                    returnKeyType="next"
-                    value={s.email}
-                    onChangeText={email => {
-                      this.setState({ email: email });
-                    }}
-                    keyboardType="email-address"
-                    placeholderTextColor="#999"
-                    placeholder={s.textContent.emailInput}
-                  />
-                  <TextInput
-                    ref={input => (this.senhaInput = input)}
-                    style={[styles.inputArea, globalStyles.textRegular]}
-                    multiline={false}
-                    autoCorrect={false}
-                    returnKeyType="go"
-                    value={s.pass}
-                    secureTextEntry={true}
-                    onSubmitEditing={this.signIn}
-                    onChangeText={pass => {
-                      this.setState({ pass: pass });
-                    }}
-                    placeholder={s.textContent.passInput}
-                    placeholderTextColor="#999"
-                  />
-                </View>
+              <View style={styles.inputContent}>
+                <TextInput
+                  onSubmitEditing={() => this.senhaInput.focus()}
+                  style={[styles.inputArea, globalStyles.textRegular]}
+                  multiline={false}
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  returnKeyType="next"
+                  value={s.email}
+                  onChangeText={email => {
+                    this.setState({ email: email });
+                  }}
+                  keyboardType="email-address"
+                  placeholderTextColor="#999"
+                  placeholder={s.textContent.emailInput}
+                />
+                <TextInput
+                  ref={input => (this.senhaInput = input)}
+                  style={[styles.inputArea, globalStyles.textRegular]}
+                  multiline={false}
+                  autoCorrect={false}
+                  returnKeyType="go"
+                  value={s.pass}
+                  secureTextEntry={true}
+                  onSubmitEditing={this.signIn}
+                  onChangeText={pass => {
+                    this.setState({ pass: pass });
+                  }}
+                  placeholder={s.textContent.passInput}
+                  placeholderTextColor="#999"
+                />
+              </View>
               {/* </Transition> */}
 
               {/* <Transition shared="botao1"> */}
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  style={[styles.buttons, s.buttonRes, s.opacity]}
-                  onPress={this.signIn}
-                  disabled={s.buttonDisable}
-                >
-                  <Text style={[globalStyles.textRegular, styles.textButton]}>
-                    {s.loading
-                      ? s.textContent.loading
-                      : s.textContent.loginButton}
-                  </Text>
-                </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                style={[styles.buttons, s.buttonRes, s.opacity]}
+                onPress={this.signIn}
+                disabled={s.buttonDisable}
+              >
+                <Text style={[globalStyles.textRegular, styles.textButton]}>
+                  {s.loading
+                    ? s.textContent.loading
+                    : s.textContent.loginButton}
+                </Text>
+              </TouchableOpacity>
               {/* </Transition> */}
               <TouchableOpacity
                 hitSlop={{ bottom: 30, top: 0, right: 20, left: 20 }}
@@ -260,7 +263,7 @@ export default class Login extends Component {
 
             <View style={styles.cadContent} />
 
-            <SafeAreaView style={{marginTop: 30}}>
+            <SafeAreaView style={{ marginTop: 30 }}>
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
@@ -270,7 +273,7 @@ export default class Login extends Component {
                 }}
                 hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
               >
-                <Text style={[globalStyles.textRegular, styles.cadText, {fontSize: 16}]}>
+                <Text style={[globalStyles.textRegular, styles.cadText, { fontSize: 16 }]}>
                   {s.textContent.noCad}
                 </Text>
               </TouchableOpacity>
