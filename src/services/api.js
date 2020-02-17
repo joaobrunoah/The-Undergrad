@@ -5,26 +5,31 @@ const firebaseAppAuth = firebase.auth();
 const firebaseAppFirestore = firebase.firestore();
 const firebaseAppDatabase = firebase.database();
 
+
 class System {
 
   static conversas = [];
   static isWatcherRunning = false;
   static messagesCb = {};
+  static user = null;
 
   // Função para deslogar do sistema
   async logOut() {
-    await firebaseAppAuth.signOut();
-    // await AsyncStorage.multiRemove(["email", "pass", "userUID"]);
     await AsyncStorage.clear();
+    await firebaseAppAuth.signOut();
+  }
+
+  async signOut() {
+    await firebaseAppAuth.signOut();
+    let language = await AsyncStorage.getItem("language");
+    await AsyncStorage.clear();
+    await AsyncStorage.setItem("language", language);
+
   }
 
   // Verificar se existe um usuário logado
   async addAuthListener(callback) {
-    try {
-      await firebaseAppAuth.onAuthStateChanged(callback);
-    } catch (e) {
-      console.warn(e)
-    }
+    await firebaseAppAuth.onAuthStateChanged(callback);
   }
 
   async isSignedIn() {
@@ -43,11 +48,7 @@ class System {
 
   // Register
   async register(email, pass) {
-    try {
-      return await firebaseAppAuth.createUserWithEmailAndPassword(email, pass);
-    } catch (e) {
-      return console.warn(e)
-    }
+    return await firebaseAppAuth.createUserWithEmailAndPassword(email, pass);
   }
 
   // Esqueci a senha
@@ -354,6 +355,18 @@ class System {
       });
     });
   }
+
+  getUser() {
+    return System.user;
+  }
 }
 
+firebaseAppAuth.onAuthStateChanged(async user => {
+  if (user) {
+
+    System.user = user;
+  }
+});
+
 export default new System();
+
