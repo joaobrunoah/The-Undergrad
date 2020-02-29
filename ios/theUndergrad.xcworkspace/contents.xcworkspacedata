@@ -2,9 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/joaobrunoah/WebstormProjects/The-Undergrad/ios/GoogleService-Info.plist">
-   </FileRef>
-   <FileRef
       location = "group:theUndergrad.xcodeproj">
    </FileRef>
    <FileRef

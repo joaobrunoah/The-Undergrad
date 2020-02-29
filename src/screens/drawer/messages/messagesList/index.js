@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { ActivityIndicator, View, Text, TouchableOpacity, Alert } from "react-native";
+import { ActivityIndicator, View, Text, TouchableOpacity, Alert, FlatList } from "react-native";
 import AsyncStorage from "@react-native-community/async-storage";
-import { SwipeListView } from "react-native-swipe-list-view";
 
 // Icon
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
@@ -102,7 +101,7 @@ export default class MessagesList extends Component {
     let s = this.state;
 
     return (
-      <View>
+      <View style={{display: 'flex', flexDirection:'column', height: '100%', width: '100%'}}>
         {s.loading
           ? <View
             style={{
@@ -114,8 +113,8 @@ export default class MessagesList extends Component {
           >
             <ActivityIndicator size="large" color="#0008" />
           </View>
-          : <SwipeListView
-            rightOpenValue={-75}
+          : <FlatList
+            style={{ flex: 1}}
             // Order by last message sent
             data={s.conversas.sort((a,b) => {
               const lastTalkTime = (obj) => {
@@ -131,7 +130,6 @@ export default class MessagesList extends Component {
             })}
             disableRightSwipe
             renderItem={({ item }) => {
-
               return (<Message
                 data={item}
                 msg={this.lastMsg(item)}

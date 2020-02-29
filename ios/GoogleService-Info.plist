@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>712368372491-8dm71bkkpfulv6sb8oopbmk482keq6vi.apps.googleusercontent.com</string>
+	<string>712368372491-2lar3rbh5eef69p44dddhu61o98sb0oo.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.712368372491-8dm71bkkpfulv6sb8oopbmk482keq6vi</string>
+	<string>com.googleusercontent.apps.712368372491-2lar3rbh5eef69p44dddhu61o98sb0oo</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>712368372491-25dukf5g06cmmrapgukb35nu4p49sq0g.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.fluxosconsultoria.theundergrad</string>
+	<string>com.TheUndergrad</string>
 	<key>PROJECT_ID</key>
 	<string>app-venda</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:712368372491:ios:64cde6e88db53e5a</string>
+	<string>1:712368372491:ios:1621202ff1daf26021400e</string>
 	<key>DATABASE_URL</key>
 	<string>https://app-venda.firebaseio.com</string>
 </dict>
