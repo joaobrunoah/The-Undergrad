@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { TouchableOpacity, Image, View, Text, ScrollView } from "react-native";
+import React, {Component} from "react";
+import {TouchableOpacity, Image, View, Text, ScrollView, SafeAreaView} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
 
@@ -10,7 +10,7 @@ import System from "../../../../services/api";
 import Icon from "react-native-vector-icons/FontAwesome5";
 
 // Textos
-import { textBr, textUsa } from "../../../../assets/content/mainRoute/categs";
+import {textBr, textUsa} from "../../../../assets/content/mainRoute/categs";
 
 //Styles
 import {
@@ -61,7 +61,7 @@ export default class Details extends Component {
         s.userInfo = r.data();
         s.sellerUID = uid[2];
         if (s.userInfo.imgProfile) {
-          s.photo = { uri: s.userInfo.imgProfile };
+          s.photo = {uri: s.userInfo.imgProfile};
         } else {
           s.photo = "";
         }
@@ -73,7 +73,7 @@ export default class Details extends Component {
 
         System.getUniData(s.uniID).then(universityCb => {
           let coin = universityCb.data().coin;
-          this.setState({ coin: coin });
+          this.setState({coin: coin});
         });
       })
       .catch(e => {
@@ -97,112 +97,114 @@ export default class Details extends Component {
     let s = this.state;
 
     return (
-      <LinearGradient
-        colors={colorsGradient}
-        start={startGradient}
-        end={endGradient}
-        style={globalStyles.screen}
-      >
-        <View style={styles.container}>
-          <Header back={true} />
-          <ScrollView>
-            <View style={{ alignItems: "center" }}>
-              <View
-                style={{
-                  marginTop: 10,
-                  width: "90%",
-                  height: 200,
-                  borderRadius: 10,
-                  borderWidth: 0.5,
-                  borderColor: "#0006",
-                  backgroundColor: "#FFF",
-                  justifyContent: "center",
-                  alignItems: "center"
-                }}
-              >
-                <Image
-                  style={{ width: "100%", height: "100%", borderRadius: 10 }}
-                  source={{ uri: s.data.pictures[0] }}
-                />
-              </View>
-              <View style={{ marginTop: 10 }}>
-                <Text
-                  style={[
-                    globalStyles.textBold,
-                    { paddingHorizontal: 20, fontSize: 18, textAlign: "center" }
-                  ]}
+      <SafeAreaView style={styles.container}>
+        <LinearGradient
+          colors={colorsGradient}
+          start={startGradient}
+          end={endGradient}
+          style={globalStyles.screen}
+        >
+          <View style={styles.container}>
+            <Header back={true}/>
+            <ScrollView>
+              <View style={{alignItems: "center"}}>
+                <View
+                  style={{
+                    marginTop: 10,
+                    width: "90%",
+                    height: 200,
+                    borderRadius: 10,
+                    borderWidth: 0.5,
+                    borderColor: "#0006",
+                    backgroundColor: "#FFF",
+                    justifyContent: "center",
+                    alignItems: "center"
+                  }}
                 >
-                  {s.data.description}
-                </Text>
-              </View>
-              <View style={{ alignItems: "center" }}>
-                <Text style={globalStyles.textBold}>
-                  {s.textContent.price} {this.state.coin ? this.state.coin : '$'} {Number(s.data.price).toFixed(2)}
-                </Text>
-              </View>
-              <View style={styles.stats}>
-                <View style={[styles.statsItems, { maxWidth: 75, width: 75 }]}>
-                  <Text style={globalStyles.textBold}>
-                    {s.textContent.sales}
-                  </Text>
-                  <Text style={globalStyles.textBold}>{s.sales}</Text>
+                  <Image
+                    style={{width: "100%", height: "100%", borderRadius: 10}}
+                    source={{uri: s.data.pictures[0]}}
+                  />
                 </View>
-                <View style={styles.statsItems}>
-                  <View style={styles.giantCircle}>
-                    <View style={styles.mediumCircle}>
-                      {s.photo === "" ? (
-                        <Icon name="user" size={30} color="#737373" solid />
-                      ) : (
+                <View style={{marginTop: 10}}>
+                  <Text
+                    style={[
+                      globalStyles.textBold,
+                      {paddingHorizontal: 20, fontSize: 18, textAlign: "center"}
+                    ]}
+                  >
+                    {s.data.description}
+                  </Text>
+                </View>
+                <View style={{alignItems: "center"}}>
+                  <Text style={globalStyles.textBold}>
+                    {s.textContent.price} {this.state.coin ? this.state.coin : '$'} {Number(s.data.price).toFixed(2)}
+                  </Text>
+                </View>
+                <View style={styles.stats}>
+                  <View style={[styles.statsItems, {maxWidth: 75, width: 75}]}>
+                    <Text style={globalStyles.textBold}>
+                      {s.textContent.sales}
+                    </Text>
+                    <Text style={globalStyles.textBold}>{s.sales}</Text>
+                  </View>
+                  <View style={styles.statsItems}>
+                    <View style={styles.giantCircle}>
+                      <View style={styles.mediumCircle}>
+                        {s.photo === "" ? (
+                          <Icon name="user" size={30} color="#737373" solid/>
+                        ) : (
                           <Image
-                            style={{ width: 100, height: 100, borderRadius: 50 }}
+                            style={{width: 100, height: 100, borderRadius: 50}}
                             source={s.photo}
                           />
                         )}
+                      </View>
                     </View>
                   </View>
+                  <View style={[styles.statsItems, {maxWidth: 75, width: 75}]}>
+                    <Text style={globalStyles.textBold}>
+                      {s.textContent.star}
+                    </Text>
+                    <Text style={globalStyles.textBold}>{s.userInfo.rank}</Text>
+                  </View>
                 </View>
-                <View style={[styles.statsItems, { maxWidth: 75, width: 75 }]}>
-                  <Text style={globalStyles.textBold}>
-                    {s.textContent.star}
-                  </Text>
-                  <Text style={globalStyles.textBold}>{s.userInfo.rank}</Text>
-                </View>
-              </View>
-              <Text style={[globalStyles.textBold, { fontSize: 16, textAlign: 'center', width: '100%' }]}>
-                {s.userInfo.name}
-              </Text>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                onPress={() => {
-                  this.props.navigation.navigate("MessageDetail", {
-                    data: { key: s.sellerUID },
-                    data2: s.data
-                  });
-                }}
-                style={{
-                  marginTop: 20,
-                  marginBottom: 20,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  backgroundColor: "#0008",
-                  paddingVertical: 10,
-                  paddingHorizontal: 20,
-                  borderRadius: 10
-                }}
-              >
-                <Text
-                  style={[
-                    globalStyles.textSemiBold,
-                    { color: "#FFF", fontSize: 16 }
-                  ]}
-                >
-                  {s.textContent.message}
+                <Text style={[globalStyles.textBold, {fontSize: 16, textAlign: 'center', width: '100%'}]}>
+                  {s.userInfo.name}
                 </Text>
-              </TouchableOpacity>
-            </View>
-          </ScrollView>
-        </View>
-      </LinearGradient>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  onPress={() => {
+                    this.props.navigation.navigate("MessageDetail", {
+                      data: {key: s.sellerUID},
+                      data2: s.data
+                    });
+                  }}
+                  style={{
+                    marginTop: 20,
+                    marginBottom: 20,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: "#0008",
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    borderRadius: 10
+                  }}
+                >
+                  <Text
+                    style={[
+                      globalStyles.textSemiBold,
+                      {color: "#FFF", fontSize: 16}
+                    ]}
+                  >
+                    {s.textContent.message}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </ScrollView>
+          </View>
+        </LinearGradient>
+      </SafeAreaView>
     );
   }
 }

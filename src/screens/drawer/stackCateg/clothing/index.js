@@ -34,7 +34,7 @@ import Header from "../../../../assets/components/header";
 
 class Item extends Component {
 
-  state = { coin: '' }
+  state = { coin: '' };
 
   async componentDidMount() {
     let uniID = this.props.uniID;
@@ -78,18 +78,20 @@ class Item extends Component {
             {p.description}
           </Text>
         </View>
-        <Image
-          source={{ uri: p.pictures[0] }}
-          style={{
-            zIndex: 0,
-            position: "absolute",
-            width: "100%",
-            height: 110,
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-            top: 0
-          }}
-        />
+        {(p.pictures.length > 0 && p.pictures[0] !== null && p.pictures[0] !== "") ?
+          <Image
+            source={{ uri: p.pictures[0] }}
+            style={{
+              zIndex: 0,
+              position: "absolute",
+              width: "100%",
+              height: 110,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              top: 0
+            }}
+          /> : null
+        }
         <View
           style={{
             zIndex: 6,
@@ -140,37 +142,32 @@ export default class Clothing extends Component {
 
     this.setState(s);
 
-    System.getUserInfo(s.userUid).then(r => {
-      s.userInfo = r.data();
-      let uni = r.data().university.split("/", 2);
-      s.uniID = uni[1];
-      this.setState(s);
-    });
+    let userInfoObj = await System.getUserInfo(s.userUid);
+    s.userInfo = userInfoObj.data();
+    let uni = userInfoObj.data().university.split("/", 2);
+    s.uniID = uni[1];
+    this.setState(s);
 
-    System.getCategories("Clothing")
-      .then(r => {
-        let data = r.docs;
-        data.forEach(doc => {
-          let id = doc.id;
-          System.getItemsCateg(id).then(r => {
-            r.forEach(doc => {
-              let auxUni = doc.data().university.split("/", 3);
-              let auxUserUni = s.userInfo.university.split("/", 2);
-              if (auxUni[2] === auxUserUni[1]) {
-                s.itemsForSale.push(doc.data());
-                this.setState(s);
-              } else {
-                return;
-              }
-            });
-          });
+    try {
+      let categoryObj = await System.getCategories("Clothing");
+      let data = categoryObj.docs;
+      for (const doc of data) {
+        let id = doc.id;
+        let itemsCategObj = await System.getItemsCateg(id);
+        itemsCategObj.forEach(doc => {
+          let auxUni = doc.data().university.split("/", 3);
+          let auxUserUni = s.userInfo.university.split("/", 2);
+          if (auxUni[2] === auxUserUni[1]) {
+            s.itemsForSale.push(doc.data());
+            this.setState(s);
+          }
         });
-        s.loading = false;
-        this.setState(s);
-      })
-      .catch(e => {
-        console.warn(e);
-      });
+      }
+      s.loading = false;
+      this.setState(s);
+    } catch (err) {
+      console.warn(err);
+    }
   }
 
   render() {
