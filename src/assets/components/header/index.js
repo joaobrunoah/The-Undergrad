@@ -15,6 +15,7 @@ export class Header extends Component {
 
     this.state = {
       back: this.props.back,
+      backCb: this.props.backCb,
       msg: this.props.back,
       categs: this.props.categ,
       hitSlop: { top: 20, bottom: 20, left: 20, right: 20 }
@@ -41,6 +42,9 @@ export class Header extends Component {
               hitSlop={s.hitSlop}
               activeOpacity={0.5}
               onPress={() => {
+                if(s.backCb) {
+                  s.backCb();
+                }
                 this.props.navigation.goBack();
               }}
             >

@@ -31,10 +31,9 @@ export class Message extends Component {
       uni: "",
       messages: [],
       lastMessage: "",
-      unread: 0,
+      unread: p.unreadMessages ? p.unreadMessages : 0,
       uid: this.props.uid,
     };
-    this.unread();
   }
 
   messageDetail = () => {
@@ -54,40 +53,12 @@ export class Message extends Component {
     });
   }
 
-  // loadMessages = async () => {
-  //   let s = this.state;
-  //   let uid = await AsyncStorage.getItem("userUID");
-  //   let p = this.props.data;
-
-  //   System.getListaConversas(uid, async r => {
-  //     s.messages = [];
-  //     r.forEach(r => {
-  //       if (r.key === p.key) {
-  //         let messages = r.val().messages;
-  //         Object.values(messages).forEach(r => {
-  //           s.messages.push({
-  //             hour: r.hour,
-  //             user: r.user,
-  //             message: r.message
-  //           });
-  //         });
-  //         s.lastMessage = s.messages[s.messages.length - 1].message
-  //       }
-  //     });
-  //     await this.setState(s);
-  //   })
-  // };
-
-  async unread() {
-    var s = this.state;
-    var messages;
-
-    System.getListaConversas(s.uid, async r => {
-      messages = r.toJSON()[this.props.data.key]["unreadMessages"];
-      this.setState({ unread: String(messages) });
-    }, 'Message Item');
+  componentWillReceiveProps(nextProps){
+    let p = nextProps.data;
+    this.setState({
+      unread: p.unreadMessages ? p.unreadMessages : 0
+    });
   }
-
 
   render() {
     let s = this.state;
@@ -127,7 +98,7 @@ export class Message extends Component {
             </Text>
           </View>
         </SafeAreaView>
-        {this.state.unread != 0 ?
+        {this.state.unread !== 0 ?
           <View style={styles.unread}>
             <Text
               style={{ color: "white", textAlign: "center", fontWeight: "600" }}

@@ -277,11 +277,9 @@ class System {
         .ref("chats")
         .child(uid)
         .on("value", (r) => {
-          console.log('here!');
           System.conversas = r;
           for (let prop in System.messagesCb) {
             if(System.messagesCb.hasOwnProperty(prop)) {
-              console.log(prop);
               System.messagesCb[prop](r);
             }
           }
@@ -303,10 +301,16 @@ class System {
     }
   }
 
+  //Verifica atualizações do Chat
+  removeListaConversas(callbackName) {
+    if(callbackName) {
+      System.messagesCb[callbackName] = () => {};
+    }
+  }
+
   // Envia mensagem
   async sendMessage(uid, sentUid, data) {
     try {
-      await this.setUnread(sentUid, uid, false);
       await firebaseAppDatabase
         .ref("chats")
         .child(uid)

@@ -40,7 +40,7 @@ exports.sendPushNotification = functions.database
       // Notification details.
       const payload = {
         notification: {
-          title: `${name} disse:`,
+          title: `${name}:`,
           body: `${eventObj.message}`,
           icon: 'icon',
         },

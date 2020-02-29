@@ -50,8 +50,8 @@ export class Mensagem extends Component {
     let style = {
       paddingVertical: 5,
       paddingHorizontal: 10,
-      maxWidth: 200,
-      marginVertical: 5,
+      maxWidth: 300,
+      marginVertical: 2,
       borderRadius: 10
     };
 
@@ -150,10 +150,11 @@ export default class MessageDetail extends Component {
       message: prefixo + s.newMessage
     };
 
-    System.sendMessage(s.uid, p.key, data);
+    await System.setUnread(p.key, s.uid, false);
+    await System.sendMessage(s.uid, p.key, data);
 
     if (s.uid !== p.key) {
-      System.sendMessage(p.key, s.uid, data);
+      await System.sendMessage(p.key, s.uid, data);
     }
 
     await this.setState({ newMessage: "" });
@@ -171,6 +172,7 @@ export default class MessageDetail extends Component {
       let messageArray = [];
       r.forEach(r => {
         if (r.key === p.key) {
+          System.setUnread(uid, p.key,true);
           let messages = r.val().messages;
           for (let param in messages) {
             if (messages.hasOwnProperty(param)) {
@@ -180,6 +182,7 @@ export default class MessageDetail extends Component {
               messageArray.push({
                 id: message.id,
                 hour: message.hour,
+                full_date: message.full_date,
                 user: message.user,
                 message: message.message
               });
@@ -189,17 +192,18 @@ export default class MessageDetail extends Component {
       });
 
       messageArray = messageArray.sort((a, b) => {
-        if(a && a.id && b && b.id) {
-          return a.id.localeCompare(b.id);
+        if(a && a.full_date && b && b.full_date) {
+          return b.full_date.localeCompare(a.full_date);
         } else {
-          if (!a || !a.id) {
-            return -1;
-          } else {
+          if (!a || !a.full_date) {
             return 1;
+          } else {
+            return -1;
           }
         }
       });
-      await this.setState({ messages: messageArray });
+
+      this.setState({ messages: messageArray });
     }, 'Actual Conversation');
   };
 
@@ -222,7 +226,9 @@ export default class MessageDetail extends Component {
             opacity: 0.8
           }}
         >
-          <Header back={true} />
+          <Header back={true} backCb={() => {
+            System.removeListaConversas('Actual Conversation');
+          }}/>
         </SafeAreaView>
 
         <SafeAreaView style={styles.container}>
@@ -235,14 +241,14 @@ export default class MessageDetail extends Component {
             }}
           >
             <FlatList
+              inverted
               style={{ marginTop: 10 }}
-              ref="flatList"
-              onContentSizeChange={() => this.refs.flatList.scrollToEnd()}
+              contentContainerStyle={{ paddingTop: 10, paddingBottom: 10}}
               data={s.messages}
               renderItem={({ item }) => (
                 <Mensagem data={item} user={item.user} />
               )}
-              keyExtractor={(item, index) => index}
+              keyExtractor={(item, index) => item.id+''+index}
             />
           </View>
           <View style={styles.messageTextArea}>

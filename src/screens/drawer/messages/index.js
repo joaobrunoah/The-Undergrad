@@ -20,25 +20,47 @@ import MessagesList from "./messagesList";
 
 //TextContent
 import { textBr, textUsa } from "../../../assets/content/mainRoute/messages";
+import System from "../../../services/api";
 
 export default class Messages extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      textContent: {}
+      textContent: {},
+      conversas: [],
+      loading: true
     };
   }
 
   async componentDidMount() {
     let s = this.state;
     s.language = await AsyncStorage.getItem("language");
+    const uid = await AsyncStorage.getItem("userUID");
 
     if (s.language === "br") {
       s.textContent = textBr;
     } else if (s.language === "usa") {
       s.textContent = textUsa;
     }
+
+    s.uid = uid;
+
+    System.getListaConversas(uid, async conversationList => {
+      let conversas = [];
+      conversationList.forEach(conversationObj => {
+        if (conversationObj.val().messages) {
+          conversas.push({
+            key: conversationObj.key,
+            unreadMessages: conversationObj.val().unreadMessages,
+            messages: conversationObj.val().messages
+          });
+        }
+      });
+      s.loading = false;
+      s.conversas = conversas;
+      this.setState(s);
+    }, 'Message List');
 
     this.setState(s);
   }
@@ -59,7 +81,13 @@ export default class Messages extends Component {
             {s.textContent.title}
           </Text>
           <View>
-            <MessagesList />
+            <MessagesList
+              conversas={this.state.conversas}
+              loading={this.state.loading}
+              uid={this.state.uid}
+              textContent={this.state.textContent}
+              language={this.state.language}
+            />
           </View>
         </SafeAreaView>
       </LinearGradient>
