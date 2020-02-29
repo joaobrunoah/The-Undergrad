@@ -57,41 +57,50 @@ export default class Dashboard extends Component {
 
       // Disable Button
       disable: true,
-      loading: true
+      loading: false
     };
   }
 
   async componentDidMount() {
-    let s = this.state;
-    s.language = await AsyncStorage.getItem("language");
-    s.uid = await AsyncStorage.getItem("userUID");
-    this.setState(s);
+    const language = await AsyncStorage.getItem("language")
+    const uid = await AsyncStorage.getItem("userUID");
 
-    System.getUserInfo(s.uid).then(r => {
-        s.active = r.data().active;
-        this.setState(s);
-      })
-      .then(() => {
-        if (!System.isSignedIn() || !s.active) {
-          System.logOut();
-          this.props.navigation.navigate("Language")
-        }
-      });
+    this.setState({
+      language: language,
+      uid: uid,
+      loading: true
+    });
 
-    if (s.language === "br") {
-      s.textContent = textBr;
-    } else if (s.language === "usa") {
-      s.textContent = textUsa;
+    let userInfoObj = await System.getUserInfo(uid);
+    const active = userInfoObj.data().active;
+    this.setState({active: active});
+
+    const isSignedIn = await System.isSignedIn();
+
+    if (!isSignedIn || !active) {
+      await System.logOut();
+      this.props.navigation.navigate("Language")
     }
+
+    let textContent = textUsa;
+
+    if (language === "br") {
+      textContent = textBr;
+    }
+    this.setState({
+      textContent: textContent
+    });
 
     this.getInfo();
 
-    System.getListaConversas(s.uid, async r => {
-      s.unreadMessages = 0;
-      r.forEach(r => {
-        s.unreadMessages += r.val().unreadMessages;
+    System.getListaConversas(uid, async conversationList => {
+      let unreadMessages = 0;
+      conversationList.forEach(r => {
+        unreadMessages += r.val().unreadMessages;
       });
-      this.setState(s)
+      this.setState({
+        unreadMessages: unreadMessages
+      })
     }, 'UnreadMessages');
   }
 
@@ -128,7 +137,6 @@ export default class Dashboard extends Component {
 
     r.forEach(doc => {
       let data = doc.data();
-
 
       if (data.dueDate.seconds * 1000 >= date) {
         if (data.spot === 1) {
