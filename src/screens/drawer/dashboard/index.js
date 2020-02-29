@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
   ActivityIndicator,
   View,
@@ -21,7 +21,7 @@ import SearchBar from "../../../assets/components/searchBar";
 import Categories from "../../../assets/components/dashboard/categ";
 
 //TextContent
-import { textBr, textUsa } from "../../../assets/content/mainRoute/dashboard";
+import {textBr, textUsa} from "../../../assets/content/mainRoute/dashboard";
 
 // Api
 import System from "../../../services/api";
@@ -68,15 +68,15 @@ export default class Dashboard extends Component {
     this.setState(s);
 
     System.getUserInfo(s.uid).then(r => {
-      s.active = r.data().active;
-      this.setState(s);
-    })
-    .then(() => {
-      if(!System.isSignedIn() || !s.active) {
-        System.logOut();
-        this.props.navigation.navigate("Language")
-      } 
-    });
+        s.active = r.data().active;
+        this.setState(s);
+      })
+      .then(() => {
+        if (!System.isSignedIn() || !s.active) {
+          System.logOut();
+          this.props.navigation.navigate("Language")
+        }
+      });
 
     if (s.language === "br") {
       s.textContent = textBr;
@@ -130,7 +130,7 @@ export default class Dashboard extends Component {
       let data = doc.data();
 
 
-      if (data.dueDate.seconds*1000 >= date) {
+      if (data.dueDate.seconds * 1000 >= date) {
         if (data.spot === 1) {
           s.spotOne = data;
           this.setState(s);
@@ -156,24 +156,24 @@ export default class Dashboard extends Component {
       }
     });
 
-    this.setState({ disable: false, loading: false });
+    this.setState({disable: false, loading: false});
   };
 
   render() {
     let s = this.state;
 
     return (
-      <LinearGradient
-        colors={colorsGradient}
-        start={startGradient}
-        end={endGradient}
-        style={globalStyles.screen}
-      >
-        <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <LinearGradient
+          colors={colorsGradient}
+          start={startGradient}
+          end={endGradient}
+          style={globalStyles.screen}
+        >
           <Header unread={this.state.unreadMessages}/>
-          <SearchBar />
+          <SearchBar/>
           <ScrollView>
-            <Categories />
+            <Categories/>
             <View style={styles.filterBar}>
               <Text style={styles.filterText}>{s.textContent.filter}</Text>
             </View>
@@ -191,14 +191,14 @@ export default class Dashboard extends Component {
                     style={[styles.one, styles.boxStyle]}
                   >
                     {s.loading ? (
-                      <ActivityIndicator size="small" color="#0002" />
+                      <ActivityIndicator size="small" color="#0002"/>
                     ) : s.spotOne === "" ? (
-                      <Text style={{ color: "#0009" }}>
+                      <Text style={{color: "#0009"}}>
                         {s.textContent.spot}
                       </Text>
                     ) : (
                       <Image
-                        source={{ uri: this.state.spotOne.image }}
+                        source={{uri: this.state.spotOne.image}}
                         style={styles.imgsADS}
                       />
                     )}
@@ -214,14 +214,14 @@ export default class Dashboard extends Component {
                     style={[styles.two, styles.boxStyle]}
                   >
                     {s.loading ? (
-                      <ActivityIndicator size="small" color="#0002" />
+                      <ActivityIndicator size="small" color="#0002"/>
                     ) : s.spotTwo === "" ? (
-                      <Text style={{ color: "#0009" }}>
+                      <Text style={{color: "#0009"}}>
                         {s.textContent.spot}
                       </Text>
                     ) : (
                       <Image
-                        source={{ uri: this.state.spotTwo.image }}
+                        source={{uri: this.state.spotTwo.image}}
                         style={styles.imgsADS}
                       />
                     )}
@@ -239,14 +239,14 @@ export default class Dashboard extends Component {
                     style={[styles.tree, styles.boxStyle]}
                   >
                     {s.loading ? (
-                      <ActivityIndicator size="small" color="#0002" />
+                      <ActivityIndicator size="small" color="#0002"/>
                     ) : s.spotTree === "" ? (
-                      <Text style={{ color: "#0009" }}>
+                      <Text style={{color: "#0009"}}>
                         {s.textContent.spot}
                       </Text>
                     ) : (
                       <Image
-                        source={{ uri: this.state.spotTree.image }}
+                        source={{uri: this.state.spotTree.image}}
                         style={styles.imgsADS}
                       />
                     )}
@@ -257,7 +257,7 @@ export default class Dashboard extends Component {
                 <TouchableOpacity
                   disabled={s.disable}
                   onPress={() => {
-                    this.props.navigation.navigate("Ads", { 
+                    this.props.navigation.navigate("Ads", {
                       data: s.spotFour
                     });
                   }}
@@ -265,12 +265,12 @@ export default class Dashboard extends Component {
                   style={[styles.four, styles.boxStyle]}
                 >
                   {s.loading ? (
-                    <ActivityIndicator size="small" color="#0002" />
+                    <ActivityIndicator size="small" color="#0002"/>
                   ) : s.spotFour === "" ? (
-                    <Text style={{ color: "#0009" }}>{s.textContent.spot}</Text>
+                    <Text style={{color: "#0009"}}>{s.textContent.spot}</Text>
                   ) : (
                     <Image
-                      source={{ uri: this.state.spotFour.image }}
+                      source={{uri: this.state.spotFour.image}}
                       style={styles.imgsADS}
                     />
                   )}
@@ -289,14 +289,14 @@ export default class Dashboard extends Component {
                     style={[styles.five, styles.boxStyle]}
                   >
                     {s.loading ? (
-                      <ActivityIndicator size="small" color="#0002" />
+                      <ActivityIndicator size="small" color="#0002"/>
                     ) : s.spotFive === "" ? (
-                      <Text style={{ color: "#0009" }}>
+                      <Text style={{color: "#0009"}}>
                         {s.textContent.spot}
                       </Text>
                     ) : (
                       <Image
-                        source={{ uri: this.state.spotFive.image }}
+                        source={{uri: this.state.spotFive.image}}
                         style={styles.imgsADS}
                       />
                     )}
@@ -314,14 +314,14 @@ export default class Dashboard extends Component {
                     style={[styles.six, styles.boxStyle]}
                   >
                     {s.loading ? (
-                      <ActivityIndicator size="small" color="#0002" />
+                      <ActivityIndicator size="small" color="#0002"/>
                     ) : s.spotSix === "" ? (
-                      <Text style={{ color: "#0009" }}>
+                      <Text style={{color: "#0009"}}>
                         {s.textContent.spot}
                       </Text>
                     ) : (
                       <Image
-                        source={{ uri: this.state.spotSix.image }}
+                        source={{uri: this.state.spotSix.image}}
                         style={styles.imgsADS}
                       />
                     )}
@@ -340,12 +340,12 @@ export default class Dashboard extends Component {
                   style={[styles.seven, styles.boxStyle]}
                 >
                   {s.loading ? (
-                    <ActivityIndicator size="small" color="#0002" />
+                    <ActivityIndicator size="small" color="#0002"/>
                   ) : s.spotSeven === "" ? (
-                    <Text style={{ color: "#0009" }}>{s.textContent.spot}</Text>
+                    <Text style={{color: "#0009"}}>{s.textContent.spot}</Text>
                   ) : (
                     <Image
-                      source={{ uri: this.state.spotSeven.image }}
+                      source={{uri: this.state.spotSeven.image}}
                       style={styles.imgsADS}
                     />
                   )}
@@ -353,8 +353,8 @@ export default class Dashboard extends Component {
               </View>
             </View>
           </ScrollView>
-        </SafeAreaView>
-      </LinearGradient>
+        </LinearGradient>
+      </SafeAreaView>
     );
   }
 }

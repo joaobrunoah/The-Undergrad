@@ -14,11 +14,15 @@ import Details from "../../screens/drawer/stackCateg/detailsScreen";
 
 // Search
 import Search from "../../screens/drawer/dashboard/search";
+import Messages from "../../screens/drawer/messages";
 
 const StackDash = createStackNavigator(
   {
     Dashboard: {
-      screen: Dashboard
+      screen: Dashboard,
+      navigationOptions: {
+        header: false
+      }
     },
     Gadgets: {
       screen: Gadgets
