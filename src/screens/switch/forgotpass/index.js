@@ -124,7 +124,6 @@ export default class ForgotPass extends Component {
               </Transition>
 
               <View style={styles.inputContent}>
-                <Transition appear="right">
                   <TextInput
                     onSubmitEditing={this.forgot}
                     style={[styles.inputArea, globalStyles.textRegular]}
@@ -140,8 +139,6 @@ export default class ForgotPass extends Component {
                     placeholderTextColor="#999"
                     placeholder={s.textContent.emailInput}
                   />
-                </Transition>
-                <Transition shared="botao1">
                 <TouchableOpacity
                   activeOpacity={0.7}
                   style={styles.buttons}
@@ -152,7 +149,7 @@ export default class ForgotPass extends Component {
                       ? s.textContent.loading
                       : s.textContent.sendButton}
                   </Text>
-                </TouchableOpacity></Transition>
+                </TouchableOpacity>
               </View>
             </SafeAreaView>
           </KeyboardAvoidingView>
