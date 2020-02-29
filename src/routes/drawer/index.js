@@ -18,75 +18,38 @@ import MessageItem from "../../screens/drawer/messages/messagesItem";
 const DrawerMenu = createStackNavigator(
   {
     StackDash: {
-      screen: StackDash,
-      navigationOptions: {
-        header: false
-      }
+      screen: StackDash
     },
     Perfil: {
-      screen: Perfil,
-      navigationOptions: {
-        header: false
-      }
+      screen: Perfil
     },
     Settings: {
-      screen: Settings,
-      navigationOptions: {
-        header: false
-      }
+      screen: Settings
     },
     ItemsForSale: {
-      screen: ItemsForSale,
-      navigationOptions: {
-        header: false
-      }
+      screen: ItemsForSale
     },
     SellScreen: {
-      screen: SellScreen,
-      navigationOptions: {
-        header: false
-      }
+      screen: SellScreen
     },
     BuyScreen: {
-      screen: BuyScreen,
-      navigationOptions: {
-        header: false
-      }
+      screen: BuyScreen
     },
     Messages: {
-      screen: Messages,
-      navigationOptions: {
-        header: false
-      }
+      screen: Messages
     },
     MessageDetail: {
-      screen: MessageDetail,
-      navigationOptions: {
-        header: false
-      }
-      // navigationOptions: ({ navigation}) => ({
-      //   headerLeft: () => <HeaderBackButton tintColor="#737373" onPress={() => navigation.goBack()}/>,
-      //   title: "The Undergrad",
-      //   headerTitleStyle: {
-      //     fontSize: 26,
-      //     fontFamily: "Montserrat-SemiBold",
-      //     textAlign: "center",
-      //     marginBottom: 10
-      //   },
-      //   headerStyle: {
-      //     backgroundColor: "#ebebeb"
-      //   }
-      // })
+      screen: MessageDetail
     },
     MessageItem: {
-      screen: MessageItem,
-      navigationOptions: {
-        header: false
-      }
+      screen: MessageItem
     }
   },
   {
-    //initialRouteName: "StackDash",
+    defaultNavigationOptions: {
+      header: null
+    },
+    mode: "screen"
   }
 );
 
