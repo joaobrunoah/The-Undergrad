@@ -7,9 +7,7 @@ export const globalStyles = StyleSheet.create({
     flex: 1,
     width: width,
     height: height,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingTop: 10
+    padding: 10
   },
   textRegular: {
     fontFamily: "Montserrat-Regular"
