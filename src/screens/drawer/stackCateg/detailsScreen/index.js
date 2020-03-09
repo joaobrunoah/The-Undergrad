@@ -64,7 +64,7 @@ export default class Details extends Component {
         s.sellerUID = uid[2];
         if (s.userInfo.imgProfile) {
           let imgUrlArray = s.userInfo.imgProfile.split('%2F');
-          const lastElPosition = imgUrlArray.length-1;
+          const lastElPosition = imgUrlArray.length - 1;
           imgUrlArray[lastElPosition] = 'thumb_' + imgUrlArray[lastElPosition];
           const imgUrlThumb = imgUrlArray.join('%2F');
           s.photo = {uri: imgUrlThumb};
@@ -109,9 +109,9 @@ export default class Details extends Component {
     let s = this.state;
     let pictureThumb = null;
     let picturesModal = [];
-    if(s.data.pictures && s.data.pictures.length > 0 && s.data.pictures[0] !== null && s.data.pictures[0] !== "") {
-      let pictureArray =  s.data.pictures[0].split('%2F');
-      const lastElPosition = pictureArray.length-1;
+    if (s.data.pictures && s.data.pictures.length > 0 && s.data.pictures[0] !== null && s.data.pictures[0] !== "") {
+      let pictureArray = s.data.pictures[0].split('%2F');
+      const lastElPosition = pictureArray.length - 1;
       pictureArray[lastElPosition] = 'thumb_' + pictureArray[lastElPosition];
       //pictureThumb = pictureArray.join('%2F');
       pictureThumb = s.data.pictures[0];
@@ -124,7 +124,6 @@ export default class Details extends Component {
 
     return (
       <SafeAreaView style={styles.container}>
-
         <ImageView
           images={picturesModal}
           imageIndex={0}
@@ -132,8 +131,8 @@ export default class Details extends Component {
           onRequestClose={() => {
             this.setImageModalVisibility(false);
           }}
+          presentationStyle={'overFullScreen'}
         />
-
         <LinearGradient
           colors={colorsGradient}
           start={startGradient}
@@ -142,7 +141,7 @@ export default class Details extends Component {
         >
           <View style={styles.container}>
             <Header back={true}/>
-            <ScrollView>
+            <ScrollView style={{flex: 1}}>
               <View style={{alignItems: "center"}}>
                 <TouchableHighlight
                   style={{
