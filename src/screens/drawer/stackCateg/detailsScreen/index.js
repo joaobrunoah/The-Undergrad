@@ -1,7 +1,8 @@
 import React, {Component} from "react";
-import {TouchableOpacity, Image, View, Text, ScrollView, SafeAreaView} from "react-native";
+import {TouchableHighlight, TouchableOpacity, Image, View, Text, ScrollView, SafeAreaView} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
+import ImageView from "react-native-image-viewing";
 
 // Api
 import System from "../../../../services/api";
@@ -38,7 +39,8 @@ export default class Details extends Component {
       sales: 0,
       sellerUID: "",
       uniID: "",
-      coin: ""
+      coin: "",
+      isImageModalVisible: false
     };
   }
 
@@ -97,19 +99,41 @@ export default class Details extends Component {
       });
   }
 
+  setImageModalVisibility(imageModalVisibility) {
+    this.setState({
+      isImageModalVisible: imageModalVisibility
+    })
+  }
+
   render() {
     let s = this.state;
     let pictureThumb = null;
+    let picturesModal = [];
     if(s.data.pictures && s.data.pictures.length > 0 && s.data.pictures[0] !== null && s.data.pictures[0] !== "") {
       let pictureArray =  s.data.pictures[0].split('%2F');
       const lastElPosition = pictureArray.length-1;
       pictureArray[lastElPosition] = 'thumb_' + pictureArray[lastElPosition];
       //pictureThumb = pictureArray.join('%2F');
       pictureThumb = s.data.pictures[0];
+      picturesModal = s.data.pictures.map(obj => {
+        return {
+          uri: obj
+        }
+      })
     }
 
     return (
       <SafeAreaView style={styles.container}>
+
+        <ImageView
+          images={picturesModal}
+          imageIndex={0}
+          visible={this.state.isImageModalVisible}
+          onRequestClose={() => {
+            this.setImageModalVisibility(false);
+          }}
+        />
+
         <LinearGradient
           colors={colorsGradient}
           start={startGradient}
@@ -120,7 +144,7 @@ export default class Details extends Component {
             <Header back={true}/>
             <ScrollView>
               <View style={{alignItems: "center"}}>
-                <View
+                <TouchableHighlight
                   style={{
                     marginTop: 10,
                     width: "90%",
@@ -132,12 +156,15 @@ export default class Details extends Component {
                     justifyContent: "center",
                     alignItems: "center"
                   }}
+                  onPress={() => {
+                    this.setImageModalVisibility(true);
+                  }}
                 >
                   <Image
                     style={{width: "100%", height: "100%", borderRadius: 10}}
                     source={{uri: pictureThumb}}
                   />
-                </View>
+                </TouchableHighlight>
                 <View style={{marginTop: 10}}>
                   <Text
                     style={[

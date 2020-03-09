@@ -34,7 +34,7 @@ import Header from "../../../../assets/components/header";
 
 class Item extends Component {
 
-  state = { coin: '' }
+  state = { coin: '' };
 
   async componentDidMount() {
     let uniID = this.props.uniID;
@@ -114,7 +114,7 @@ class Item extends Component {
           }}
         >
           <Text style={[globalStyles.textSemiBold, { color: "#0008" }]}>
-            {this.props.text.price} {this.state.coin ? this.state.coin : '$'} {Number(p.price).toFixed(2)}
+            {this.state.coin ? this.state.coin : '$'} {Number(p.price).toFixed(2)}
           </Text>
         </View>
       </TouchableOpacity>
