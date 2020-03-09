@@ -97,13 +97,12 @@ exports.generateThumbnail = functions.storage.object().onFinalize(async (object)
     // To enable Client-side caching you can set the Cache-Control headers here. Uncomment below.
     // 'Cache-Control': 'public,max-age=3600',
   };
-  console.log('h5');
 
   // Download file from bucket.
   await file.download({destination: tempLocalFile});
   console.log('The file has been downloaded to', tempLocalFile);
   // Generate a thumbnail using ImageMagick.
-  await spawn('convert', [tempLocalFile, '-thumbnail', `${THUMB_MAX_WIDTH}x${THUMB_MAX_HEIGHT}>`, tempLocalThumbFile], {capture: ['stdout', 'stderr']});
+  await spawn('convert', [tempLocalFile, '-resize', `${THUMB_MAX_WIDTH}x${THUMB_MAX_HEIGHT}>`, tempLocalThumbFile], {capture: ['stdout', 'stderr']});
   console.log('Thumbnail created at', tempLocalThumbFile);
   // Uploading the Thumbnail.
   await bucket.upload(tempLocalThumbFile, {destination: thumbFilePath, metadata: metadata});

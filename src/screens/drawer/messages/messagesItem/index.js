@@ -48,7 +48,11 @@ export class Message extends Component {
       s.uni = r.data().email;
       let aux = s.uni.split("@", 2);
       s.uni = aux[1];
-      s.imageProfile = r.data().imgProfile;
+      let imgUrlArray = r.data().imgProfile.split('%2F');
+      const lastElPosition = imgUrlArray.length-1;
+      imgUrlArray[lastElPosition] = 'thumb_' + imgUrlArray[lastElPosition];
+      const imgUrlThumb = imgUrlArray.join('%2F');
+      s.imageProfile = imgUrlThumb;
       this.setState(s);
     });
   }

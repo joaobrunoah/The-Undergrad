@@ -46,6 +46,13 @@ class Item extends Component {
 
   render() {
     let p = this.props.data;
+    if(p.pictures && p.pictures.length > 0 && p.pictures[0] !== null && p.pictures[0] !== "") {
+      p.pictureThumb =  p.pictures[0].split('%2F');
+      const lastElPosition = p.pictureThumb.length-1;
+      p.pictureThumb[lastElPosition] = 'thumb_' + p.pictureThumb[lastElPosition];
+      p.pictureThumb = p.pictureThumb.join('%2F');
+    }
+
     let nav = this.props.nav;
     return (
       <TouchableOpacity
@@ -78,9 +85,9 @@ class Item extends Component {
             {p.description}
           </Text>
         </View>
-        {(p.pictures.length > 0 && p.pictures[0] !== null && p.pictures[0] !== "") ?
+        {(p.pictureThumb) ?
           <Image
-            source={{ uri: p.pictures[0] }}
+            source={{ uri: p.pictureThumb }}
             style={{
               zIndex: 0,
               position: "absolute",

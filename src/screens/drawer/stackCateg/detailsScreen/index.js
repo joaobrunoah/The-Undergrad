@@ -61,7 +61,11 @@ export default class Details extends Component {
         s.userInfo = r.data();
         s.sellerUID = uid[2];
         if (s.userInfo.imgProfile) {
-          s.photo = {uri: s.userInfo.imgProfile};
+          let imgUrlArray = s.userInfo.imgProfile.split('%2F');
+          const lastElPosition = imgUrlArray.length-1;
+          imgUrlArray[lastElPosition] = 'thumb_' + imgUrlArray[lastElPosition];
+          const imgUrlThumb = imgUrlArray.join('%2F');
+          s.photo = {uri: imgUrlThumb};
         } else {
           s.photo = "";
         }
@@ -95,6 +99,14 @@ export default class Details extends Component {
 
   render() {
     let s = this.state;
+    let pictureThumb = null;
+    if(s.data.pictures && s.data.pictures.length > 0 && s.data.pictures[0] !== null && s.data.pictures[0] !== "") {
+      let pictureArray =  s.data.pictures[0].split('%2F');
+      const lastElPosition = pictureArray.length-1;
+      pictureArray[lastElPosition] = 'thumb_' + pictureArray[lastElPosition];
+      //pictureThumb = pictureArray.join('%2F');
+      pictureThumb = s.data.pictures[0];
+    }
 
     return (
       <SafeAreaView style={styles.container}>
@@ -123,7 +135,7 @@ export default class Details extends Component {
                 >
                   <Image
                     style={{width: "100%", height: "100%", borderRadius: 10}}
-                    source={{uri: s.data.pictures[0]}}
+                    source={{uri: pictureThumb}}
                   />
                 </View>
                 <View style={{marginTop: 10}}>

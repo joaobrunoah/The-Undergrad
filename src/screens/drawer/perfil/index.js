@@ -128,7 +128,11 @@ export default class Perfil extends Component {
         s.userData = data;
         s.stars = s.userData.rank / s.userData.totalRank;
         if (s.userData.imgProfile) {
-          s.photo = { uri: s.userData.imgProfile };
+          let imgUrlArray = s.userData.imgProfile.split('%2F');
+          const lastElPosition = imgUrlArray.length-1;
+          imgUrlArray[lastElPosition] = 'thumb_' + imgUrlArray[lastElPosition];
+          const imgUrlThumb = imgUrlArray.join('%2F');
+          s.photo = {uri: imgUrlThumb};
         } else {
           s.photo = "";
         }
