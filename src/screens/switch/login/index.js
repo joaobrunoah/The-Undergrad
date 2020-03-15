@@ -193,21 +193,25 @@ export default class Login extends Component {
             </TouchableOpacity>
           </SafeAreaView>
 
-          <KeyboardAvoidingView
-            enabled
-            behavior="padding"
-            style={styles.container}
-          >
-            <SafeAreaView>
-              {/* <Transition shared="logo"> */}
-              <View style={styles.logoContent}>
-                <Image style={styles.logo} source={mainLogo} />
-                <Text style={[globalStyles.textRegular, styles.mainText]}>
-                  The Undergrad
-                  </Text>
-              </View>
-              {/* </Transition> */}
+          <SafeAreaView style={styles.container}>
+            {/* <Transition shared="logo"> */}
+            <View style={styles.logoContent}>
+              <Image style={styles.logo} source={mainLogo} />
+              <Text style={[globalStyles.textRegular, styles.mainText]}>
+                The Undergrad
+                </Text>
+            </View>
+            {/* </Transition> */}
 
+            <KeyboardAvoidingView
+              enabled
+              behavior="padding"
+              keyboardVerticalOffset = {200}
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
               {/* <Transition disappear="left" inline={true} delay={true}> */}
               <View style={styles.inputContent}>
                 <TextInput
@@ -275,11 +279,7 @@ export default class Login extends Component {
                   {s.textContent.forgotPass}
                 </Text>
               </TouchableOpacity>
-            </SafeAreaView>
 
-            <View style={styles.cadContent} />
-
-            <SafeAreaView style={{ marginTop: 30 }}>
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
@@ -288,13 +288,14 @@ export default class Login extends Component {
                   Keyboard.dismiss();
                 }}
                 hitSlop={{ bottom: 20, top: 20, right: 20, left: 20 }}
+                style={{ marginTop: 30 }}
               >
                 <Text style={[globalStyles.textRegular, styles.cadText, { fontSize: 16 }]}>
                   {s.textContent.noCad}
                 </Text>
               </TouchableOpacity>
-            </SafeAreaView>
-          </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
+          </SafeAreaView>
         </LinearGradient>
       </DismissKeyboard>
     );
