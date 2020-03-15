@@ -16,6 +16,71 @@ const THUMB_MAX_WIDTH = 200;
 // Thumbnail prefix added to file names.
 const THUMB_PREFIX = 'thumb_';
 
+exports.sendAdsPushNotification = functions.firestore
+  .document('ads/{id_ad}')
+  .onCreate(async (snap, context) => {
+    const adObj = snap.data();
+
+    const university = adObj.university;
+    const businessName = adObj.university;
+
+    let querySnapshot = await admin
+      .firestore()
+      .collection('universities')
+      .where("initials", "==", university).get();
+
+    let universitiesList = [];
+
+    let language = 'br';
+
+    querySnapshot.forEach(function(doc) {
+      // doc.data() is never undefined for query doc snapshots
+      let uniObj = doc.data();
+      if(uniObj.coin === 'U$') {
+        language = 'en';
+      }
+      universitiesList.push('universities/' + uniObj.id);
+    });
+
+    querySnapshot = await admin
+      .firestore()
+      .collection('users')
+      .where("university", "in", universitiesList).get();
+
+    let pushTokens = [];
+
+    querySnapshot.forEach(function(doc) {
+      // doc.data() is never undefined for query doc snapshots
+      let userObj = doc.data();
+      if(userObj.fcmToken) {
+        pushTokens.push(userObj.fcmToken);
+      }
+    });
+
+
+
+    let title = 'New event at ' + university + '!';
+    let body = 'Check '+ businessName + ' in The Undergrad!';
+
+    if(language === 'br') {
+      title = 'Novo evento da ' + university + '!';
+      body = 'Confira ' + businessName + ' no The Undergrad!';
+    }
+
+    // Notification details.
+    let payload = {
+      notification: {
+        title: title,
+        body: body
+      },
+      tokens: pushTokens
+    };
+
+    console.log(JSON.stringify(payload));
+
+    await admin.messaging().sendMulticast(payload);
+  });
+
 exports.sendPushNotification = functions.database
   .instance('app-venda')
   .ref('chats/{user_from_id}/{user_to_id}/messages/{message_id}')

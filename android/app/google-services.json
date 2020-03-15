@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "712368372491-b9v8tvo03jf1me2t9cv3vb4ls723hkgl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.TheUndergrad",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
           "client_id": "712368372491-ara45eb3v0n1e3sf8hu0okqc4unkcuja.apps.googleusercontent.com",
           "client_type": 3
         }

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.fluxosconsultoria.theundergrad">
+  package="com.TheUndergrad">
 
   <meta-data
     android:name="com.google.firebase.messaging.default_notification_icon"
@@ -20,6 +20,14 @@
       android:roundIcon="@drawable/icon"
       android:allowBackup="true"
       android:theme="@style/AppTheme">
+
+      <meta-data
+        android:name="com.google.firebase.messaging.default_notification_icon"
+        android:resource="@drawable/icon_push" />
+      <meta-data
+        android:name="com.google.firebase.messaging.default_notification_color"
+        android:resource="@color/push_color" />
+
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

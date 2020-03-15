@@ -35,12 +35,12 @@ android_library(
 
 android_build_config(
     name = "build_config",
-    package = "com.fluxosconsultoria.theundergrad",
+    package = "com.TheUndergrad",
 )
 
 android_resource(
     name = "res",
-    package = "com.fluxosconsultoria.theundergrad",
+    package = "com.TheUndergrad",
     res = "src/main/res",
 )
 

@@ -1,4 +1,4 @@
-package com.fluxosconsultoria.theundergrad;
+package com.TheUndergrad;
 
 import com.facebook.react.ReactActivity;
 
