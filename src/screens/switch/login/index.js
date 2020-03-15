@@ -194,24 +194,26 @@ export default class Login extends Component {
           </SafeAreaView>
 
           <SafeAreaView style={styles.container}>
-            {/* <Transition shared="logo"> */}
-            <View style={styles.logoContent}>
-              <Image style={styles.logo} source={mainLogo} />
-              <Text style={[globalStyles.textRegular, styles.mainText]}>
-                The Undergrad
-                </Text>
-            </View>
-            {/* </Transition> */}
 
             <KeyboardAvoidingView
               enabled
-              behavior="padding"
+              behavior="position"
               keyboardVerticalOffset = {200}
               style={{
                 justifyContent: 'center',
                 alignItems: 'center'
               }}
             >
+
+              {/* <Transition shared="logo"> */}
+              <View style={styles.logoContent}>
+                <Image style={styles.logo} source={mainLogo} />
+                <Text style={[globalStyles.textRegular, styles.mainText]}>
+                  The Undergrad
+                  </Text>
+              </View>
+              {/* </Transition> */}
+
               {/* <Transition disappear="left" inline={true} delay={true}> */}
               <View style={styles.inputContent}>
                 <TextInput
@@ -248,18 +250,21 @@ export default class Login extends Component {
               {/* </Transition> */}
 
               {/* <Transition shared="botao1"> */}
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={[styles.buttons, s.buttonRes, s.opacity]}
-                onPress={this.signIn}
-                disabled={s.buttonDisable}
-              >
-                <Text style={[globalStyles.textRegular, styles.textButton]}>
-                  {s.loading
-                    ? s.textContent.loading
-                    : s.textContent.loginButton}
-                </Text>
-              </TouchableOpacity>
+              <View style={styles.inputContent}>
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  style={[styles.buttons, s.buttonRes, s.opacity]}
+                  onPress={this.signIn}
+                  disabled={s.buttonDisable}
+                >
+                  <Text style={[globalStyles.textRegular, styles.textButton]}>
+                    {s.loading
+                      ? s.textContent.loading
+                      : s.textContent.loginButton}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+
               {/* </Transition> */}
               <TouchableOpacity
                 hitSlop={{ bottom: 30, top: 0, right: 20, left: 20 }}
