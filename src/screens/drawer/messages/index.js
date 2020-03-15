@@ -35,16 +35,14 @@ export default class Messages extends Component {
 
   async componentDidMount() {
     let s = this.state;
-    s.language = await AsyncStorage.getItem("language");
+    let language = await AsyncStorage.getItem("language");
     const uid = await AsyncStorage.getItem("userUID");
 
-    if (s.language === "br") {
-      s.textContent = textBr;
-    } else if (s.language === "usa") {
-      s.textContent = textUsa;
-    }
+    let textContent = textUsa;
 
-    s.uid = uid;
+    if (s.language === "br") {
+      textContent = textBr;
+    }
 
     System.getListaConversas(uid, async conversationList => {
       let conversas = [];
@@ -57,12 +55,21 @@ export default class Messages extends Component {
           });
         }
       });
-      s.loading = false;
-      s.conversas = conversas;
-      this.setState(s);
+      let loading = false;
+      this.setState({
+        language,
+        uid,
+        textContent,
+        loading,
+        conversas
+      });
     }, 'Message List');
 
-    this.setState(s);
+    this.setState({
+      language,
+      uid,
+      textContent
+    });
   }
 
   render() {

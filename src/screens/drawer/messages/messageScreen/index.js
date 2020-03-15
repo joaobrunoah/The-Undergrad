@@ -47,7 +47,7 @@ export class Mensagem extends Component {
   async componentDidMount() {
     let s = this.state;
     let uid = await AsyncStorage.getItem("userUID");
-    let style = {
+    let styleBase = {
       paddingVertical: 5,
       paddingHorizontal: 10,
       maxWidth: 300,
@@ -55,21 +55,23 @@ export class Mensagem extends Component {
       borderRadius: 10
     };
 
+    let style = {
+      ...styleBase,
+      backgroundColor: "#a6a6a6",
+      alignSelf: "flex-start"
+    };
+
     if (s.data.user == uid) {
-      s.style = {
-        ...style,
+      style = {
+        ...styleBase,
         backgroundColor: "#c0ffa2",
         alignSelf: "flex-end"
       };
-    } else {
-      s.style = {
-        ...style,
-        backgroundColor: "#a6a6a6",
-        alignSelf: "flex-start"
-      };
     }
 
-    this.setState(s);
+    this.setState({
+      style
+    });
   }
 
   render() {
@@ -115,16 +117,18 @@ export default class MessageDetail extends Component {
   }
 
   async componentWillMount() {
-    let s = this.state;
-    s.language = await AsyncStorage.getItem("language");
+    let language = await AsyncStorage.getItem("language");
 
-    if (s.language === "br") {
-      s.textContent = textBr;
-    } else if (s.language === "usa") {
-      s.textContent = textUsa;
+    let textContent = textUsa;
+
+    if (language === "br") {
+      textContent = textBr;
     }
 
-    this.setState(s);
+    this.setState({
+      language,
+      textContent
+    });
   }
 
   async componentDidMount() {

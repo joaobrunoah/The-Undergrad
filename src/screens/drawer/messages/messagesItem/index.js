@@ -44,16 +44,18 @@ export class Message extends Component {
     let auxID = this.props.data.key;
     let s = this.state;
     System.getUserInfo(auxID).then(r => {
-      s.nome = r.data().name;
-      s.uni = r.data().email;
-      let aux = s.uni.split("@", 2);
-      s.uni = aux[1];
+      let nome = r.data().name;
+      let uni = r.data().email;
+      let aux = uni.split("@", 2);
+      uni = aux[1];
       let imgUrlArray = r.data().imgProfile.split('%2F');
       const lastElPosition = imgUrlArray.length-1;
       imgUrlArray[lastElPosition] = 'thumb_' + imgUrlArray[lastElPosition];
       const imgUrlThumb = imgUrlArray.join('%2F');
-      s.imageProfile = imgUrlThumb;
-      this.setState(s);
+      let imageProfile = imgUrlThumb;
+      this.setState({
+        nome, uni, imageProfile
+      });
     });
   }
 
