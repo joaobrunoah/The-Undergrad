@@ -69,12 +69,13 @@ export default class Cadastro extends Component {
   }
 
   register = async () => {
+
     let s = this.state;
     let date = moment().format("LLL");
-    s.buttonDisable = true;
-    s.loading = true;
-    s.opacity = { opacity: 0.7 };
-    s.data = {
+    let buttonDisable = true;
+    let loading = true;
+    let opacity = { opacity: 0.7 };
+    let data = {
       rank: 0,
       totalRank: 0,
       sales: 0,
@@ -87,31 +88,40 @@ export default class Cadastro extends Component {
       university: s.university,
       universityName: s.universityName
     };
-    await this.setState(s);
+    await this.setState({
+      date,
+      buttonDisable,
+      loading,
+      opacity,
+      data
+    });
 
     if (
-      s.name !== "" &&
-      s.tel !== "" &&
-      s.email !== "" &&
-      s.pass !== "" &&
-      s.repPass !== ""
+      this.state.name !== "" &&
+      this.state.tel !== "" &&
+      this.state.email !== "" &&
+      this.state.pass !== "" &&
+      this.state.repPass !== ""
     ) {
       System.addAuthListener(user => {
         if (user) {
-          let oldData = s.data;
-          s.userUID = user.uid;
-          s.data = { ...oldData, uid: user.uid };
-          this.setState(s);
+          let oldData = this.state.data;
+          let userUID = user.uid;
+          let data = { ...oldData, uid: user.uid };
+          this.setState({
+            userUID,
+            data
+          });
           user.sendEmailVerification();
         }
       });
 
-      System.register(s.email, s.pass)
+      System.register(this.state.email, this.state.pass)
         .then(async r => {
-          if (s.userUID != "") {
-            System.registerOnFirestore(s.userUID, s.data)
+          if (this.state.userUID != "") {
+            System.registerOnFirestore(this.state.userUID, this.state.data)
               .then(async r => {
-                Alert.alert(s.textContent.titleError, s.textContent.suc);
+                Alert.alert(this.state.textContent.titleError, this.state.textContent.suc);
                 // await AsyncStorage.setItem("userUID", s.userUID);
                 // await AsyncStorage.setItem("isOn", "true").then(
                 //   await AsyncStorage.setItem("email", s.email).then(
@@ -139,17 +149,25 @@ export default class Cadastro extends Component {
           else
             Alert.alert(s.textContent.titleError, s.textContent.error_1);
 
-          s.buttonDisable = false;
-          s.loading = false;
-          s.opacity = { opacity: 1 };
-          this.setState(s);
+          let buttonDisable = false;
+          let loading = false;
+          let opacity = { opacity: 1 };
+          this.setState({
+            buttonDisable,
+            loading,
+            opacity
+          });
         });
     } else {
       Alert.alert(s.textContent.titleError, s.textContent.error_2);
-      s.buttonDisable = false;
-      s.loading = false;
-      s.opacity = { opacity: 1 };
-      this.setState(s);
+      let buttonDisable = false;
+      let loading = false;
+      let opacity = { opacity: 1 };
+      this.setState({
+        buttonDisable,
+        loading,
+        opacity
+      });
     }
   };
 
@@ -159,10 +177,14 @@ export default class Cadastro extends Component {
 
   checkUni = () => {
     let s = this.state;
-    s.buttonDisable = true;
-    s.loading = true;
-    s.opacity = { opacity: 0.7 };
-    this.setState(s);
+    let buttonDisable = true;
+    let loading = true;
+    let opacity = { opacity: 0.7 };
+    this.setState({
+      buttonDisable,
+      loading,
+      opacity
+    });
 
     let uniDomain = s.email.split("@", 2);
 
@@ -174,71 +196,91 @@ export default class Cadastro extends Component {
       System.checkUni(uniDomain[1])
         .then(r => {
           if (r.docs.length !== 0) {
-            s.uniID = r.docs[0].ref.id;
-            s.university = r.docs[0].ref.path;
+            let uniID = r.docs[0].ref.id;
+            let university = r.docs[0].ref.path;
             System.getUniData(r.docs[0].ref.id)
               .then(r => {
                 let data = r.data();
-                s.universityName = data.name;
-                s.data.universityName = data.name;
-                this.setState(s);
+                let universityName = data.name;
+                this.state.data.universityName = data.name;
+                this.setState({
+                  uniID,
+                  university,
+                  universityName
+                });
                 this.register();
               })
               .catch(e => {
                 Alert.alert(s.textContent.titleError, s.textContent.error_3);
-                s.buttonDisable = false;
-                s.loading = false;
-                s.opacity = { opacity: 1 };
-                this.setState(s);
+                let buttonDisable = false;
+                let loading = false;
+                let opacity = { opacity: 1 };
+                this.setState({
+                  buttonDisable,
+                  loading,
+                  opacity
+                });
               });
           } else {
             Alert.alert(s.textContent.titleError, s.textContent.error_3);
-            s.buttonDisable = false;
-            s.loading = false;
-            s.opacity = { opacity: 1 };
-            this.setState(s);
+            let buttonDisable = false;
+            let loading = false;
+            let opacity = { opacity: 1 };
+            this.setState({
+              buttonDisable,
+              loading,
+              opacity
+            });
           }
         })
         .catch(error => {
           Alert.alert(s.textContent.titleError, s.textContent.error_3);
-          s.buttonDisable = false;
-          s.loading = false;
-          s.opacity = { opacity: 1 };
-          this.setState(s);
+          let buttonDisable = false;
+          let loading = false;
+          let opacity = { opacity: 1 };
+          this.setState({
+            buttonDisable,
+            loading,
+            opacity
+          });
         });
     }
   };
 
   checkPass = repPass => {
     let s = this.state;
+
+    let stateObj = {};
+
     if (repPass === s.pass && repPass !== "" && s.pass !== "") {
-      s.correctPass = { borderWidth: 2, borderColor: "#5cd65c" };
-      s.buttonRes = { backgroundColor: "#1219" };
-      s.buttonDisable = false;
+      stateObj.correctPass = { borderWidth: 2, borderColor: "#5cd65c" };
+      stateObj.buttonRes = { backgroundColor: "#1219" };
+      stateObj.buttonDisable = false;
     } else if (repPass !== s.pass && repPass !== "") {
-      s.correctPass = { borderWidth: 2, borderColor: "#ff4d4d" };
-      s.buttonRes = { backgroundColor: "#ff4d4d" };
-      s.buttonDisable = true;
+      stateObj.correctPass = { borderWidth: 2, borderColor: "#ff4d4d" };
+      stateObj.buttonRes = { backgroundColor: "#ff4d4d" };
+      stateObj.buttonDisable = true;
     } else {
-      s.correctPass = {};
-      s.buttonRes = {};
-      s.buttonDisable = true;
+      stateObj.correctPass = {};
+      stateObj.buttonRes = {};
+      stateObj.buttonDisable = true;
     }
 
-    this.setState(s);
+    this.setState(stateObj);
   };
 
   async componentWillMount() {
-    let s = this.state;
     let language = await AsyncStorage.getItem("language");
 
+    let textContent = textUsa;
+
     if (language === "br") {
-      s.textContent = textBr;
-    } else if (language === "usa") {
-      s.textContent = textUsa;
+      textContent = textBr;
     }
 
-    this.setState(s);
+    this.setState({
+      textContent
+    });
   }
 
   render() {

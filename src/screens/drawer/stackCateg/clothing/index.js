@@ -114,7 +114,7 @@ class Item extends Component {
           }}
         >
           <Text style={[globalStyles.textSemiBold, { color: "#0008" }]}>
-            {this.state.coin ? this.state.coin : '$'} {Number(p.price).toFixed(2)}
+          {this.props.text.price} {this.state.coin ? this.state.coin : '$'} {Number(p.price).toFixed(2)}
           </Text>
         </View>
       </TouchableOpacity>

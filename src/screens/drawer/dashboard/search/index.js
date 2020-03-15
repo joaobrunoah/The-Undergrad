@@ -38,6 +38,14 @@ import Header from "../../../../assets/components/header";
 class Item extends Component {
   render() {
     let p = this.props.data;
+
+    if(p.pictures && p.pictures.length > 0 && p.pictures[0] !== null && p.pictures[0] !== "") {
+      p.pictureThumb =  p.pictures[0].split('%2F');
+      const lastElPosition = p.pictureThumb.length-1;
+      p.pictureThumb[lastElPosition] = 'thumb_' + p.pictureThumb[lastElPosition];
+      p.pictureThumb = p.pictureThumb.join('%2F');
+    }
+
     let nav = this.props.nav;
     return (
       <TouchableOpacity
@@ -71,7 +79,7 @@ class Item extends Component {
           </Text>
         </View>
         <Image
-          source={{ uri: p.pictures[0] }}
+          source={{ uri: p.pictureThumb }}
           style={{
             zIndex: 0,
             position: "absolute",
@@ -180,84 +188,86 @@ export default class Search extends Component {
     let s = this.state;
 
     return (
-      <LinearGradient
-        colors={colorsGradient}
-        start={startGradient}
-        end={endGradient}
-        style={globalStyles.screen}
-      >
-        <View style={styles.container}>
-          <Header back={true} />
-          <Text style={styles.textButton}>{s.textContent.search}</Text>
-          <TextInput
-            value={s.search}
-            onChangeText={text => {
-              s.search = text;
-              this.setState(s);
-              this.search();
-            }}
-            onSubmitEditing={() => {
-              this.setState({ search: "" });
-              this.search();
-            }}
-            placeholder={s.textContent.search}
-            style={{
-              justifyContent: "center",
-              alignItems: "flex-start",
-              width: "100%",
-              height: 40,
-              backgroundColor: "#FFF",
-              borderRadius: 5,
-              marginTop: 10,
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-              ...globalStyles.textRegular
-            }}
-          />
-          {s.search != "" ? (s.loading ? (
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center"
+      <SafeAreaView style={globalStyles.screen}>
+        <LinearGradient
+          colors={colorsGradient}
+          start={startGradient}
+          end={endGradient}
+          style={globalStyles.screen}
+        >
+          <View style={styles.container}>
+            <Header back={true} />
+            <Text style={styles.textButton}>{s.textContent.search}</Text>
+            <TextInput
+              value={s.search}
+              onChangeText={text => {
+                s.search = text;
+                this.setState(s);
+                this.search();
               }}
-            >
-              <ActivityIndicator size="large" color="#0008" />
-            </View>
-          ) : (
-              <FlatList
-                ListEmptyComponent={
-                  <View
-                    style={{
-                      flex: 1,
-                      height: 400,
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <Icon name="surprise" size={50} light color="#0006" />
-                    <Text style={globalStyles.textSemiBold}>
-                      {s.textContent.items}
-                    </Text>
-                  </View>
-                }
-                style={{ marginTop: 20 }}
-                data={s.itemsForSale}
-                columnWrapperStyle={{ justifyContent: "space-around" }}
-                numColumns={2}
-                renderItem={({ item }) => (
-                  <Item
-                    text={s.textContent}
-                    data={item}
-                    nav={this.props.navigation}
-                    coin={this.state.coin ? this.state.coin : "$"}
-                  />
-                )}
-                keyExtractor={(item, index) => index}
-              />
-            )) : null}
-        </View>
-      </LinearGradient>
+              onSubmitEditing={() => {
+                this.setState({ search: "" });
+                this.search();
+              }}
+              placeholder={s.textContent.search}
+              style={{
+                justifyContent: "center",
+                alignItems: "flex-start",
+                width: "100%",
+                height: 40,
+                backgroundColor: "#FFF",
+                borderRadius: 5,
+                marginTop: 10,
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                ...globalStyles.textRegular
+              }}
+            />
+            {s.search != "" ? (s.loading ? (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: "center",
+                  justifyContent: "center"
+                }}
+              >
+                <ActivityIndicator size="large" color="#0008" />
+              </View>
+            ) : (
+                <FlatList
+                  ListEmptyComponent={
+                    <View
+                      style={{
+                        flex: 1,
+                        height: 400,
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
+                    >
+                      <Icon name="surprise" size={50} light color="#0006" />
+                      <Text style={globalStyles.textSemiBold}>
+                        {s.textContent.items}
+                      </Text>
+                    </View>
+                  }
+                  style={{ marginTop: 20 }}
+                  data={s.itemsForSale}
+                  columnWrapperStyle={{ justifyContent: "space-around" }}
+                  numColumns={2}
+                  renderItem={({ item }) => (
+                    <Item
+                      text={s.textContent}
+                      data={item}
+                      nav={this.props.navigation}
+                      coin={this.state.coin ? this.state.coin : "$"}
+                    />
+                  )}
+                  keyExtractor={(item, index) => index}
+                />
+              )) : null}
+          </View>
+        </LinearGradient>
+      </SafeAreaView>
     );
   }
 }
