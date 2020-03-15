@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   SafeAreaView,
   KeyboardAvoidingView,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
+  Platform
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { StackActions, NavigationActions } from "react-navigation";
@@ -198,7 +199,7 @@ export default class Login extends Component {
             <KeyboardAvoidingView
               enabled
               behavior="position"
-              keyboardVerticalOffset = {200}
+              keyboardVerticalOffset = {Platform.OS === 'ios' ? 200 : 0}
               style={{
                 justifyContent: 'center',
                 alignItems: 'center'

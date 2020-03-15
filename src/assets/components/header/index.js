@@ -67,6 +67,9 @@ export class Header extends Component {
               onPress={this.navMessage}
             >
               <Icon name="comment-alt" size={24} color={this.props.unread ? "rgb(21,128,251)" : "#737373"} solid />
+              <Text style={{color: '#FFFFFF', fontWeight: 'bold', position: 'absolute', width: '100%', textAlign: 'center'}}>
+                {this.props.unread ? this.props.unread : ''}
+              </Text>
             </TouchableOpacity>
           )}
         </View>

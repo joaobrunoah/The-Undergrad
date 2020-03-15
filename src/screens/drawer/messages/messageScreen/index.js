@@ -215,79 +215,84 @@ export default class MessageDetail extends Component {
     let s = this.state;
 
     return (
-      <LinearGradient
-        colors={colorsGradient}
-        start={startGradient}
-        end={endGradient}
-        style={globalStyles.screen}
-      >
-        <SafeAreaView
-          style={{
-            margin: -10,
-            padding: 10,
-            backgroundColor: "#FFF",
-            zIndex: 7,
-            opacity: 0.8
-          }}
-        >
-          <Header back={true} backCb={() => {
-            System.removeListaConversas('Actual Conversation');
-          }}/>
-        </SafeAreaView>
-
-        <SafeAreaView style={styles.container}>
-          <View
-            style={{
-              padding: 10,
-              paddingBottom: 50,
-              height: "100%",
-              width: "100%"
-            }}
+      <>
+        <SafeAreaView style={{flex: 0, backgroundColor: '#FFFFFF'}}/>
+        <SafeAreaView style={{flex: 1, backgroundColor: '#bdc3c7'}}>
+          <LinearGradient
+            colors={colorsGradient}
+            start={startGradient}
+            end={endGradient}
+            style={globalStyles.screen}
           >
-            <FlatList
-              inverted
-              style={{ marginTop: 10 }}
-              contentContainerStyle={{ paddingTop: 10, paddingBottom: 10}}
-              data={s.messages}
-              renderItem={({ item }) => (
-                <Mensagem data={item} user={item.user} />
-              )}
-              keyExtractor={(item, index) => item.id+''+index}
-            />
-          </View>
-          <View style={styles.messageTextArea}>
-            <TextInput
-              value={s.newMessage}
-              onChangeText={text => {
-                this.setState({ newMessage: text });
+            <SafeAreaView
+              style={{
+                margin: -10,
+                padding: 10,
+                backgroundColor: "#FFF",
+                zIndex: 7,
+                opacity: 0.8
               }}
-              placeholder="Digite aqui sua mensagem"
-              style={[
-                globalStyles.textRegular,
-                {
-                  height: 40,
-                  maxHeight: 40,
-                  width: "90%",
-                  paddingHorizontal: 10,
-                  paddingVertical: 5,
-                  flexDirection: "row",
-                  borderColor: "#CCC",
-                  borderWidth: 1,
-                  borderRadius: 5,
-                  alignItems: "center",
-                  justifyContent: "flex-start"
-                }
-              ]}
-            />
-            <TouchableOpacity
-              onPress={this.sendMessage}
-              style={{ marginRight: 5 }}
             >
-              <Icon name="arrow-circle-right" size={24} color="#737373" />
-            </TouchableOpacity>
-          </View>
+              <Header back={true} backCb={() => {
+                System.removeListaConversas('Actual Conversation');
+              }}/>
+            </SafeAreaView>
+
+            <SafeAreaView style={styles.container}>
+              <View
+                style={{
+                  padding: 10,
+                  paddingBottom: 50,
+                  height: "100%",
+                  width: "100%"
+                }}
+              >
+                <FlatList
+                  inverted
+                  style={{ marginTop: 10 }}
+                  contentContainerStyle={{ paddingTop: 10, paddingBottom: 10}}
+                  data={s.messages}
+                  renderItem={({ item }) => (
+                    <Mensagem data={item} user={item.user} />
+                  )}
+                  keyExtractor={(item, index) => item.id+''+index}
+                />
+              </View>
+              <View style={styles.messageTextArea}>
+                <TextInput
+                  value={s.newMessage}
+                  onChangeText={text => {
+                    this.setState({ newMessage: text });
+                  }}
+                  placeholder="Digite aqui sua mensagem"
+                  style={[
+                    globalStyles.textRegular,
+                    {
+                      height: 40,
+                      maxHeight: 40,
+                      width: "90%",
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                      flexDirection: "row",
+                      borderColor: "#CCC",
+                      borderWidth: 1,
+                      borderRadius: 5,
+                      alignItems: "center",
+                      justifyContent: "flex-start"
+                    }
+                  ]}
+                />
+                <TouchableOpacity
+                  onPress={this.sendMessage}
+                  style={{ marginRight: 5 }}
+                >
+                  <Icon name="arrow-circle-right" size={24} color="#737373" />
+                </TouchableOpacity>
+              </View>
+            </SafeAreaView>
+          </LinearGradient>
         </SafeAreaView>
-      </LinearGradient>
+      </>
     );
   }
 }
