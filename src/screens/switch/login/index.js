@@ -59,38 +59,47 @@ export default class Login extends Component {
   }
 
   async componentWillMount() {
-    let s = this.state;
     let language = await AsyncStorage.getItem("language");
 
+    let textContent = textUsa;
+
     if (language === "br") {
-      s.textContent = textBr;
-    } else if (language === "usa") {
-      s.textContent = textUsa;
+      textContent = textBr;
     }
-    this.setState(s);
+    this.setState({
+      textContent
+    });
   }
 
   signIn = async () => {
     Keyboard.dismiss();
     let s = this.state;
-    s.loading = true;
-    s.disabled = true;
-    s.opacity = { opacity: 0.7 };
-    this.setState(s);
+    let loading = true;
+    let disabled = true;
+    let opacity = { opacity: 0.7 };
+    this.setState({
+      loading,
+      disabled,
+      opacity
+    });
+    let active = false;
+
     System.signOut();
+
     if (s.email !== "" && s.pass !== "") {
       System.login(s.email, s.pass)
         .then(async () => {
           let user = System.getUser();
-          console.log(user);
           await AsyncStorage.setItem("userUID", user.uid);
           System.getUserInfo(user.uid)
             .then(r => {
-              s.active = r.data().active;
-              this.setState(s);
+              active = r.data().active;
+              this.setState({
+                active
+              });
             })
             .then(async () => {
-              if (s.active) {
+              if (active) {
                 await AsyncStorage.setItem("isOn", "true")
                   .then(
                     await AsyncStorage.setItem("email", s.email).then(
@@ -100,10 +109,14 @@ export default class Login extends Component {
                   .then(() => {
                     if (!System.getUser().emailVerified) {
                       Alert.alert(s.textContent.titleError, s.textContent.error_3);
-                      s.disabled = false;
-                      s.loading = false;
-                      s.opacity = 1;
-                      this.setState(s);
+                      let disabled = false;
+                      let loading = false;
+                      let opacity = 1;
+                      this.setState({
+                        disabled,
+                        loading,
+                        opacity
+                      });
                       System.signOut();
                     } else {
                       const resetAction = StackActions.reset({
@@ -115,27 +128,39 @@ export default class Login extends Component {
                   });
               } else {
                 Alert.alert(s.textContent.titleError, s.textContent.error_4);
-                s.disabled = false;
-                s.loading = false;
-                s.opacity = 1;
-                this.setState(s);
+                let disabled = false;
+                let loading = false;
+                let opacity = 1;
+                this.setState({
+                  disabled,
+                  loading,
+                  opacity
+                });
               }
             });
         })
         .catch(err => {
           console.warn(err);
           Alert.alert(s.textContent.titleError, s.textContent.error_1);
-          s.disabled = false;
-          s.loading = false;
-          s.opacity = { opacity: 1 };
-          this.setState(s);
+          let disabled = false;
+          let loading = false;
+          let opacity = { opacity: 1 };
+          this.setState({
+            disabled,
+            loading,
+            opacity
+          });
         });
     } else {
       Alert.alert(s.textContent.titleError, s.textContent.error_2);
-      s.disabled = false;
-      s.loading = false;
-      s.opacity = 1;
-      this.setState(s);
+      let disabled = false;
+      let loading = false;
+      let opacity = 1;
+      this.setState({
+        disabled,
+        loading,
+        opacity
+      });
     }
   };
 
