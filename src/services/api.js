@@ -146,6 +146,8 @@ class System {
   // Setar a pasta imgs e a offers com a imagem tento o mesmo nome do UID do User
   async setItemImg(userUID, type, imagePickerResponse, platformOS) {
 
+    console.log(imagePickerResponse);
+
     const getFileLocalPath = response => {
       const { path, uri } = response;
       return platformOS === 'android' ? path : uri;

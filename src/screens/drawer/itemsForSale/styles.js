@@ -16,11 +16,10 @@ const styles = StyleSheet.create({
     maxHeight: 140,
     width: "45%",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     borderRadius: 10,
     marginBottom: 20,
-    backgroundColor: "#FFF",
-    overflow: "hidden"
+    backgroundColor: "#FFF"
   }
 });
 

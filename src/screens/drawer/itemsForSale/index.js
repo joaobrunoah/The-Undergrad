@@ -6,7 +6,7 @@ import {
   FlatList,
   ActivityIndicator,
   Image,
-  TouchableOpacity
+  TouchableOpacity, SafeAreaView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { StackActions, NavigationActions } from "react-navigation";
@@ -34,34 +34,35 @@ import styles from "./styles";
 import { textBr, textUsa } from "../../../assets/content/mainRoute/perfil";
 
 class Item extends Component {
-  constructor(props) {
-    super(props);
 
-    this.state = {
-      userUid: "",
-      textContent: {}
-    };
-  }
+  state = { coin: '' };
 
   async componentDidMount() {
-    let s = this.state;
-    s.language = await AsyncStorage.getItem("language");
-    s.userUid = await AsyncStorage.getItem("userUID");
+    let uniID = this.props.uniID;
+    System.getUniData(uniID).then(universityCb => {
+      let coin = universityCb.data().coin;
+      this.setState({ coin: coin });
+    });
 
-    if (s.language === "br") {
-      s.textContent = textBr;
-    } else if (s.language === "usa") {
-      s.textContent = textUsa;
+    let language = await AsyncStorage.getItem("language");
+    let userUid = await AsyncStorage.getItem("userUID");
+
+    let textContent = textUsa;
+
+    if (language === "br") {
+      textContent = textBr;
     }
 
-    this.setState(s);
+    this.setState({
+      language,
+      userUid,
+      textContent
+    });
   }
 
   delete = async () => {
     let p = this.props.data;
     let s = this.state;
-    s.userUid = await AsyncStorage.getItem("userUID");
-    this.setState(s);
 
     let auxID = `/users/${s.userUid}`;
 
@@ -71,7 +72,7 @@ class Item extends Component {
         data.forEach(doc => {
           if (doc.data().createdAt === p.createdAt) {
             System.deleteItemsUser(doc.id)
-              .then(r => {
+              .then(r2 => {
                 Alert.alert(
                   s.textContent.alertTitle,
                   s.textContent.alertDeleted
@@ -90,7 +91,6 @@ class Item extends Component {
               });
           }
         });
-        this.setState(s);
       })
       .catch(e => {
         console.warn(e);
@@ -98,9 +98,14 @@ class Item extends Component {
   };
 
   render() {
-    let p = this.props.data;
-    let nav = this.props.nav;
     let s = this.state;
+    let p = this.props.data;
+    if(p.pictures && p.pictures.length > 0 && p.pictures[0] !== null && p.pictures[0] !== "") {
+      p.pictureThumb =  p.pictures[0].split('%2F');
+      const lastElPosition = p.pictureThumb.length-1;
+      p.pictureThumb[lastElPosition] = 'thumb_' + p.pictureThumb[lastElPosition];
+      p.pictureThumb = p.pictureThumb.join('%2F');
+    }
 
     return (
       <TouchableOpacity
@@ -148,18 +153,20 @@ class Item extends Component {
             {p.description}
           </Text>
         </View>
-        <Image
-          source={{ uri: p.pictures[0] }}
-          style={{
-            zIndex: 0,
-            position: "absolute",
-            width: "100%",
-            height: 110,
-            borderTopLeftRadius: 10,
-            borderTopRightRadius: 10,
-            top: 0
-          }}
-        />
+        {(p.pictureThumb) ?
+          <Image
+            source={{ uri: p.pictureThumb }}
+            style={{
+              zIndex: 0,
+              position: "absolute",
+              width: "100%",
+              height: 110,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
+              top: 0
+            }}
+          /> : null
+        }
         <View
           style={{
             zIndex: 6,
@@ -175,7 +182,7 @@ class Item extends Component {
           }}
         >
           <Text style={[globalStyles.textSemiBold, { color: "#0008" }]}>
-            {this.props.text.price} {Number(p.price).toFixed(2)}
+            {this.props.text.price} {this.state.coin ? this.state.coin : '$'} {Number(p.price).toFixed(2)}
           </Text>
         </View>
       </TouchableOpacity>
@@ -234,68 +241,73 @@ export default class ItemsForSale extends Component {
     let s = this.state;
 
     return (
-      <LinearGradient
-        colors={colorsGradient}
-        start={startGradient}
-        end={endGradient}
-        style={globalStyles.screen}
-      >
-        {/* Modal */}
+      <>
+        <SafeAreaView style={{flex: 0, backgroundColor: '#ecf0f1'}}/>
+        <SafeAreaView style={[styles.container,{backgroundColor: '#bdc3c7'}]}>
+          <LinearGradient
+            colors={colorsGradient}
+            start={startGradient}
+            end={endGradient}
+            style={globalStyles.screen}
+          >
+            {/* Modal */}
 
-        {/* Fim Modal */}
-        <View style={styles.container}>
-          <Header back={true} />
-          <Text
-            style={[
-              globalStyles.textBold,
-              { fontSize: 20, marginVertical: 10, textAlign: "center" }
-            ]}>
-            {s.textContent.yourItemsFor}
-          </Text>
-          <View style={styles.separator} />
-          {s.loading ? (
-            <View
-              style={{
-                flex: 1,
-                alignItems: "center",
-                justifyContent: "center"
-              }}
-            >
-              <ActivityIndicator size="large" color="#0008" />
-            </View>
-          ) : (
-              <FlatList
-                ListEmptyComponent={
-                  <View
-                    style={{
-                      flex: 1,
-                      height: 400,
-                      alignItems: "center",
-                      justifyContent: "center"
-                    }}
-                  >
-                    <Icon name="surprise" size={50} light color="#0006" />
-                    <Text style={globalStyles.textSemiBold}>
-                      {s.textContent.emptyList}
-                    </Text>
-                  </View>
-                }
-                style={{ marginTop: 20 }}
-                data={s.itemsForSale}
-                columnWrapperStyle={{ justifyContent: "space-around" }}
-                numColumns={2}
-                renderItem={({ item }) => (
-                  <Item
-                    text={s.textContent}
-                    data={item}
-                    nav={this.props.navigation}
+            {/* Fim Modal */}
+            <View style={styles.container}>
+              <Header back={true} />
+              <Text
+                style={[
+                  globalStyles.textBold,
+                  { fontSize: 20, marginVertical: 10, textAlign: "center" }
+                ]}>
+                {s.textContent.yourItemsFor}
+              </Text>
+              <View style={styles.separator} />
+              {s.loading ? (
+                <View
+                  style={{
+                    flex: 1,
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}
+                >
+                  <ActivityIndicator size="large" color="#0008" />
+                </View>
+              ) : (
+                  <FlatList
+                    ListEmptyComponent={
+                      <View
+                        style={{
+                          flex: 1,
+                          height: 400,
+                          alignItems: "center",
+                          justifyContent: "center"
+                        }}
+                      >
+                        <Icon name="surprise" size={50} light color="#0006" />
+                        <Text style={globalStyles.textSemiBold}>
+                          {s.textContent.emptyList}
+                        </Text>
+                      </View>
+                    }
+                    style={{ marginTop: 20 }}
+                    data={s.itemsForSale}
+                    columnWrapperStyle={{ justifyContent: "space-around" }}
+                    numColumns={2}
+                    renderItem={({ item }) => (
+                      <Item
+                        text={s.textContent}
+                        data={item}
+                        nav={this.props.navigation}
+                      />
+                    )}
+                    keyExtractor={(item, index) => index}
                   />
                 )}
-                keyExtractor={(item, index) => index}
-              />
-            )}
-        </View>
-      </LinearGradient>
+            </View>
+          </LinearGradient>
+        </SafeAreaView>
+      </>
     );
   }
 }

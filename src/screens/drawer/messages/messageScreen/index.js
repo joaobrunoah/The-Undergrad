@@ -141,6 +141,11 @@ export default class MessageDetail extends Component {
 
   sendMessage = async () => {
     let s = this.state;
+
+    if(s.newMessage === "") {
+      return;
+    }
+
     let p = this.props.navigation.state.params.data;
     let d = this.props.navigation.state.params.data2;
     let prefixo = typeof d === "undefined" ? "" : "[" + d.description + " - " + s.textContent.price + Number(d.price).toFixed(2).toString() + "]\n";

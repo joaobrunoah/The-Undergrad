@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  Platform
+  Platform, SafeAreaView
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import moment from "moment";
@@ -75,24 +75,37 @@ export default class SellScreen extends Component {
       loadingImg: true
     });
 
-    ImagePicker.showImagePicker({noData: true}, async r => {
-      if(r.didCancel) {
+    ImagePicker.showImagePicker({noData: true}, async (r) => {
+
+      if(r.didCancel || r.error) {
+        if(r.error)
+          Alert.alert(
+            this.state.textContent.warning,
+            this.state.textContent.msgError + ': ' + r.error
+          );
         this.setState({loadingImg : false});
         return;
       }
 
-      let uploadResponse = await System.setItemImg(userUID, 'offers', r, Platform.OS);
+      try {
+        let uploadResponse = await System.setItemImg(userUID, 'offers', r, Platform.OS);
 
-      const imgUrl = uploadResponse.downloadURL;
+        const imgUrl = uploadResponse.downloadURL;
 
-      let sellInfo = this.state.sellInfo;
+        let sellInfo = this.state.sellInfo;
 
-      sellInfo.pictures = [imgUrl];
-      this.setState({
-        sellInfo: sellInfo,
-        photo: {uri: r.uri},
-        loadingImg: false
-      });
+        sellInfo.pictures = [imgUrl];
+        this.setState({
+          sellInfo: sellInfo,
+          photo: {uri: r.uri},
+          loadingImg: false
+        });
+      } catch (err) {
+        Alert.alert(this.state.textContent.warning, this.state.textContent.msgError + ': ' + err.message);
+        this.setState({loadingImg : false});
+        return;
+      }
+
     });
   };
 
@@ -172,214 +185,219 @@ export default class SellScreen extends Component {
   render() {
 
     return (
-      <LinearGradient
-        colors={colorsGradient}
-        start={startGradient}
-        end={endGradient}
-        style={globalStyles.screen}
-      >
-        {/* Modal */}
-        <Modal
-          swipeToClose={true}
-          backButtonClose={true}
-          style={{
-            justifyContent: "center",
-            alignItems: "flex-start",
-            width: "50%",
-            height: "25%",
-            borderRadius: 10,
-            padding: 10
-          }}
-          ref="Categ"
-        >
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => {
-              let oldData = this.state.sellInfo;
-              this.setState({
-                categ: this.state.language === "br" ? "Tecnologia" : "Gadgets",
-                sellInfo: {
-                  ...oldData,
-                  category: "8PY3ZBsMlNIwhYtEwgGH",
-                  categoryRef: `/categories/8PY3ZBsMlNIwhYtEwgGH`
-                }
-              });
-              this.refs.Categ.close();
-            }}
+      <>
+        <SafeAreaView style={{flex: 0, backgroundColor: '#ecf0f1'}}/>
+        <SafeAreaView style={[styles.container,{backgroundColor: '#bdc3c7'}]}>
+          <LinearGradient
+            colors={colorsGradient}
+            start={startGradient}
+            end={endGradient}
+            style={globalStyles.screen}
           >
-            <Text
-              style={[
-                globalStyles.textSemiBold,
-                { marginVertical: 10, fontSize: 16 }
-              ]}
+            {/* Modal */}
+            <Modal
+              swipeToClose={true}
+              backButtonClose={true}
+              style={{
+                justifyContent: "center",
+                alignItems: "flex-start",
+                width: "50%",
+                height: "25%",
+                borderRadius: 10,
+                padding: 10
+              }}
+              ref="Categ"
             >
-              {this.state.textContent.gadgets}
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => {
-              let oldData = this.state.sellInfo;
-              this.setState({
-                categ: this.state.language === "br" ? "Livros" : "Books",
-                sellInfo: {
-                  ...oldData,
-                  category: "N3iUL6ynRStM5GIHpOvm",
-                  categoryRef: `/categories/N3iUL6ynRStM5GIHpOvm`
-                }
-              });
-              this.refs.Categ.close();
-            }}
-          >
-            <Text
-              style={[
-                globalStyles.textSemiBold,
-                { marginVertical: 10, fontSize: 16 }
-              ]}
-            >
-              {this.state.textContent.books}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => {
-              let oldData = this.state.sellInfo;
-              this.setState({
-                categ: this.state.language === "br" ? "Roupas" : "Clothing",
-                sellInfo: {
-                  ...oldData,
-                  category: "cKZwtt8QrAEY3xwcWUJl",
-                  categoryRef: `/categories/cKZwtt8QrAEY3xwcWUJl`
-                }
-              });
-              this.refs.Categ.close();
-            }}
-          >
-            <Text
-              style={[
-                globalStyles.textSemiBold,
-                { marginVertical: 10, fontSize: 16 }
-              ]}
-            >
-              {this.state.textContent.clothing}
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => {
-              let oldData = this.state.sellInfo;
-              this.setState({
-                categ: this.state.language === "br" ? "Móveis" : "Furniture",
-                sellInfo: {
-                  ...oldData,
-                  category: "pafcKINwS2mP1AVVu49T",
-                  categoryRef: `/categories/pafcKINwS2mP1AVVu49T`
-                }
-              });
-              this.refs.Categ.close();
-            }}
-          >
-            <Text
-              style={[
-                globalStyles.textSemiBold,
-                { marginVertical: 10, fontSize: 16 }
-              ]}
-            >
-              {this.state.textContent.furniture}
-            </Text>
-          </TouchableOpacity>
-        </Modal>
-        {/* Fim Modal */}
-        <ScrollView style={styles.container}>
-          <Header back={true} />
-          <TouchableOpacity onPress={this.takePhoto} style={styles.uploadArea}>
-            {this.state.loadingImg ? (
-              <View
-                style={{
-                  backgroundColor: "#FFF4",
-                  width: "100%",
-                  height: "100%",
-                  justifyContent: "center",
-                  alignItems: "center"
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => {
+                  let oldData = this.state.sellInfo;
+                  this.setState({
+                    categ: this.state.language === "br" ? "Tecnologia" : "Gadgets",
+                    sellInfo: {
+                      ...oldData,
+                      category: "8PY3ZBsMlNIwhYtEwgGH",
+                      categoryRef: `/categories/8PY3ZBsMlNIwhYtEwgGH`
+                    }
+                  });
+                  this.refs.Categ.close();
                 }}
               >
-                <ActivityIndicator size="large" color="#FFF" />
-              </View>
-            ) : this.state.photo === null ? (
-              <Text style={[globalStyles.textSemiBold, styles.uploadText]}>
-                {this.state.textContent.upImg}
-              </Text>
-            ) : (
-              <Image
-                source={this.state.photo}
-                style={{ height: "100%", width: "100%" }}
-                resizeMode="cover"
-              />
-            )}
-          </TouchableOpacity>
-          <TextInput
-            multiline={false}
-            maxLength={80}
-            value={this.state.sellInfo.description}
-            onChangeText={text => {
-              let oldData = this.state.sellInfo;
-              this.setState({ sellInfo: { ...oldData, description: text } });
-            }}
-            style={[globalStyles.textRegular, styles.description]}
-            placeholder={this.state.textContent.description}
-          />
-          <TouchableOpacity
-            activeOpacity={0.7}
-            onPress={() => {
-              this.refs.Categ.open();
-            }}
-            style={[styles.description, { justifyContent: "center" }]}
-          >
-            <Text style={[globalStyles.textRegular]}>{this.state.categ}</Text>
-          </TouchableOpacity>
-          <TextInput
-            multiline={true}
-            maxLength={150}
-            value={this.state.sellInfo.price}
-            onChangeText={text => {
-
-              if(isNaN(text)) {
-                return;
-              }
-
-              let oldData = this.state.sellInfo;
-              this.setState({
-                sellInfo: { ...oldData, price: text }
-              });
-            }}
-            keyboardType="decimal-pad"
-            style={[
-              globalStyles.textRegular,
-              styles.description,
-              {
-                width: "30%",
-                textAlign: "center"
-              }
-            ]}
-            placeholder={this.state.textContent.price}
-          />
-          <TouchableOpacity
-            disabled={this.state.loadingImg ? false : this.state.loading}
-            activeOpacity={0.7}
-            onPress={this.upOffer}
-            style={styles.uploadOfferButton}
-          >
-            {this.state.loading ? (
-              <ActivityIndicator size="small" color="#FFF" />
-            ) : (
-                <Text style={[globalStyles.textSemiBold, styles.uploadOffer]}>
-                  {this.state.textContent.upOffer}
+                <Text
+                  style={[
+                    globalStyles.textSemiBold,
+                    { marginVertical: 10, fontSize: 16 }
+                  ]}
+                >
+                  {this.state.textContent.gadgets}
                 </Text>
-              )}
-          </TouchableOpacity>
-        </ScrollView>
-      </LinearGradient>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => {
+                  let oldData = this.state.sellInfo;
+                  this.setState({
+                    categ: this.state.language === "br" ? "Livros" : "Books",
+                    sellInfo: {
+                      ...oldData,
+                      category: "N3iUL6ynRStM5GIHpOvm",
+                      categoryRef: `/categories/N3iUL6ynRStM5GIHpOvm`
+                    }
+                  });
+                  this.refs.Categ.close();
+                }}
+              >
+                <Text
+                  style={[
+                    globalStyles.textSemiBold,
+                    { marginVertical: 10, fontSize: 16 }
+                  ]}
+                >
+                  {this.state.textContent.books}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => {
+                  let oldData = this.state.sellInfo;
+                  this.setState({
+                    categ: this.state.language === "br" ? "Roupas" : "Clothing",
+                    sellInfo: {
+                      ...oldData,
+                      category: "cKZwtt8QrAEY3xwcWUJl",
+                      categoryRef: `/categories/cKZwtt8QrAEY3xwcWUJl`
+                    }
+                  });
+                  this.refs.Categ.close();
+                }}
+              >
+                <Text
+                  style={[
+                    globalStyles.textSemiBold,
+                    { marginVertical: 10, fontSize: 16 }
+                  ]}
+                >
+                  {this.state.textContent.clothing}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => {
+                  let oldData = this.state.sellInfo;
+                  this.setState({
+                    categ: this.state.language === "br" ? "Móveis" : "Furniture",
+                    sellInfo: {
+                      ...oldData,
+                      category: "pafcKINwS2mP1AVVu49T",
+                      categoryRef: `/categories/pafcKINwS2mP1AVVu49T`
+                    }
+                  });
+                  this.refs.Categ.close();
+                }}
+              >
+                <Text
+                  style={[
+                    globalStyles.textSemiBold,
+                    { marginVertical: 10, fontSize: 16 }
+                  ]}
+                >
+                  {this.state.textContent.furniture}
+                </Text>
+              </TouchableOpacity>
+            </Modal>
+            {/* Fim Modal */}
+            <ScrollView style={styles.container}>
+              <Header back={true} />
+              <TouchableOpacity onPress={this.takePhoto} style={styles.uploadArea}>
+                {this.state.loadingImg ? (
+                  <View
+                    style={{
+                      backgroundColor: "#FFF4",
+                      width: "100%",
+                      height: "100%",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    <ActivityIndicator size="large" color="#FFF" />
+                  </View>
+                ) : this.state.photo === null ? (
+                  <Text style={[globalStyles.textSemiBold, styles.uploadText]}>
+                    {this.state.textContent.upImg}
+                  </Text>
+                ) : (
+                  <Image
+                    source={this.state.photo}
+                    style={{ height: "100%", width: "100%" }}
+                    resizeMode="cover"
+                  />
+                )}
+              </TouchableOpacity>
+              <TextInput
+                multiline={false}
+                maxLength={80}
+                value={this.state.sellInfo.description}
+                onChangeText={text => {
+                  let oldData = this.state.sellInfo;
+                  this.setState({ sellInfo: { ...oldData, description: text } });
+                }}
+                style={[globalStyles.textRegular, styles.description]}
+                placeholder={this.state.textContent.description}
+              />
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => {
+                  this.refs.Categ.open();
+                }}
+                style={[styles.description, { justifyContent: "center" }]}
+              >
+                <Text style={[globalStyles.textRegular]}>{this.state.categ}</Text>
+              </TouchableOpacity>
+              <TextInput
+                multiline={false}
+                maxLength={150}
+                value={this.state.sellInfo.price}
+                onChangeText={text => {
+
+                  if(isNaN(text)) {
+                    return;
+                  }
+
+                  let oldData = this.state.sellInfo;
+                  this.setState({
+                    sellInfo: { ...oldData, price: text }
+                  });
+                }}
+                keyboardType="decimal-pad"
+                style={[
+                  globalStyles.textRegular,
+                  styles.description,
+                  {
+                    width: "30%",
+                    textAlign: "center"
+                  }
+                ]}
+                placeholder={this.state.textContent.price}
+              />
+              <TouchableOpacity
+                disabled={this.state.loadingImg ? false : this.state.loading}
+                activeOpacity={0.7}
+                onPress={this.upOffer}
+                style={styles.uploadOfferButton}
+              >
+                {this.state.loading ? (
+                  <ActivityIndicator size="small" color="#FFF" />
+                ) : (
+                    <Text style={[globalStyles.textSemiBold, styles.uploadOffer]}>
+                      {this.state.textContent.upOffer}
+                    </Text>
+                  )}
+              </TouchableOpacity>
+            </ScrollView>
+          </LinearGradient>
+        </SafeAreaView>
+      </>
     );
   }
 }

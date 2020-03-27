@@ -76,28 +76,31 @@ export default class Messages extends Component {
     let s = this.state;
 
     return (
-      <LinearGradient
-        colors={colorsGradient}
-        start={startGradient}
-        end={endGradient}
-        style={globalStyles.screen}
-      >
-        <SafeAreaView style={styles.container}>
-          <Header back={true} />
-          <Text style={[globalStyles.textRegular, styles.mainText]}>
-            {s.textContent.title}
-          </Text>
-          <View>
-            <MessagesList
-              conversas={this.state.conversas}
-              loading={this.state.loading}
-              uid={this.state.uid}
-              textContent={this.state.textContent}
-              language={this.state.language}
-            />
-          </View>
+      <>
+        <SafeAreaView style={{flex: 0, backgroundColor: '#ecf0f1'}}/>
+        <SafeAreaView style={[styles.container,{backgroundColor: '#bdc3c7'}]}>
+          <LinearGradient
+            colors={colorsGradient}
+            start={startGradient}
+            end={endGradient}
+            style={globalStyles.screen}
+          >
+            <Header back={true} />
+            <Text style={[globalStyles.textRegular, styles.mainText]}>
+              {s.textContent.title}
+            </Text>
+            <View style={{flex: 1}}>
+              <MessagesList
+                conversas={this.state.conversas}
+                loading={this.state.loading}
+                uid={this.state.uid}
+                textContent={this.state.textContent}
+                language={this.state.language}
+              />
+            </View>
+          </LinearGradient>
         </SafeAreaView>
-      </LinearGradient>
+      </>
     );
   }
 }

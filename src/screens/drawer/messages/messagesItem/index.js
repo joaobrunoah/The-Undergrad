@@ -42,18 +42,21 @@ export class Message extends Component {
 
   componentDidMount() {
     let auxID = this.props.data.key;
-    let s = this.state;
+    let that = this;
     System.getUserInfo(auxID).then(r => {
       let nome = r.data().name;
       let uni = r.data().email;
       let aux = uni.split("@", 2);
       uni = aux[1];
-      let imgUrlArray = r.data().imgProfile.split('%2F');
-      const lastElPosition = imgUrlArray.length-1;
-      imgUrlArray[lastElPosition] = 'thumb_' + imgUrlArray[lastElPosition];
-      const imgUrlThumb = imgUrlArray.join('%2F');
-      let imageProfile = imgUrlThumb;
-      this.setState({
+      let imageProfile = undefined;
+      if(r.data().imgProfile) {
+        let imgUrlArray = r.data().imgProfile.split('%2F');
+        const lastElPosition = imgUrlArray.length-1;
+        imgUrlArray[lastElPosition] = 'thumb_' + imgUrlArray[lastElPosition];
+        const imgUrlThumb = imgUrlArray.join('%2F');
+        imageProfile = imgUrlThumb;
+      }
+      that.setState({
         nome, uni, imageProfile
       });
     });

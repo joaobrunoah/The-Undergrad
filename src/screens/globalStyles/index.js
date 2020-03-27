@@ -22,5 +22,5 @@ export const globalStyles = StyleSheet.create({
 
 //Linear Gradient
 export const colorsGradient = ["#ecf0f1", "#bdc3c7"];
-export const startGradient = { x: 1, y: 0 };
+export const startGradient = { x: 0, y: 0 };
 export const endGradient = { x: 0, y: 1 };

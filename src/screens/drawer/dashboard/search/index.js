@@ -188,7 +188,7 @@ export default class Search extends Component {
     let s = this.state;
 
     return (
-      <SafeAreaView style={globalStyles.screen}>
+      <SafeAreaView style={{flex: 1}}>
         <LinearGradient
           colors={colorsGradient}
           start={startGradient}

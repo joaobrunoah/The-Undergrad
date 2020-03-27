@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {TouchableHighlight, TouchableOpacity, Image, View, Text, ScrollView, SafeAreaView} from "react-native";
+import {TouchableHighlight, TouchableOpacity, Image, View, Text, ScrollView, SafeAreaView, BackHandler} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-community/async-storage";
 import ImageView from "react-native-image-viewing";
@@ -97,6 +97,11 @@ export default class Details extends Component {
       .catch(e => {
         console.warn(e);
       });
+
+    BackHandler.removeEventListener('hardwareBackPress', () => {});
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      this.props.navigation.goBack();
+    });
   }
 
   setImageModalVisibility(imageModalVisibility) {
