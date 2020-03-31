@@ -78,6 +78,7 @@ export default class Login extends Component {
     let loading = true;
     let disabled = true;
     let opacity = { opacity: 0.7 };
+
     this.setState({
       loading,
       disabled,
@@ -85,75 +86,52 @@ export default class Login extends Component {
     });
     let active = false;
 
-    System.signOut();
+    try {
+      await System.signOut();
+    } catch(err) {
+      console.warn(err);
+    }
 
-    if (s.email !== "" && s.pass !== "") {
-      System.login(s.email, s.pass)
-        .then(async () => {
-          let user = System.getUser();
-          await AsyncStorage.setItem("userUID", user.uid);
-          System.getUserInfo(user.uid)
-            .then(r => {
-              active = r.data().active;
-              this.setState({
-                active
-              });
-            })
-            .then(async () => {
-              if (active) {
-                await AsyncStorage.setItem("isOn", "true")
-                  .then(
-                    await AsyncStorage.setItem("email", s.email).then(
-                      await AsyncStorage.setItem("pass", s.pass)
-                    )
-                  )
-                  .then(() => {
-                    if (!System.getUser().emailVerified) {
-                      Alert.alert(s.textContent.titleError, s.textContent.error_3);
-                      let disabled = false;
-                      let loading = false;
-                      let opacity = 1;
-                      this.setState({
-                        disabled,
-                        loading,
-                        opacity
-                      });
-                      System.signOut();
-                    } else {
-                      const resetAction = StackActions.reset({
-                        index: 0,
-                        actions: [NavigationActions.navigate({ routeName: "Home" })]
-                      });
-                      this.props.navigation.dispatch(resetAction);
-                    }
-                  });
-              } else {
-                Alert.alert(s.textContent.titleError, s.textContent.error_4);
-                let disabled = false;
-                let loading = false;
-                let opacity = 1;
-                this.setState({
-                  disabled,
-                  loading,
-                  opacity
-                });
-              }
+    let hasError = false;
+
+    try {
+      if (s.email !== "" && s.pass !== "") {
+        await System.login(s.email, s.pass);
+
+        let user = System.getUser();
+        await AsyncStorage.setItem("userUID", user.uid);
+        let r = await System.getUserInfo(user.uid);
+        active = r.data().active;
+
+        if (active) {
+          await AsyncStorage.setItem("isOn", "true");
+          await AsyncStorage.setItem("email", s.email);
+          await AsyncStorage.setItem("pass", s.pass);
+          if (!System.getUser().emailVerified) {
+            Alert.alert(s.textContent.titleError, s.textContent.error_3);
+            hasError = true;
+            await System.signOut();
+          } else {
+            const resetAction = StackActions.reset({
+              index: 0,
+              actions: [NavigationActions.navigate({ routeName: "Home" })]
             });
-        })
-        .catch(err => {
-          console.warn(err);
-          Alert.alert(s.textContent.titleError, s.textContent.error_1);
-          let disabled = false;
-          let loading = false;
-          let opacity = { opacity: 1 };
-          this.setState({
-            disabled,
-            loading,
-            opacity
-          });
-        });
-    } else {
-      Alert.alert(s.textContent.titleError, s.textContent.error_2);
+            this.props.navigation.dispatch(resetAction);
+          }
+        } else {
+          Alert.alert(s.textContent.titleError, s.textContent.error_4);
+          hasError = true;
+        }
+      } else {
+        Alert.alert(s.textContent.titleError, s.textContent.error_2);
+        hasError = true;
+      }
+    } catch (err) {
+      Alert.alert(s.textContent.titleError, s.textContent.error_1);
+      hasError = true;
+    }
+
+    if(hasError) {
       let disabled = false;
       let loading = false;
       let opacity = 1;
@@ -240,7 +218,6 @@ export default class Login extends Component {
                   returnKeyType="go"
                   value={s.pass}
                   secureTextEntry={true}
-                  onSubmitEditing={this.signIn}
                   onChangeText={pass => {
                     this.setState({ pass: pass });
                   }}

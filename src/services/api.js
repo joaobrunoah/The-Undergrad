@@ -12,9 +12,14 @@ class System {
   static isWatcherRunning = false;
   static messagesCb = {};
   static user = null;
+  static userId = null;
 
   // Função para deslogar do sistema
   async logOut() {
+    System.isWatcherRunning = false;
+    System.messagesCb = {};
+    System.conversas = [];
+    firebaseAppDatabase.ref("chats").child(System.userId).off("value");
     await AsyncStorage.clear();
     await firebaseAppAuth.signOut();
   }
@@ -24,7 +29,6 @@ class System {
     let language = await AsyncStorage.getItem("language");
     await AsyncStorage.clear();
     await AsyncStorage.setItem("language", language);
-
   }
 
   // Verificar se existe um usuário logado
@@ -275,9 +279,10 @@ class System {
   watchMessages(uid) {
     if(!System.isWatcherRunning) {
       System.isWatcherRunning = true;
+      System.userId = uid;
       firebaseAppDatabase
         .ref("chats")
-        .child(uid)
+        .child(System.userId)
         .on("value", (r) => {
           System.conversas = r;
           for (let prop in System.messagesCb) {

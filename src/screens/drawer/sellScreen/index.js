@@ -9,7 +9,8 @@ import {
   TouchableOpacity,
   ScrollView,
   TextInput,
-  Platform, SafeAreaView
+  Platform, SafeAreaView,
+  PermissionsAndroid
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import moment from "moment";
@@ -66,6 +67,24 @@ export default class SellScreen extends Component {
     };
   }
 
+  checkAllPermissions = async () => {
+    try {
+      await PermissionsAndroid.requestMultiple
+      ([PermissionsAndroid.PERMISSIONS.CAMERA, PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE, PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE]);
+      if ((await PermissionsAndroid.check('android.permission.CAMERA')) &&
+        (await PermissionsAndroid.check('android.permission.CAMERA')) &&
+        (await PermissionsAndroid.check('android.permission.CAMERA'))) {
+        console.log('You can use the camera');
+        return true;
+      } else {
+        console.log('all permissions denied');
+        return false;
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  };
+
   takePhoto = async () => {
 
     const userUID = await AsyncStorage.getItem("userUID");
@@ -75,38 +94,43 @@ export default class SellScreen extends Component {
       loadingImg: true
     });
 
-    ImagePicker.showImagePicker({noData: true}, async (r) => {
+    if(await this.checkAllPermissions()) {
+      ImagePicker.showImagePicker({noData: true}, async (r) => {
 
-      if(r.didCancel || r.error) {
-        if(r.error)
-          Alert.alert(
-            this.state.textContent.warning,
-            this.state.textContent.msgError + ': ' + r.error
-          );
-        this.setState({loadingImg : false});
-        return;
-      }
+        if(r.didCancel || r.error) {
+          if(r.error)
+            Alert.alert(
+              this.state.textContent.warning,
+              this.state.textContent.msgError + ': ' + r.error
+            );
+          this.setState({loadingImg : false});
+          return;
+        }
 
-      try {
-        let uploadResponse = await System.setItemImg(userUID, 'offers', r, Platform.OS);
+        try {
+          let uploadResponse = await System.setItemImg(userUID, 'offers', r, Platform.OS);
 
-        const imgUrl = uploadResponse.downloadURL;
+          const imgUrl = uploadResponse.downloadURL;
 
-        let sellInfo = this.state.sellInfo;
+          let sellInfo = this.state.sellInfo;
 
-        sellInfo.pictures = [imgUrl];
-        this.setState({
-          sellInfo: sellInfo,
-          photo: {uri: r.uri},
-          loadingImg: false
-        });
-      } catch (err) {
-        Alert.alert(this.state.textContent.warning, this.state.textContent.msgError + ': ' + err.message);
-        this.setState({loadingImg : false});
-        return;
-      }
+          sellInfo.pictures = [imgUrl];
+          this.setState({
+            sellInfo: sellInfo,
+            photo: {uri: r.uri},
+            loadingImg: false
+          });
+        } catch (err) {
+          Alert.alert(this.state.textContent.warning, this.state.textContent.msgError + ': ' + err.message);
+          this.setState({loadingImg : false});
+          return;
+        }
+      });
+    } else {
+      Alert.alert(this.state.textContent.warning, this.state.textContent.msgError);
+    }
 
-    });
+
   };
 
   componentWillUnmount() {

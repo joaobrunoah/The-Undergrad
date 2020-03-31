@@ -50,31 +50,28 @@ export default class Language extends Component {
     let s = this.state;
     let selectedStyle = styles.selectedStyle;
 
-    s.language = language;
-    this.getLanguage();
-
-    if (s.language === "br") {
-      s.selectedUsaStyle = {};
-      s.textContent = textBr;
-      s.selectedBrStyle = selectedStyle;
-    } else if (s.language === "usa") {
-      s.selectedBrStyle = {};
-      s.textContent = textUsa;
-      s.selectedUsaStyle = selectedStyle;
-    } else {
-      return;
-    }
-    this.setState(s);
-  };
-
-  getLanguage = () => {
-    let s = this.state;
+    let isSelected = false;
     if (s.language !== null) {
-      s.isSelected = true;
-    } else {
-      s.isSelected = false;
+      isSelected = true;
     }
-    this.setState(s);
+
+    let selectedBrStyle = {};
+    let textContent = textUsa;
+    let selectedUsaStyle = selectedStyle;
+
+    if (language === "br") {
+      selectedUsaStyle = {};
+      textContent = textBr;
+      selectedBrStyle = selectedStyle;
+    }
+
+    this.setState({
+      language,
+      selectedUsaStyle,
+      selectedBrStyle,
+      textContent,
+      isSelected
+    });
   };
 
   confirmButton = async () => {
@@ -94,12 +91,11 @@ export default class Language extends Component {
   };
 
   showConfirm = () => {
-    let s = this.state;
-    if (s.isSelected) {
+    if (this.state.isSelected) {
       return (
         <View style={styles.buttonsContent}>
           <Text style={globalStyles.textRegular}>
-            {s.textContent.confirmText}
+            {this.state.textContent.confirmText}
           </Text>
           <View
             style={{
@@ -115,7 +111,7 @@ export default class Language extends Component {
               }}
             >
               <Text style={[globalStyles.textRegular, styles.textButton]}>
-                {s.textContent.confirmButton}
+                {this.state.textContent.confirmButton}
               </Text>
             </TouchableOpacity>
           </View>
