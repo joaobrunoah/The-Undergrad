@@ -1,12 +1,12 @@
-export const textBr = {
+export const textBrLanguage = {
   //Choose language
-  confirmButton: "Confirmar",
-  confirmText: "Selecionar idioma?",
-  continueBR: "Aceitar",
+  confirmButton: 'Confirmar',
+  confirmText: 'Selecionar idioma?',
+  continueBR: 'Aceitar',
 
   // Termos de Privacidade
-  termTitleBR: "Termos de Privacidade",
-  termAccBR: "Aceito os Termos de Privacidade",
+  termTitleBR: 'Termos de Privacidade',
+  termAccBR: 'Aceito os Termos de Privacidade',
   termPriBR: `Política de Privacidade
 
   Política de privacidade: Classificados online e Chat
@@ -314,7 +314,7 @@ export const textBr = {
   UNDERGRAD`,
 
   // Termos de uso
-  termUseTitleBR: "Termos de Uso",
+  termUseTitleBR: 'Termos de Uso',
   termUseBR: `Termos de Uso do Chat
 
   Termos e Condições Gerais de Uso do Chat
@@ -966,18 +966,18 @@ export const textBr = {
   a renúncia a qualquer desses direitos somente será válida se formalizada por
   escrito, bem como a nulidade ou invalidade de qualquer previsão destes T&C não
   prejudicará a validade e eficácia das demais disposições.`,
-  termUseAccBR: "Aceito os Termos de Uso"
+  termUseAccBR: 'Aceito os Termos de Uso',
 };
 
-export const textUsa = {
+export const textUsaLanguage = {
   //Choose language
-  confirmButton: "Confirm",
-  confirmText: "Select language?",
-  continueUSA: "Accept",
+  confirmButton: 'Confirm',
+  confirmText: 'Select language?',
+  continueUSA: 'Accept',
 
   // Terms
-  termTitleUSA: "Privacy Terms",
-  termAccUSA: "I accept the privacy terms",
+  termTitleUSA: 'Privacy Terms',
+  termAccUSA: 'I accept the privacy terms',
   termPriUSA: `We care about your privacy and are committed to protecting your personal data. This
   privacy statement will inform you how we handle your personal data, your privacy
   rights and how the law protects you. Please read this privacy statement carefully
@@ -1282,8 +1282,8 @@ export const textUsa = {
   indicates your or your guardian's acceptance (as the case may be) of any changes`,
 
   // Terms of use
-  termUseTitleUSA: "Terms of use",
-  termUseAccUSA: "I accept the terms of use",
+  termUseTitleUSA: 'Terms of use',
+  termUseAccUSA: 'I accept the terms of use',
   termUseUSA: `ACCEPTANCE
   The undergrad, a limited liability company under the laws of local with its offices at
   (office?) provide a collection of online resources which include classified
@@ -1853,5 +1853,5 @@ export const textUsa = {
   contained in these Terms, or a preliminary or permanent injunction against the
   breach or threatened breach of any such term or in aid of the exercise of any power
   granted in these Terms, or any combination thereof, without the necessity of posting
-  a bond.`
+  a bond.`,
 };

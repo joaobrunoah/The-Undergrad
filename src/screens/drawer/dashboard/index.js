@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, {Component} from 'react';
 import {
   ActivityIndicator,
   View,
@@ -6,69 +6,69 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
-  SafeAreaView
-} from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import AsyncStorage from "@react-native-community/async-storage";
-import moment from "moment";
+  SafeAreaView,
+} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorage from '@react-native-community/async-storage';
+import moment from 'moment';
 
 // Modal
-import Modal from "react-native-modalbox";
+import Modal from 'react-native-modalbox';
 
 //Components
-import Header from "../../../assets/components/header";
-import SearchBar from "../../../assets/components/searchBar";
-import Categories from "../../../assets/components/dashboard/categ";
+import Header from '../../../assets/components/header';
+import SearchBar from '../../../assets/components/searchBar';
+import Categories from '../../../assets/components/dashboard/categ';
 
 //TextContent
-import {textBr, textUsa} from "../../../assets/content/mainRoute/dashboard";
+import {textBr, textUsa} from '../../../assets/content/mainRoute/dashboard';
 
 // Api
-import System from "../../../services/api";
+import System from '../../../services/api';
 
 //Styles
 import {
   globalStyles,
   colorsGradient,
   startGradient,
-  endGradient
-} from "../../globalStyles";
-import styles from "./styles";
+  endGradient,
+} from '../../globalStyles';
+import styles from './styles';
 
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      uid: "",
+      uid: '',
       active: false,
       unreadMessages: 0,
       textContent: {},
       data: [],
-      spotOne: "",
-      spotTwo: "",
-      spotTree: "",
-      spotFour: "",
-      spotFive: "",
-      spotSix: "",
-      spotSeven: "",
+      spotOne: '',
+      spotTwo: '',
+      spotTree: '',
+      spotFour: '',
+      spotFive: '',
+      spotSix: '',
+      spotSeven: '',
 
       // Uni Initials
-      uniInitials: "",
+      uniInitials: '',
 
       // Disable Button
       disable: true,
-      loading: false
+      loading: false,
     };
   }
 
   async componentDidMount() {
-    const language = await AsyncStorage.getItem("language")
-    const uid = await AsyncStorage.getItem("userUID");
+    const language = await AsyncStorage.getItem('language');
+    const uid = await AsyncStorage.getItem('userUID');
 
     this.setState({
       language: language,
       uid: uid,
-      loading: true
+      loading: true,
     });
 
     let userInfoObj = await System.getUserInfo(uid);
@@ -79,37 +79,41 @@ export default class Dashboard extends Component {
 
     if (!isSignedIn || !active) {
       await System.logOut();
-      this.props.navigation.navigate("Language")
+      this.props.navigation.navigate('Language');
     }
 
     let textContent = textUsa;
 
-    if (language === "br") {
+    if (language === 'br') {
       textContent = textBr;
     }
     this.setState({
-      textContent: textContent
+      textContent: textContent,
     });
 
     this.getInfo();
 
-    System.getListaConversas(uid, async conversationList => {
-      let unreadMessages = 0;
-      conversationList.forEach(r => {
-        unreadMessages += r.val().unreadMessages;
-      });
-      this.setState({
-        unreadMessages: unreadMessages
-      })
-    }, 'UnreadMessages');
+    System.getListaConversas(
+      uid,
+      async conversationList => {
+        let unreadMessages = 0;
+        conversationList.forEach(r => {
+          unreadMessages += r.val().unreadMessages;
+        });
+        this.setState({
+          unreadMessages: unreadMessages,
+        });
+      },
+      'UnreadMessages',
+    );
   }
 
   getInfo = async () => {
     let s = this.state;
-    let uid = await AsyncStorage.getItem("userUID");
+    let uid = await AsyncStorage.getItem('userUID');
 
     System.getUserInfo(uid).then(userObj => {
-      let uni = userObj.data().university.split("/", 2);
+      let uni = userObj.data().university.split('/', 2);
       let newUni = uni[1];
       System.getUniData(newUni).then(uniObj => {
         let initials = uniObj.data().initials;
@@ -172,18 +176,17 @@ export default class Dashboard extends Component {
 
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: '#ecf0f1'}}/>
-        <SafeAreaView style={[styles.container,{backgroundColor: '#bdc3c7'}]}>
+        <SafeAreaView style={{flex: 0, backgroundColor: '#ecf0f1'}} />
+        <SafeAreaView style={[styles.container, {backgroundColor: '#bdc3c7'}]}>
           <LinearGradient
             colors={colorsGradient}
             start={startGradient}
             end={endGradient}
-            style={globalStyles.screen}
-          >
-            <Header unread={this.state.unreadMessages}/>
-            <SearchBar/>
+            style={globalStyles.screen}>
+            <Header unread={this.state.unreadMessages} />
+            <SearchBar />
             <ScrollView>
-              <Categories/>
+              <Categories />
               <View style={styles.filterBar}>
                 <Text style={styles.filterText}>{s.textContent.filter}</Text>
               </View>
@@ -193,17 +196,16 @@ export default class Dashboard extends Component {
                     <TouchableOpacity
                       disabled={s.disable}
                       onPress={() => {
-                        this.props.navigation.navigate("Ads", {
-                          data: s.spotOne
+                        this.props.navigation.navigate('Ads', {
+                          data: s.spotOne,
                         });
                       }}
                       activeOpacity={0.7}
-                      style={[styles.one, styles.boxStyle]}
-                    >
+                      style={[styles.one, styles.boxStyle]}>
                       {s.loading ? (
-                        <ActivityIndicator size="small" color="#0002"/>
-                      ) : s.spotOne === "" ? (
-                        <Text style={{color: "#0009"}}>
+                        <ActivityIndicator size="small" color="#0002" />
+                      ) : s.spotOne === '' ? (
+                        <Text style={{color: '#0009'}}>
                           {s.textContent.spot}
                         </Text>
                       ) : (
@@ -216,17 +218,16 @@ export default class Dashboard extends Component {
                     <TouchableOpacity
                       disabled={s.disable}
                       onPress={() => {
-                        this.props.navigation.navigate("Ads", {
-                          data: s.spotTwo
+                        this.props.navigation.navigate('Ads', {
+                          data: s.spotTwo,
                         });
                       }}
                       activeOpacity={0.7}
-                      style={[styles.two, styles.boxStyle]}
-                    >
+                      style={[styles.two, styles.boxStyle]}>
                       {s.loading ? (
-                        <ActivityIndicator size="small" color="#0002"/>
-                      ) : s.spotTwo === "" ? (
-                        <Text style={{color: "#0009"}}>
+                        <ActivityIndicator size="small" color="#0002" />
+                      ) : s.spotTwo === '' ? (
+                        <Text style={{color: '#0009'}}>
                           {s.textContent.spot}
                         </Text>
                       ) : (
@@ -241,17 +242,16 @@ export default class Dashboard extends Component {
                     <TouchableOpacity
                       disabled={s.disable}
                       onPress={() => {
-                        this.props.navigation.navigate("Ads", {
-                          data: s.spotTree
+                        this.props.navigation.navigate('Ads', {
+                          data: s.spotTree,
                         });
                       }}
                       activeOpacity={0.7}
-                      style={[styles.tree, styles.boxStyle]}
-                    >
+                      style={[styles.tree, styles.boxStyle]}>
                       {s.loading ? (
-                        <ActivityIndicator size="small" color="#0002"/>
-                      ) : s.spotTree === "" ? (
-                        <Text style={{color: "#0009"}}>
+                        <ActivityIndicator size="small" color="#0002" />
+                      ) : s.spotTree === '' ? (
+                        <Text style={{color: '#0009'}}>
                           {s.textContent.spot}
                         </Text>
                       ) : (
@@ -267,17 +267,16 @@ export default class Dashboard extends Component {
                   <TouchableOpacity
                     disabled={s.disable}
                     onPress={() => {
-                      this.props.navigation.navigate("Ads", {
-                        data: s.spotFour
+                      this.props.navigation.navigate('Ads', {
+                        data: s.spotFour,
                       });
                     }}
                     activeOpacity={0.7}
-                    style={[styles.four, styles.boxStyle]}
-                  >
+                    style={[styles.four, styles.boxStyle]}>
                     {s.loading ? (
-                      <ActivityIndicator size="small" color="#0002"/>
-                    ) : s.spotFour === "" ? (
-                      <Text style={{color: "#0009"}}>{s.textContent.spot}</Text>
+                      <ActivityIndicator size="small" color="#0002" />
+                    ) : s.spotFour === '' ? (
+                      <Text style={{color: '#0009'}}>{s.textContent.spot}</Text>
                     ) : (
                       <Image
                         source={{uri: this.state.spotFour.image}}
@@ -291,17 +290,16 @@ export default class Dashboard extends Component {
                     <TouchableOpacity
                       disabled={s.disable}
                       onPress={() => {
-                        this.props.navigation.navigate("Ads", {
-                          data: s.spotFive
+                        this.props.navigation.navigate('Ads', {
+                          data: s.spotFive,
                         });
                       }}
                       activeOpacity={0.7}
-                      style={[styles.five, styles.boxStyle]}
-                    >
+                      style={[styles.five, styles.boxStyle]}>
                       {s.loading ? (
-                        <ActivityIndicator size="small" color="#0002"/>
-                      ) : s.spotFive === "" ? (
-                        <Text style={{color: "#0009"}}>
+                        <ActivityIndicator size="small" color="#0002" />
+                      ) : s.spotFive === '' ? (
+                        <Text style={{color: '#0009'}}>
                           {s.textContent.spot}
                         </Text>
                       ) : (
@@ -316,17 +314,16 @@ export default class Dashboard extends Component {
                     <TouchableOpacity
                       disabled={s.disable}
                       onPress={() => {
-                        this.props.navigation.navigate("Ads", {
-                          data: s.spotSix
+                        this.props.navigation.navigate('Ads', {
+                          data: s.spotSix,
                         });
                       }}
                       activeOpacity={0.7}
-                      style={[styles.six, styles.boxStyle]}
-                    >
+                      style={[styles.six, styles.boxStyle]}>
                       {s.loading ? (
-                        <ActivityIndicator size="small" color="#0002"/>
-                      ) : s.spotSix === "" ? (
-                        <Text style={{color: "#0009"}}>
+                        <ActivityIndicator size="small" color="#0002" />
+                      ) : s.spotSix === '' ? (
+                        <Text style={{color: '#0009'}}>
                           {s.textContent.spot}
                         </Text>
                       ) : (
@@ -342,17 +339,16 @@ export default class Dashboard extends Component {
                   <TouchableOpacity
                     disabled={s.disable}
                     onPress={() => {
-                      this.props.navigation.navigate("Ads", {
-                        data: s.spotSeven
+                      this.props.navigation.navigate('Ads', {
+                        data: s.spotSeven,
                       });
                     }}
                     activeOpacity={0.7}
-                    style={[styles.seven, styles.boxStyle]}
-                  >
+                    style={[styles.seven, styles.boxStyle]}>
                     {s.loading ? (
-                      <ActivityIndicator size="small" color="#0002"/>
-                    ) : s.spotSeven === "" ? (
-                      <Text style={{color: "#0009"}}>{s.textContent.spot}</Text>
+                      <ActivityIndicator size="small" color="#0002" />
+                    ) : s.spotSeven === '' ? (
+                      <Text style={{color: '#0009'}}>{s.textContent.spot}</Text>
                     ) : (
                       <Image
                         source={{uri: this.state.spotSeven.image}}

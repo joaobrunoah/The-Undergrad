@@ -1,30 +1,31 @@
-import React, { Component } from "react";
-import { View, TouchableOpacity, Text, SafeAreaView } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
-import { withNavigation } from "react-navigation";
+import React, {Component} from 'react';
+import {View, TouchableOpacity, Text, SafeAreaView} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import {withNavigation} from 'react-navigation';
 
 //Styles
-import styles from "./styles";
+import styles from './styles';
 
 //Texts
-import { textBr, textUsa } from "../../content/mainRoute/dashboard";
+import {textBr, textUsa} from '../../content/mainRoute/dashboard';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 export class SearchBar extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      textContent: {}
+      textContent: {},
     };
   }
 
   async componentWillMount() {
     let s = this.state;
-    let language = await AsyncStorage.getItem("language");
+    let language = await AsyncStorage.getItem('language');
 
-    if (language === "br") {
+    if (language === 'br') {
       s.textContent = textBr;
-    } else if (language === "usa") {
+    } else if (language === 'usa') {
       s.textContent = textUsa;
     }
 
@@ -38,12 +39,15 @@ export class SearchBar extends Component {
       <SafeAreaView style={styles.container}>
         <TouchableOpacity
           onPress={() => {
-            this.props.navigation.navigate("Search");
+            this.props.navigation.navigate('Search');
           }}
           activeOpacity={0.4}
-          style={styles.button}
-        >
-          <Text style={styles.textButton}>{s.textContent.search}</Text>
+          style={styles.button}>
+          <Text style={styles.textButton}>
+            <FontAwesome5Icon name={'search'} size={15} />
+            {'   '}
+            {s.textContent.search}
+          </Text>
         </TouchableOpacity>
       </SafeAreaView>
     );
