@@ -24,6 +24,7 @@
     "react-native-image-viewing": "^0.1.7",
     "react-native-keyboard-accessory": "^0.1.10",
     "react-native-linear-gradient": "^2.5.6",
+    "react-native-masked-text": "^1.13.0",
     "react-native-modalbox": "^2.0.0",
     "react-native-push-notification": "^3.1.9",
     "react-native-safe-area-context": "^0.7.0",

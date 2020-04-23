@@ -13,6 +13,7 @@ import {
   SafeAreaView,
   PermissionsAndroid,
 } from 'react-native';
+import {TextInputMask} from 'react-native-masked-text';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import ImagePicker from 'react-native-image-picker';
@@ -382,31 +383,40 @@ export default class SellScreen extends Component {
                   {this.state.categ}
                 </Text>
               </TouchableOpacity>
-              <TextInput
-                multiline={false}
-                maxLength={150}
-                value={this.state.sellInfo.price}
-                onChangeText={text => {
-                  if (isNaN(text)) {
-                    return;
-                  }
-
-                  let oldData = this.state.sellInfo;
-                  this.setState({
-                    sellInfo: {...oldData, price: text},
-                  });
-                }}
-                keyboardType="decimal-pad"
-                style={[
-                  globalStyles.textRegular,
-                  styles.description,
-                  {
-                    width: '30%',
-                    textAlign: 'center',
-                  },
-                ]}
-                placeholder={this.state.textContent.price}
-              />
+              <View>
+                <TextInputMask
+                  type={'money'}
+                  options={{
+                    precision: 2,
+                    separator: ',',
+                    delimiter: '.',
+                    unit: '$',
+                  }}
+                  multiline={false}
+                  maxLength={9}
+                  value={this.state.sellInfo.price}
+                  onChangeText={text => {
+                    //  if (isNaN(text)) {
+                    //    return;
+                    //  }
+                    let oldData = this.state.sellInfo;
+                    oldData.price = text;
+                    this.setState({
+                      sellInfo: oldData,
+                    });
+                  }}
+                  keyboardType="decimal-pad"
+                  style={[
+                    globalStyles.textRegular,
+                    styles.description,
+                    {
+                      width: '30%',
+                      textAlign: 'center',
+                    },
+                  ]}
+                  placeholder={this.state.textContent.price}
+                />
+              </View>
               <TouchableOpacity
                 disabled={this.state.loadingImg ? false : this.state.loading}
                 activeOpacity={0.7}
