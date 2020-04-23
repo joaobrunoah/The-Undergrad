@@ -79,7 +79,6 @@ export default class Login extends Component {
       textContent = textBr;
       textContentModal = textBrLanguage;
     }
-    console.log(textContentModal);
     this.setState({
       textContent,
       textContentModal,
@@ -293,7 +292,6 @@ export default class Login extends Component {
               <TouchableOpacity
                 activeOpacity={0.7}
                 onPress={() => {
-                  console.log(s.language);
                   this.refs.Use.close();
                 }}
                 style={{position: 'absolute', right: 0, top: 0}}>
@@ -387,6 +385,7 @@ export default class Login extends Component {
                   style={[styles.inputArea, globalStyles.textRegular]}
                   multiline={false}
                   autoCorrect={false}
+                  autoCapitalize="none"
                   returnKeyType="go"
                   value={s.pass}
                   secureTextEntry={true}

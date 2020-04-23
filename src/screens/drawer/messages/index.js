@@ -1,26 +1,26 @@
-import React, { Component } from "react";
-import { View, Text, SafeAreaView } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
-import AsyncStorage from "@react-native-community/async-storage";
+import React, {Component} from 'react';
+import {View, Text, SafeAreaView} from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import AsyncStorage from '@react-native-community/async-storage';
 
 //Styles
 import {
   globalStyles,
   colorsGradient,
   startGradient,
-  endGradient
-} from "../../globalStyles";
-import styles from "./styles";
+  endGradient,
+} from '../../globalStyles';
+import styles from './styles';
 
 //Components
-import Header from "../../../assets/components/header";
+import Header from '../../../assets/components/header';
 
 //MessagesList
-import MessagesList from "./messagesList";
+import MessagesList from './messagesList';
 
 //TextContent
-import { textBr, textUsa } from "../../../assets/content/mainRoute/messages";
-import System from "../../../services/api";
+import {textBr, textUsa} from '../../../assets/content/mainRoute/messages';
+import System from '../../../services/api';
 
 export default class Messages extends Component {
   constructor(props) {
@@ -29,62 +29,64 @@ export default class Messages extends Component {
     this.state = {
       textContent: {},
       conversas: [],
-      loading: true
+      loading: true,
     };
   }
 
   async componentDidMount() {
     let s = this.state;
-    let language = await AsyncStorage.getItem("language");
-    const uid = await AsyncStorage.getItem("userUID");
+    let language = await AsyncStorage.getItem('language');
+    const uid = await AsyncStorage.getItem('userUID');
 
     let textContent = textUsa;
 
-    if (s.language === "br") {
+    if (language === 'br') {
       textContent = textBr;
     }
 
-    System.getListaConversas(uid, async conversationList => {
-      let conversas = [];
-      conversationList.forEach(conversationObj => {
-        if (conversationObj.val().messages) {
-          conversas.push({
-            key: conversationObj.key,
-            unreadMessages: conversationObj.val().unreadMessages,
-            messages: conversationObj.val().messages
-          });
-        }
-      });
-      let loading = false;
-      this.setState({
-        language,
-        uid,
-        textContent,
-        loading,
-        conversas
-      });
-    }, 'Message List');
+    System.getListaConversas(
+      uid,
+      async conversationList => {
+        let conversas = [];
+        conversationList.forEach(conversationObj => {
+          if (conversationObj.val().messages) {
+            conversas.push({
+              key: conversationObj.key,
+              unreadMessages: conversationObj.val().unreadMessages,
+              messages: conversationObj.val().messages,
+            });
+          }
+        });
+        let loading = false;
+        this.setState({
+          language,
+          uid,
+          textContent,
+          loading,
+          conversas,
+        });
+      },
+      'Message List',
+    );
 
     this.setState({
       language,
       uid,
-      textContent
+      textContent,
     });
   }
 
   render() {
     let s = this.state;
-
     return (
       <>
-        <SafeAreaView style={{flex: 0, backgroundColor: '#ecf0f1'}}/>
-        <SafeAreaView style={[styles.container,{backgroundColor: '#bdc3c7'}]}>
+        <SafeAreaView style={{flex: 0, backgroundColor: '#ecf0f1'}} />
+        <SafeAreaView style={[styles.container, {backgroundColor: '#bdc3c7'}]}>
           <LinearGradient
             colors={colorsGradient}
             start={startGradient}
             end={endGradient}
-            style={globalStyles.screen}
-          >
+            style={globalStyles.screen}>
             <Header back={true} />
             <Text style={[globalStyles.textRegular, styles.mainText]}>
               {s.textContent.title}

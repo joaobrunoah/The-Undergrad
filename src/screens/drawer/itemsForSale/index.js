@@ -33,6 +33,7 @@ import styles from './styles';
 
 //TextContent
 import {textBr, textUsa} from '../../../assets/content/mainRoute/perfil';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 
 class Item extends Component {
   state = {coin: ''};
@@ -230,6 +231,7 @@ export default class ItemsForSale extends Component {
         data.forEach(doc => {
           s.itemsForSale.push(doc.data());
         });
+        s.itemsForSale.push({is_sell_button: true});
         s.loading = false;
         this.setState(s);
       })
@@ -292,13 +294,56 @@ export default class ItemsForSale extends Component {
                   data={s.itemsForSale}
                   columnWrapperStyle={{justifyContent: 'space-around'}}
                   numColumns={2}
-                  renderItem={({item}) => (
-                    <Item
-                      text={s.textContent}
-                      data={item}
-                      nav={this.props.navigation}
-                    />
-                  )}
+                  renderItem={({item}) => {
+                    let result;
+                    if (item.is_sell_button) {
+                      result = (
+                        <TouchableOpacity
+                          style={{
+                            height: 140,
+                            maxHeight: 140,
+                            width: '45%',
+                            alignItems: 'center',
+                            justifyContent: 'flex-end',
+                            borderRadius: 10,
+                            marginBottom: 20,
+                            backgroundColor: '#0008',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}
+                          onPress={()=>{
+                            this.props.navigation.navigate('SellScreen');
+                          }}
+                          opacity={0.7}>
+                          <View>
+                            <FontAwesome5Icon
+                              name={'plus'}
+                              size={40}
+                              color={'white'}
+                            />
+                          </View>
+                          <Text
+                            style={{
+                              paddingTop: 10,
+                              color: 'white',
+                              fontSize: 16,
+                              fontWeight: 'bold',
+                            }}>
+                            {s.textContent.addItem}
+                          </Text>
+                        </TouchableOpacity>
+                      );
+                    } else {
+                      result = (
+                        <Item
+                          text={s.textContent}
+                          data={item}
+                          nav={this.props.navigation}
+                        />
+                      );
+                    }
+                    return result;
+                  }}
                   keyExtractor={(item, index) => index}
                 />
               )}
