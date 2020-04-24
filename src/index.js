@@ -1,20 +1,17 @@
-import React, { Component, useEffect } from "react";
-import {
-  Alert
-} from 'react-native';
+import React, {Component, useEffect} from 'react';
+import {Alert} from 'react-native';
 
-import firebase from './services/firebaseConnection'
+import firebase from './services/firebaseConnection';
 
 //StatusBar
-import "./configs/StatusBarConfig";
+import './configs/StatusBarConfig';
 
 //Navigation
-import Routes from "./routes/switch";
+import Routes from './routes/switch';
 
 console.disableYellowBox = true;
 
 const App = () => {
-
   useEffect(() => {
     checkPermission();
     messageListener();
@@ -53,28 +50,29 @@ const App = () => {
     //   showAlert(title, body);
     // });
 
-    const notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
-      const { title, body } = notificationOpen.notification;
-      //showAlert(title, body);
-    });
+    const notificationOpenedListener = firebase
+      .notifications()
+      .onNotificationOpened(notificationOpen => {
+        const {title, body} = notificationOpen.notification;
+        //showAlert(title, body);
+      });
 
-    const notificationOpen = await firebase.notifications().getInitialNotification();
+    const notificationOpen = await firebase
+      .notifications()
+      .getInitialNotification();
     if (notificationOpen) {
-      const { title, body } = notificationOpen.notification;
+      const {title, body} = notificationOpen.notification;
       //showAlert(title, body);
     }
 
-    const messageListener = firebase.messaging().onMessage((message) => {
-    });
+    const messageListener = firebase.messaging().onMessage(message => {});
   };
 
   const showAlert = (title, message) => {
     Alert.alert(
       title,
       message,
-      [
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
-      ],
+      [{text: 'OK', onPress: () => console.log('OK Pressed')}],
       {cancelable: false},
     );
   };

@@ -139,7 +139,6 @@ export default class Search extends Component {
     } else if (s.language === 'usa') {
       s.textContent = textUsa;
     }
-
     this.setState(s);
 
     System.getUserInfo(s.userUid).then(async r => {
@@ -150,38 +149,34 @@ export default class Search extends Component {
         this.setState({coin: coin});
       });
       this.setState(s);
+      this.search();
     });
-
-    // this.search();
   }
 
   search = () => {
     let s = this.state;
-    if (s.search == '') {
-      return null;
-    }
     s.loading = true;
     s.itemsForSale = [];
-    this.setState(s);
-
-    System.getSearchItem(/*s.search*/)
+    //this.setState(s);
+    System.getSearchItem(s.search)
       .then(r => {
         r.forEach(doc => {
-          s.itemsForSale.push(doc.data());
+          let data = doc.data();
           if (
-            s.itemsForSale[s.itemsForSale.length - 1]['description']
+            (data['description']
               .toLowerCase()
-              .indexOf(s.search.toLowerCase()) == -1 ||
-            s.itemsForSale[s.itemsForSale.length - 1]['university'] !==
-              '/' + s.userInfo.university
+              .indexOf(s.search.toLowerCase()) !== -1 ||
+              s.search === '') &&
+            data['university'] == '/' + s.userInfo.university
           ) {
-            s.itemsForSale = s.itemsForSale.slice(0, s.itemsForSale.length - 1);
+            console.log(data);
+            s.itemsForSale.push(data);
           }
           this.setState(s);
         });
 
         s.loading = false;
-        // s.search = "";
+        //s.search = "";
         this.setState(s);
       })
       .catch(e => {
@@ -253,48 +248,46 @@ export default class Search extends Component {
                 }}
               />
             </View>
-            {s.search != '' ? (
-              s.loading ? (
-                <View
-                  style={{
-                    flex: 1,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}>
-                  <ActivityIndicator size="large" color="#0008" />
-                </View>
-              ) : (
-                <FlatList
-                  ListEmptyComponent={
-                    <View
-                      style={{
-                        flex: 1,
-                        height: 400,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}>
-                      <Icon name="surprise" size={50} light color="#0006" />
-                      <Text style={globalStyles.textSemiBold}>
-                        {s.textContent.items}
-                      </Text>
-                    </View>
-                  }
-                  style={{marginTop: 20}}
-                  data={s.itemsForSale}
-                  columnWrapperStyle={{justifyContent: 'space-around'}}
-                  numColumns={2}
-                  renderItem={({item}) => (
-                    <Item
-                      text={s.textContent}
-                      data={item}
-                      nav={this.props.navigation}
-                      coin={this.state.coin ? this.state.coin : '$'}
-                    />
-                  )}
-                  keyExtractor={(item, index) => index}
-                />
-              )
-            ) : null}
+            {s.loading ? (
+              <View
+                style={{
+                  flex: 1,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <ActivityIndicator size="large" color="#0008" />
+              </View>
+            ) : (
+              <FlatList
+                ListEmptyComponent={
+                  <View
+                    style={{
+                      flex: 1,
+                      height: 400,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}>
+                    <Icon name="surprise" size={50} light color="#0006" />
+                    <Text style={globalStyles.textSemiBold}>
+                      {s.textContent.items}
+                    </Text>
+                  </View>
+                }
+                style={{marginTop: 20}}
+                data={s.itemsForSale}
+                columnWrapperStyle={{justifyContent: 'space-around'}}
+                numColumns={2}
+                renderItem={({item}) => (
+                  <Item
+                    text={s.textContent}
+                    data={item}
+                    nav={this.props.navigation}
+                    coin={this.state.coin ? this.state.coin : '$'}
+                  />
+                )}
+                keyExtractor={(item, index) => index}
+              />
+            )}
           </View>
         </LinearGradient>
       </SafeAreaView>
