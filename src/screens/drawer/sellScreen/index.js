@@ -191,16 +191,22 @@ export default class SellScreen extends Component {
 
     if (s.sellInfo.description !== '') {
       if (s.categ !== 'Categoria' && s.categ !== 'Category') {
-        if (!isNaN(s.sellInfo.price)) {
-          System.registerItem(data)
-            .then(r => {
-              this.props.navigation.navigate('Dashboard');
-            })
-            .catch(e => {
-              Alert.alert(s.textContent.warning, s.textContent.msgError);
-              this.props.navigation.navigate('Dashboard');
-              console.warn(e);
-            });
+        if (!isNaN(s.sellInfo.price) && s.sellInfo.price != '') {
+          if (!this.state.photo) {
+            Alert.alert(s.textContent.warning, s.textContent.noPhoto);
+            s.loading = false;
+            this.setState(s);
+          } else {
+            System.registerItem(data)
+              .then(r => {
+                this.props.navigation.navigate('Dashboard');
+              })
+              .catch(e => {
+                Alert.alert(s.textContent.warning, s.textContent.msgError);
+                this.props.navigation.navigate('Dashboard');
+                console.warn(e);
+              });
+          }
         } else {
           Alert.alert(s.textContent.warning, s.textContent.msgError_4);
           s.loading = false;
@@ -400,6 +406,9 @@ export default class SellScreen extends Component {
                     //    return;
                     //  }
                     let oldData = this.state.sellInfo;
+                    text = text.replace('$', '');
+                    text = text.replace('.', '');
+                    text = text.replace(',', '.');
                     oldData.price = text;
                     this.setState({
                       sellInfo: oldData,
