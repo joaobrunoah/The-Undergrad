@@ -14,6 +14,7 @@ export const textBr = {
   error_4: 'A senha deve ter no mínimo 6 dígitos',
   error_5: 'Essa conta já existe.',
   loading: 'Carregando...',
+  checkEmail: 'Cadastro Realizado, cheque o seu e-mail para finalizar',
 };
 
 export const textUsa = {
@@ -32,4 +33,5 @@ export const textUsa = {
   error_4: 'Your password must be at least 6 digits',
   error_5: 'This account already exists',
   loading: 'Loading...',
+  checkEmail: 'Successfully registered, check your e-mail to finish.',
 };

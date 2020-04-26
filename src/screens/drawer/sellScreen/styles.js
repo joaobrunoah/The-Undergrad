@@ -49,7 +49,25 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: "#737373",
     borderRadius: 10
-  }
+  },
+  modal: {
+    borderRadius: 10,
+    backgroundColor: '#FFF',
+    width: '80%',
+    height: 250,
+    padding: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ImgOptionsModalButtons:{
+    padding: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 60,
+    width: 250,
+    backgroundColor: '#737373',
+    borderRadius: 10,
+  },
 });
 
 export default styles;

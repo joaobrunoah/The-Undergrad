@@ -19,6 +19,9 @@ export const textBr = {
   alertError: 'Erro',
   alertErrorMessage: 'Impossível carregar dados do usuário',
   addItem: 'Adicionar Item',
+  cameraOption: 'Abrir Câmera',
+  pickerOption: 'Selecionar da Galeria',
+  imgOptionsTitle: 'Selecione a opção',
 };
 
 export const textUsa = {
@@ -42,4 +45,7 @@ export const textUsa = {
   alertError: 'Error',
   alertErrorMessage: 'Unable to load user data',
   addItem: 'Add new item',
+  cameraOption: 'Open Camera',
+  pickerOption: 'Open Gallery',
+  imgOptionsTitle: 'Select the option',
 };

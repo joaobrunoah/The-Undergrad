@@ -15,6 +15,9 @@ export const textBr = {
   msgError_3: 'Adicione o nome do produto',
   msgError_4: 'O preço deve conter somente números e não pode ser nulo',
   noPhoto: 'Adicione uma imagem antes de publicar',
+  cameraOption: 'Abrir Câmera',
+  pickerOption: 'Selecionar da Galeria',
+  imgOptionsTitle: 'Selecione a opção',
 };
 
 export const textUsa = {
@@ -34,4 +37,7 @@ export const textUsa = {
   msgError_3: 'Add product name',
   msgError_4: 'Price must contain only numbers and cannot be null',
   noPhoto: 'Add an image before post',
+  cameraOption: 'Open Camera',
+  pickerOption: 'Open Gallery',
+  imgOptionsTitle: 'Select the option',
 };

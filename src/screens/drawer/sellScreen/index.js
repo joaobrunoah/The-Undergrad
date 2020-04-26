@@ -16,7 +16,7 @@ import {
 import {TextInputMask} from 'react-native-masked-text';
 import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
-import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import RNFetchBlob from 'rn-fetch-blob';
 
 // Api
@@ -91,7 +91,7 @@ export default class SellScreen extends Component {
     }
   };
 
-  takePhoto = async () => {
+  takePhoto = async mode => {
     const userUID = await AsyncStorage.getItem('userUID');
 
     this.setState({
@@ -100,44 +100,105 @@ export default class SellScreen extends Component {
     });
 
     if (await this.checkAllPermissions()) {
-      ImagePicker.showImagePicker({noData: true}, async r => {
-        if (r.didCancel || r.error) {
-          if (r.error)
-            Alert.alert(
-              this.state.textContent.warning,
-              this.state.textContent.msgError + ': ' + r.error,
-            );
-          this.setState({loadingImg: false});
-          return;
-        }
+      if (mode == 'picker') {
+        ImagePicker.openPicker({
+          noData: true,
+          cropping: true,
+          width: 150,
+          height: 200,
+        })
+          .then(async r => {
+            if (r.didCancel || r.error) {
+              if (r.error)
+                Alert.alert(
+                  this.state.textContent.warning,
+                  this.state.textContent.msgError + ': ' + r.error,
+                );
+              this.setState({loadingImg: false});
+              return;
+            }
 
-        try {
-          let uploadResponse = await System.setItemImg(
-            userUID,
-            'offers',
-            r,
-            Platform.OS,
-          );
+            try {
+              let uploadResponse = await System.setItemImg(
+                userUID,
+                'offers',
+                r,
+                Platform.OS,
+              );
 
-          const imgUrl = uploadResponse.downloadURL;
+              const imgUrl = uploadResponse.downloadURL;
 
-          let sellInfo = this.state.sellInfo;
+              let sellInfo = this.state.sellInfo;
 
-          sellInfo.pictures = [imgUrl];
-          this.setState({
-            sellInfo: sellInfo,
-            photo: {uri: r.uri},
-            loadingImg: false,
+              sellInfo.pictures = [imgUrl];
+              this.setState({
+                sellInfo: sellInfo,
+                photo: {uri: r.path},
+                loadingImg: false,
+              });
+            } catch (err) {
+              Alert.alert(
+                this.state.textContent.warning,
+                this.state.textContent.msgError + ': ' + err.message,
+              );
+              this.setState({loadingImg: false});
+              return;
+            }
+          })
+          .catch(e => {
+            console.warn(e);
           });
-        } catch (err) {
-          Alert.alert(
-            this.state.textContent.warning,
-            this.state.textContent.msgError + ': ' + err.message,
-          );
-          this.setState({loadingImg: false});
-          return;
-        }
-      });
+      } else if (mode == 'camera') {
+        ImagePicker.openCamera({
+          noData: true,
+          cropping: true,
+          width: 150,
+          height: 200,
+        })
+          .then(async r => {
+            console.log(r);
+            if (r.didCancel || r.error) {
+              if (r.error)
+                Alert.alert(
+                  this.state.textContent.warning,
+                  this.state.textContent.msgError + ': ' + r.error,
+                );
+              this.setState({loadingImg: false});
+              return;
+            }
+
+            try {
+              let uploadResponse = await System.setItemImg(
+                userUID,
+                'offers',
+                r,
+                Platform.OS,
+              );
+
+              const imgUrl = uploadResponse.downloadURL;
+
+              let sellInfo = this.state.sellInfo;
+
+              sellInfo.pictures = [imgUrl];
+              this.setState({
+                sellInfo: sellInfo,
+                photo: {uri: r.path},
+                loadingImg: false,
+              });
+            } catch (err) {
+              Alert.alert(
+                this.state.textContent.warning,
+                this.state.textContent.msgError + ': ' + err.message,
+              );
+              this.setState({loadingImg: false});
+              return;
+            }
+          })
+          .catch(e => {
+            this.setState({loadingImg:false});
+            console.warn(e);
+          });
+      }
     } else {
       Alert.alert(
         this.state.textContent.warning,
@@ -225,6 +286,7 @@ export default class SellScreen extends Component {
   };
 
   render() {
+    let s = this.state;
     return (
       <>
         <SafeAreaView style={{flex: 0, backgroundColor: '#ecf0f1'}} />
@@ -340,10 +402,50 @@ export default class SellScreen extends Component {
               </TouchableOpacity>
             </Modal>
             {/* Fim Modal */}
+            {/*Modal Select Options*/}
+            <Modal
+              ref={'imgOptions'}
+              position="center"
+              animationDuration={0}
+              useNativeDriver={false}
+              style={styles.modal}
+              swipeToClose={true}
+              backButtonClose={true}>
+              <Text
+                style={[
+                  globalStyles.textBold,
+                  {fontSize: 18, color: '#737373', marginBottom: 20},
+                ]}>
+                {s.textContent.imgOptionsTitle}
+              </Text>
+              <TouchableOpacity
+                onPress={async () => {
+                  this.refs.imgOptions.close();
+                  this.takePhoto('camera');
+                }}
+                style={styles.ImgOptionsModalButtons}>
+                <Text style={[globalStyles.textBold, styles.modalText]}>
+                  {s.textContent.cameraOption}
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  this.refs.imgOptions.close();
+                  this.takePhoto('picker');
+                }}
+                style={[styles.ImgOptionsModalButtons, {marginTop: 10}]}>
+                <Text style={[globalStyles.textBold, styles.modalText]}>
+                  {s.textContent.pickerOption}
+                </Text>
+              </TouchableOpacity>
+            </Modal>
+            {/*Finish Modal Select Options*/}
             <ScrollView style={styles.container}>
               <Header back={true} />
               <TouchableOpacity
-                onPress={this.takePhoto}
+                onPress={() => {
+                  this.refs.imgOptions.open();
+                }}
                 style={styles.uploadArea}>
                 {this.state.loadingImg ? (
                   <View

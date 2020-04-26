@@ -12,8 +12,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-community/async-storage';
 import Modal from 'react-native-modalbox';
 import System from '../../../services/api';
-import ImagePicker from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import RNFetchBlob from 'rn-fetch-blob';
+import ModalSelect from 'react-native-modal-select-option';
 
 const Blob = RNFetchBlob.polyfill.Blob;
 const fs = RNFetchBlob.fs;
@@ -63,44 +64,93 @@ export default class Perfil extends Component {
       textContent: {},
       imgLoader: false,
       temp: null,
+      imgOptionsShow: false,
     };
   }
 
-  takePicture = async () => {
+  takePicture = async mode => {
     const userUID = await AsyncStorage.getItem('userUID');
 
-    this.setState({
-      userID: userUID,
-      loading: true,
-      imgLoader: true,
-    });
-
-    ImagePicker.showImagePicker({noData: true}, async r => {
-      if (r.didCancel) {
-        this.setState({
-          loading: false,
-          imgLoader: true,
-        });
-        return;
-      }
-
-      let uploadResponse = await System.setItemImg(
-        userUID,
-        'profile',
-        r,
-        Platform.OS,
-      );
-
-      const imgUrl = uploadResponse.downloadURL;
-
-      await System.updateImgProfile(userUID, {imgProfile: imgUrl});
-
+    if (mode === 'picker') {
       this.setState({
-        photo: {uri: r.uri},
-        loading: false,
-        imgLoader: false,
+        userID: userUID,
+        loading: true,
+        imgLoader: true,
       });
-    });
+
+      ImagePicker.openPicker({
+        noData: true,
+        cropping: true,
+        width: 150,
+        height: 200,
+      })
+        .then(async image => {
+          console.log(image);
+
+          let uploadResponse = await System.setItemImg(
+            userUID,
+            'profile',
+            image,
+            Platform.OS,
+          );
+
+          const imgUrl = uploadResponse.downloadURL;
+
+          await System.updateImgProfile(userUID, {imgProfile: imgUrl});
+
+          this.setState({
+            photo: {uri: image.path},
+            loading: false,
+            imgLoader: false,
+          });
+        })
+        .catch(e => {
+          this.setState({
+            loading: false,
+            imgLoader: false,
+          });
+          console.warn(e);
+        });
+    } else if (mode == 'camera') {
+      this.setState({
+        userID: userUID,
+        loading: true,
+        imgLoader: true,
+      });
+      ImagePicker.openCamera({
+        noData: true,
+        cropping: true,
+        width: 150,
+        height: 200,
+      })
+        .then(async image => {
+          console.log(image);
+
+          let uploadResponse = await System.setItemImg(
+            userUID,
+            'profile',
+            image,
+            Platform.OS,
+          );
+
+          const imgUrl = uploadResponse.downloadURL;
+
+          await System.updateImgProfile(userUID, {imgProfile: imgUrl});
+
+          this.setState({
+            photo: {uri: image.path},
+            loading: false,
+            imgLoader: false,
+          });
+        })
+        .catch(e => {
+          this.setState({
+            loading: false,
+            imgLoader: false,
+          });
+          console.warn(e);
+        });
+    }
   };
 
   componentWillUnmount() {
@@ -211,6 +261,44 @@ export default class Perfil extends Component {
           </TouchableOpacity>
         </Modal>
         {/* Fim Modal */}
+        {/*Modal Select Options*/}
+        <Modal
+          ref={'imgOptions'}
+          position="center"
+          animationDuration={0}
+          useNativeDriver={false}
+          style={styles.modal}
+          swipeToClose={true}
+          backButtonClose={true}>
+          <Text
+            style={[
+              globalStyles.textBold,
+              {fontSize: 18, color: '#737373', marginBottom: 20},
+            ]}>
+            {s.textContent.imgOptionsTitle}
+          </Text>
+          <TouchableOpacity
+            onPress={async () => {
+              this.refs.imgOptions.close();
+              this.takePicture('camera');
+            }}
+            style={styles.ImgOptionsModalButtons}>
+            <Text style={[globalStyles.textBold, styles.modalText]}>
+              {s.textContent.cameraOption}
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              this.takePicture('picker');
+              this.refs.imgOptions.close();
+            }}
+            style={[styles.ImgOptionsModalButtons, {marginTop: 10}]}>
+            <Text style={[globalStyles.textBold, styles.modalText]}>
+              {s.textContent.pickerOption}
+            </Text>
+          </TouchableOpacity>
+        </Modal>
+        {/*Finish Modal Select Options*/}
 
         <SafeAreaView style={styles.container}>
           <Header back={true} />
@@ -231,7 +319,9 @@ export default class Perfil extends Component {
                 <View style={styles.mediumCircle}>
                   <TouchableOpacity
                     disabled={s.disable}
-                    onPress={this.takePicture}
+                    onPress={() => {
+                      this.refs.imgOptions.open();
+                    }}
                     style={styles.userCircle}>
                     {s.imgLoader ? (
                       <View

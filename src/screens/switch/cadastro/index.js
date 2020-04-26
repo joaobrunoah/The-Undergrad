@@ -121,6 +121,7 @@ export default class Cadastro extends Component {
           if (this.state.userUID != '') {
             System.registerOnFirestore(this.state.userUID, this.state.data)
               .then(async r => {
+                Alert.alert(s.textContent.titleError, s.textContent.checkEmail);
                 // await AsyncStorage.setItem("userUID", s.userUID);
                 // await AsyncStorage.setItem("isOn", "true").then(
                 //   await AsyncStorage.setItem("email", s.email).then(
