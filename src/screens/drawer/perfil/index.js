@@ -325,17 +325,7 @@ export default class Perfil extends Component {
                     style={styles.userCircle}>
                     {s.imgLoader ? (
                       <View
-                        style={{
-                          position: 'absolute',
-                          zIndex: 10,
-                          width: 100,
-                          height: 100,
-                          borderRadius: 50,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          backgroundColor: '#CCC',
-                          opacity: 0.4,
-                        }}>
+                        style={styles.userCircle}>
                         <ActivityIndicator size="small" color="#000" />
                       </View>
                     ) : null}
@@ -343,13 +333,7 @@ export default class Perfil extends Component {
                       <Icon name="user" size={30} color="#737373" />
                     ) : (
                       <Image
-                        style={{
-                          width: 100,
-                          height: 100,
-                          borderRadius: 50,
-                          borderWidth: 2,
-                          borderColor: '#FFF',
-                        }}
+                        style={styles.userCircle}
                         source={s.photo}
                       />
                     )}

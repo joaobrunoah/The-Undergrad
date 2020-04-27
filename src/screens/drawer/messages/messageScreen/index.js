@@ -8,10 +8,15 @@ import {
   ScrollView,
   SafeAreaView,
   KeyboardAvoidingView,
+  Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-community/async-storage';
 import moment from 'moment';
+
+
+const {height} = Dimensions.get('window');
+const vh = height/100;
 
 //API
 import System from '../../../../services/api';
@@ -236,9 +241,9 @@ export default class MessageDetail extends Component {
         <SafeAreaView style={{flex: 0, backgroundColor: '#FFFFFF'}} />
         <SafeAreaView style={{flex: 1, backgroundColor: '#bdc3c7'}}>
           <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'height' : null}
+            behavior={Platform.OS === 'ios' ? 'padding' : null}
             style={{flex: 1}}
-            keyboardVerticalOffset={'150'}>
+            keyboardVerticalOffset={5*vh}>
             <LinearGradient
               colors={colorsGradient}
               start={startGradient}

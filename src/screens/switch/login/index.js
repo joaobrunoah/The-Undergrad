@@ -12,12 +12,16 @@ import {
   TouchableWithoutFeedback,
   Platform,
   ScrollView,
+  Dimensions
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {StackActions, NavigationActions} from 'react-navigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import {FluidNavigator, Transition} from 'react-navigation-fluid-transitions';
 import Modal from 'react-native-modalbox';
+
+const {height} = Dimensions.get('window');
+const vh = height/100;
 
 // Api
 import System from '../../../services/api';
@@ -349,7 +353,7 @@ export default class Login extends Component {
             <KeyboardAvoidingView
               enabled
               behavior="position"
-              keyboardVerticalOffset={Platform.OS === 'ios' ? 200 : 0}
+              keyboardVerticalOffset={Platform.OS === 'ios' ? 10*vh : 0}
               style={{
                 justifyContent: 'center',
                 alignItems: 'center',

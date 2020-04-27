@@ -1,4 +1,6 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
+const {width} = Dimensions.get('window');
+const vw = width/100;
 
 const styles = StyleSheet.create({
   container: {
@@ -17,29 +19,29 @@ const styles = StyleSheet.create({
   giantCircle: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 150,
-    height: 150,
+    width: 50*vw,
+    height: 50*vw,
     borderColor: '#b3b3b3',
-    borderRadius: 75,
+    borderRadius: 50*vw,
     borderWidth: 2,
     margin: 10,
   },
   mediumCircle: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 130,
-    height: 130,
+    width: 45*vw,
+    height: 45*vw,
     borderColor: '#b3b3b3',
-    borderRadius: 65,
+    borderRadius: 45*vw,
     borderWidth: 1.5,
   },
   userCircle: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 100,
-    height: 100,
+    width: 40*vw,
+    height: 40*vw,
     borderColor: '#CCC',
-    borderRadius: 50,
+    borderRadius: 40*vw,
     backgroundColor: '#CCC',
   },
   itemsForSale: {

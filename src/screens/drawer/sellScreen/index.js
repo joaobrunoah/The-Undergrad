@@ -69,6 +69,7 @@ export default class SellScreen extends Component {
   }
 
   checkAllPermissions = async () => {
+    if(Platform.OS === 'ios') return true;
     try {
       await PermissionsAndroid.requestMultiple([
         PermissionsAndroid.PERMISSIONS.CAMERA,
@@ -100,104 +101,109 @@ export default class SellScreen extends Component {
     });
 
     if (await this.checkAllPermissions()) {
-      if (mode == 'picker') {
-        ImagePicker.openPicker({
-          noData: true,
-          cropping: true,
-          width: 150,
-          height: 200,
-        })
-          .then(async r => {
-            if (r.didCancel || r.error) {
-              if (r.error)
-                Alert.alert(
-                  this.state.textContent.warning,
-                  this.state.textContent.msgError + ': ' + r.error,
-                );
-              this.setState({loadingImg: false});
-              return;
-            }
 
-            try {
-              let uploadResponse = await System.setItemImg(
-                userUID,
-                'offers',
-                r,
-                Platform.OS,
-              );
+      if (mode === 'picker') {
+        let r = undefined;
 
-              const imgUrl = uploadResponse.downloadURL;
-
-              let sellInfo = this.state.sellInfo;
-
-              sellInfo.pictures = [imgUrl];
-              this.setState({
-                sellInfo: sellInfo,
-                photo: {uri: r.path},
-                loadingImg: false,
-              });
-            } catch (err) {
-              Alert.alert(
-                this.state.textContent.warning,
-                this.state.textContent.msgError + ': ' + err.message,
-              );
-              this.setState({loadingImg: false});
-              return;
-            }
-          })
-          .catch(e => {
-            console.warn(e);
+        try {
+          r = await ImagePicker.openPicker({
+            noData: true,
+            cropping: true,
+            width: 150,
+            height: 200,
           });
+        } catch (err) {
+          console.warn(err);
+          return;
+        }
+
+        if (r.didCancel || r.error) {
+          if (r.error) {
+            Alert.alert(
+              this.state.textContent.warning,
+              this.state.textContent.msgError + ': ' + r.error,
+            );
+          }
+          this.setState({loadingImg: false});
+          return;
+        }
+
+        try {
+          let uploadResponse = await System.setItemImg(
+            userUID,
+            'offers',
+            r,
+            Platform.OS,
+          );
+
+          const imgUrl = uploadResponse.downloadURL;
+
+          let sellInfo = this.state.sellInfo;
+
+          sellInfo.pictures = [imgUrl];
+          this.setState({
+            sellInfo: sellInfo,
+            photo: {uri: r.path},
+            loadingImg: false,
+          });
+        } catch (err) {
+          Alert.alert(
+            this.state.textContent.warning,
+            this.state.textContent.msgError + ': ' + err.message,
+          );
+          this.setState({loadingImg: false});
+          return;
+        }
       } else if (mode == 'camera') {
-        ImagePicker.openCamera({
-          noData: true,
-          cropping: true,
-          width: 150,
-          height: 200,
-        })
-          .then(async r => {
-            console.log(r);
-            if (r.didCancel || r.error) {
-              if (r.error)
-                Alert.alert(
-                  this.state.textContent.warning,
-                  this.state.textContent.msgError + ': ' + r.error,
-                );
-              this.setState({loadingImg: false});
-              return;
-            }
-
-            try {
-              let uploadResponse = await System.setItemImg(
-                userUID,
-                'offers',
-                r,
-                Platform.OS,
-              );
-
-              const imgUrl = uploadResponse.downloadURL;
-
-              let sellInfo = this.state.sellInfo;
-
-              sellInfo.pictures = [imgUrl];
-              this.setState({
-                sellInfo: sellInfo,
-                photo: {uri: r.path},
-                loadingImg: false,
-              });
-            } catch (err) {
-              Alert.alert(
-                this.state.textContent.warning,
-                this.state.textContent.msgError + ': ' + err.message,
-              );
-              this.setState({loadingImg: false});
-              return;
-            }
+        let r = undefined;
+        try {
+          r = ImagePicker.openCamera({
+            noData: true,
+            cropping: true,
+            width: 150,
+            height: 200,
           })
-          .catch(e => {
-            this.setState({loadingImg:false});
-            console.warn(e);
+        } catch(err) {
+          console.warn(err);
+          return;
+        }
+
+        if (r.didCancel || r.error) {
+          if (r.error)
+            Alert.alert(
+              this.state.textContent.warning,
+              this.state.textContent.msgError + ': ' + r.error,
+            );
+          this.setState({loadingImg: false});
+          return;
+        }
+
+        try {
+          let uploadResponse = await System.setItemImg(
+            userUID,
+            'offers',
+            r,
+            Platform.OS,
+          );
+
+          const imgUrl = uploadResponse.downloadURL;
+
+          let sellInfo = this.state.sellInfo;
+
+          sellInfo.pictures = [imgUrl];
+          this.setState({
+            sellInfo: sellInfo,
+            photo: {uri: r.path},
+            loadingImg: false,
           });
+        } catch (err) {
+          Alert.alert(
+            this.state.textContent.warning,
+            this.state.textContent.msgError + ': ' + err.message,
+          );
+          this.setState({loadingImg: false});
+          return;
+        }
       }
     } else {
       Alert.alert(
