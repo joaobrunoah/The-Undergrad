@@ -22,6 +22,11 @@ class System {
       .child(System.userId)
       .off('value');
     await AsyncStorage.clear();
+    try {
+      await firebase.iid().deleteToken();
+    } catch (err) {
+      console.warn(err);
+    }
     await firebaseAppAuth.signOut();
   }
 
