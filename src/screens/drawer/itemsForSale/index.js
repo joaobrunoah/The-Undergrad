@@ -40,10 +40,14 @@ class Item extends Component {
 
   async componentDidMount() {
     let uniID = this.props.uniID;
-    System.getUniData(uniID).then(universityCb => {
-      let coin = universityCb.data().coin;
-      this.setState({coin: coin});
-    });
+    let coin = '$';
+
+    try {
+      let universityCb = await System.getUniData(uniID);
+      coin = universityCb.data().coin;
+    } catch (err) {
+      console.warn(err);
+    }
 
     let language = await AsyncStorage.getItem('language');
     let userUid = await AsyncStorage.getItem('userUID');
@@ -58,42 +62,31 @@ class Item extends Component {
       language,
       userUid,
       textContent,
+      coin
     });
   }
 
   delete = async () => {
+
     let p = this.props.data;
     let s = this.state;
 
-    let auxID = `/users/${s.userUid}`;
+    try {
+      await System.deleteItemsUser(p.idItem);
 
-    System.getItemsUser(auxID)
-      .then(r => {
-        let data = r.docs;
-        data.forEach(doc => {
-          if (doc.data().createdAt === p.createdAt) {
-            System.deleteItemsUser(doc.id)
-              .then(r2 => {
-                Alert.alert(
-                  s.textContent.alertTitle,
-                  s.textContent.alertDeleted,
-                );
-                const resetAction = StackActions.reset({
-                  index: 0,
-                  actions: [NavigationActions.navigate({routeName: 'Preload'})],
-                });
-                this.props.nav.dispatch(resetAction);
-              })
-              .catch(e => {
-                console.warn(e);
-                Alert.alert(s.textContent.alertTitle, s.textContent.alertUnsuc);
-              });
-          }
-        });
-      })
-      .catch(e => {
-        console.warn(e);
-      });
+      Alert.alert(
+        s.textContent.alertTitle,
+        s.textContent.alertDeleted,
+      );
+
+      if(this.props.deleteCallback) {
+        this.props.deleteCallback();
+      }
+
+    } catch (err) {
+      console.warn(err);
+      Alert.alert(s.textContent.alertTitle, s.textContent.alertUnsuc);
+    }
   };
 
   render() {
@@ -206,38 +199,55 @@ export default class ItemsForSale extends Component {
   }
 
   async componentDidMount() {
-    let s = this.state;
-    s.language = await AsyncStorage.getItem('language');
-    s.userUid = await AsyncStorage.getItem('userUID');
 
-    if (s.language === 'br') {
-      s.textContent = textBr;
-    } else if (s.language === 'usa') {
-      s.textContent = textUsa;
+    const language = await AsyncStorage.getItem('language');
+    const userUid = await AsyncStorage.getItem('userUID');
+
+    let textContent = textUsa;
+
+    if (language === 'br') {
+      textContent = textBr;
     }
 
-    this.setState(s);
-
-    System.getUserInfo(s.userUid).then(r => {
-      s.userInfo = r.data();
-      this.setState(s);
+    this.setState({
+      language,
+      userUid,
+      textContent
     });
 
-    let auxID = `/users/${s.userUid}`;
-
-    System.getItemsUser(auxID)
-      .then(r => {
-        let data = r.docs;
-        data.forEach(doc => {
-          s.itemsForSale.push(doc.data());
-        });
-        s.itemsForSale.push({is_sell_button: true});
-        s.loading = false;
-        this.setState(s);
-      })
-      .catch(e => {
-        console.warn(e);
+    System.getUserInfo(userUid).then(r => {
+      const userInfo = r.data();
+      this.setState({
+        userInfo
       });
+    });
+
+    console.log('here1');
+
+    await this.loadItems();
+  }
+
+  async loadItems() {
+    let auxID = `/users/${this.state.userUid}`;
+
+    try {
+      let r = await System.getItemsUser(auxID);
+      let data = r.docs;
+      let itemsForSale = [];
+      data.forEach(doc => {
+        let item = doc.data();
+        item.idItem = doc.id;
+        itemsForSale.push(item);
+      });
+      itemsForSale.push({is_sell_button: true});
+      const loading = false;
+      this.setState({
+        itemsForSale,
+        loading
+      });
+    } catch (err) {
+      console.warn(err);
+    }
   }
 
   render() {
@@ -308,8 +318,6 @@ export default class ItemsForSale extends Component {
                             borderRadius: 10,
                             marginBottom: 20,
                             backgroundColor: '#0008',
-                            alignItems: 'center',
-                            justifyContent: 'center',
                           }}
                           onPress={()=>{
                             this.props.navigation.navigate('SellScreen');
@@ -339,6 +347,7 @@ export default class ItemsForSale extends Component {
                           text={s.textContent}
                           data={item}
                           nav={this.props.navigation}
+                          deleteCallback={this.loadItems.bind(this)}
                         />
                       );
                     }
